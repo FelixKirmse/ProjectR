@@ -4,7 +4,8 @@
 
 namespace ProjectR
 {
-class StateMachineSynchronizer : public ISynchronizer<int>
+class StateMachineSynchronizer : public ISynchronizer<int>,
+    public std::enable_shared_from_this<StateMachineSynchronizer>
 {
 public:
   StateMachineSynchronizer();

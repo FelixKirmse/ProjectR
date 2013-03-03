@@ -19,14 +19,6 @@ ifndef AR
   AR = ar
 endif
 
-ifndef RESCOMP
-  ifdef WINDRES
-    RESCOMP = $(WINDRES)
-  else
-    RESCOMP = windres
-  endif
-endif
-
 ifeq ($(config),debug)
   OBJDIR     = obj/Debug/ProjectR
   TARGETDIR  = build
@@ -36,11 +28,11 @@ ifeq ($(config),debug)
   CPPFLAGS  += -MMD -MP $(DEFINES) $(INCLUDES)
   CFLAGS    += $(CPPFLAGS) $(ARCH) -Wall -ffast-math -g -std=c++11
   CXXFLAGS  += $(CFLAGS) 
-  LDFLAGS   += -Lbuild -ltcod_debug -ltcodgui_debug -ltcodxx_debug -lboost_system -lboost_filesystem -lboost_serialization
-  RESFLAGS  += $(DEFINES) $(INCLUDES) 
+  LDFLAGS   += -ltcod_debug -ltcodgui_debug -ltcodxx_debug -lboost_system -lboost_filesystem -lboost_serialization -Lbuild
   LIBS      += -lProjectR.Model -lProjectR.Logic -lProjectR.View -lProjectR.MapGen
+  RESFLAGS  += $(DEFINES) $(INCLUDES) 
   LDDEPS    += build/libProjectR.Model.so build/libProjectR.Logic.so build/libProjectR.View.so build/libProjectR.MapGen.so
-  LINKCMD    = $(CXX) -o $(TARGET) $(OBJECTS) $(RESOURCES) $(ARCH) $(LIBS) $(LDFLAGS)
+  LINKCMD    = $(CXX) -o $(TARGET) $(OBJECTS) $(LDFLAGS) $(RESOURCES) $(ARCH) $(LIBS)
   define PREBUILDCMDS
   endef
   define PRELINKCMDS
@@ -58,11 +50,11 @@ ifeq ($(config),release)
   CPPFLAGS  += -MMD -MP $(DEFINES) $(INCLUDES)
   CFLAGS    += $(CPPFLAGS) $(ARCH) -Wall -ffast-math -O3 -std=c++11
   CXXFLAGS  += $(CFLAGS) 
-  LDFLAGS   += -Lbuild -s -ltcod -ltcodgui -ltcodxx -lboost_system -lboost_filesystem -lboost_serialization
-  RESFLAGS  += $(DEFINES) $(INCLUDES) 
+  LDFLAGS   += -s -ltcod -ltcodgui -ltcodxx -lboost_system -lboost_filesystem -lboost_serialization -Lbuild
   LIBS      += -lProjectR.Model -lProjectR.Logic -lProjectR.View -lProjectR.MapGen
+  RESFLAGS  += $(DEFINES) $(INCLUDES) 
   LDDEPS    += build/libProjectR.Model.so build/libProjectR.Logic.so build/libProjectR.View.so build/libProjectR.MapGen.so
-  LINKCMD    = $(CXX) -o $(TARGET) $(OBJECTS) $(RESOURCES) $(ARCH) $(LIBS) $(LDFLAGS)
+  LINKCMD    = $(CXX) -o $(TARGET) $(OBJECTS) $(LDFLAGS) $(RESOURCES) $(ARCH) $(LIBS)
   define PREBUILDCMDS
   endef
   define PRELINKCMDS
@@ -73,6 +65,7 @@ endif
 
 OBJECTS := \
 	$(OBJDIR)/main.o \
+	$(OBJDIR)/ProjectR.o \
 
 RESOURCES := \
 
@@ -129,16 +122,15 @@ prelink:
 ifneq (,$(PCH))
 $(GCH): $(PCH)
 	@echo $(notdir $<)
-ifeq (posix,$(SHELLTYPE))
 	-$(SILENT) cp $< $(OBJDIR)
-else
-	$(SILENT) xcopy /D /Y /Q "$(subst /,\,$<)" "$(subst /,\,$(OBJDIR))" 1>nul
-endif
-	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 endif
 
 $(OBJDIR)/main.o: src/ProjectR/main.cpp
 	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+$(OBJDIR)/ProjectR.o: src/ProjectR/ProjectR.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
 -include $(OBJECTS:%.o=%.d)

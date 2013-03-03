@@ -25,8 +25,6 @@ include/ProjectR.Interfaces/IModel.hpp
 include/ProjectR.Model/RModel.hpp
 src/ProjectR.Model/RModel.cpp
 include/ProjectR.Interfaces/IView.hpp
-include/ProjectR.View/SimpleMapView.hpp
-src/ProjectR.View/SimpleMapView.cpp
 include/ProjectR.Interfaces/IState.hpp
 include/ProjectR.Interfaces/ISynchronizeable.hpp
 include/ProjectR.Interfaces/ISynchronizer.hpp
@@ -43,3 +41,12 @@ include/ProjectR.Interfaces/IObserveable.hpp
 include/ProjectR.Interfaces/IObserver.hpp
 include/ProjectR.Model/Observeable.hpp
 src/ProjectR.Model/Observeable.cpp
+include/ProjectR.View/ConsoleView.hpp
+src/ProjectR.View/ConsoleView.cpp
+include/ProjectR.View/TitleScreenView.hpp
+include/ProjectR/ProjectR.hpp
+src/ProjectR/ProjectR.cpp
+src/ProjectR.View/TitleScreenView.cpp
+include/ProjectR.Model/ModelState.hpp
+include/ProjectR.View/RConsole.hpp
+src/ProjectR.View/RConsole.cpp

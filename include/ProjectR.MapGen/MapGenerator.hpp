@@ -8,11 +8,8 @@ class RMap;
 class MapGenerator
 {
 public:
-  MapGenerator(std::shared_ptr<RMap> map);
-  ~MapGenerator();
-
-  void GenerateMap(int level);
-private:
-  class MapGenImpl* _;
+  virtual void GenerateMap(int level) = 0;
+  static MapGenerator* Create(std::shared_ptr<RMap> map);
+  virtual ~MapGenerator(){}
 };
 }

@@ -1,19 +1,12 @@
 #include <iostream>
-#include "ProjectR.MapGen/MapGenerator.hpp"
-#include "ProjectR.Model/RModel.hpp"
-#include "ProjectR.View/SimpleMapView.hpp"
+#include "ProjectR.hpp"
 
 int main(int argc, char** argv)
 {
-  using namespace ProjectR;
-
-  std::shared_ptr<RModel> model(new RModel());
-  std::shared_ptr<SimpleMapView> view(new SimpleMapView());
-  view->SetModel(model);
-  model->AddObserver(view);
-  MapGenerator mapGen(model->GetMap());
-  mapGen.GenerateMap(1);
-  model->CommitChanges();
+  ProjectR::ProjectR* _game(ProjectR::ProjectR::Create());
+  _game->SetupGameStructure();
+  _game->RunGame();
+  delete _game;
 
   return 0;
 }

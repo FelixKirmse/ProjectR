@@ -15,6 +15,7 @@ void StateMachineSynchronizer::Sync(int value)
 
 void StateMachineSynchronizer::AddSynchronizeable(std::shared_ptr<ISynchronizeable<int> > sync)
 {
+  sync->SetSynchronizer(shared_from_this());
   _synchronizeables.push_back(sync);
 }
 

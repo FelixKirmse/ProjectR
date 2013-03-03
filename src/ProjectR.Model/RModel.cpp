@@ -8,7 +8,7 @@
 namespace ProjectR
 {
 
-struct RModelImpl
+struct RModelImpl : public RModel
 {
   RModelImpl()
     : _map(new RMap()),
@@ -48,6 +48,11 @@ struct RModelImpl
   {
   }
 
+  void CommitChanges()
+  {
+    NotifyObservers();
+  }
+
   std::shared_ptr<RMap> _map;
   std::shared_ptr<TitleModel> _titleModel;
   std::shared_ptr<MenuModel> _menuModel;
@@ -55,49 +60,9 @@ struct RModelImpl
   std::shared_ptr<BattleModel> _battleModel;
 };
 
-RModel::RModel()
-  : _(new RModelImpl())
+RModel* RModel::Create()
 {
-}
-
-RModel::~RModel()
-{
-  delete _;
-}
-
-std::shared_ptr<RMap> RModel::GetMap() const
-{
-  return _->GetMap();
-}
-
-std::shared_ptr<TitleModel> RModel::GetTitleModel() const
-{
-  return _->GetTitleModel();
-}
-
-std::shared_ptr<MenuModel> RModel::GetMenuModel() const
-{
-  return _->GetMenuModel();
-}
-
-std::shared_ptr<OverWorldModel> RModel::GetOverworldModel() const
-{
-  return _->GetOverworldModel();
-}
-
-std::shared_ptr<BattleModel> RModel::GetBattleModel() const
-{
-  return _->GetBattleModel();
-}
-
-void RModel::LoadResources()
-{
-  _->LoadResources();
-}
-
-void RModel::CommitChanges()
-{
-  NotifyObservers();
+  return new RModelImpl();
 }
 
 }

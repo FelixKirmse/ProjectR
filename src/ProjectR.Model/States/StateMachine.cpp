@@ -29,6 +29,7 @@ StateMachine::StatePtr StateMachine::GetCurrentState()
 
 void StateMachine::AddState(StatePtr state)
 {
+  state->SetStateMachine(shared_from_this());
   _states.push_back(state);
 }
 

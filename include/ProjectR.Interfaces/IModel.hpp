@@ -1,6 +1,7 @@
 #pragma once
 #include <memory>
 
+
 namespace ProjectR
 {
 class RMap;

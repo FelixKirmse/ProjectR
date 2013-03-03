@@ -12,7 +12,7 @@
 
 namespace ProjectR
 {
-struct MapGenImpl
+struct MapGenImpl : public MapGenerator
 {
   MapGenImpl(std::shared_ptr<RMap> map)
     : _map(map),
@@ -121,22 +121,17 @@ struct MapGenImpl
       _map->RecalculateHeatZone();
     }
   }
+
+  void GenerateMap(int level)
+  {
+    _featureTarget = level * 2 + Roll(5, 15);
+    PrepareMap();
+    GenerateFeatures();
+  }
 };
 
-MapGenerator::MapGenerator(std::shared_ptr<RMap> map)
-  : _(new MapGenImpl(map))
+MapGenerator* MapGenerator::Create(std::shared_ptr<RMap> map)
 {
-}
-
-MapGenerator::~MapGenerator()
-{
-  delete _;
-}
-
-void MapGenerator::GenerateMap(int level)
-{
-  _->_featureTarget = level * 2 + Roll(5, 15);
-  _->PrepareMap();
-  _->GenerateFeatures();
+  return new MapGenImpl(map);
 }
 }

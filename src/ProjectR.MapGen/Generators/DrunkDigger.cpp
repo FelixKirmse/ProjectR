@@ -47,6 +47,10 @@ void DrunkDigger::GenerateImpl(int row, int col, Direction dir)
   auto& cell = Map()->Get(row, col);
   cell = cell & Important ? Door : Floor;
   Digger::DigCell(row, col);
+  Digger::DigCell(row + 1, col);
+  Digger::DigCell(row - 1, col);
+  Digger::DigCell(row, col - 1);
+  Digger::DigCell(row, col + 1);
   digger.Dig();
 }
 

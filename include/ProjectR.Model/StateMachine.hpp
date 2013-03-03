@@ -5,7 +5,8 @@
 
 namespace ProjectR
 {
-class StateMachine : public IStateMachine, public ISynchronizeable<int>
+class StateMachine : public IStateMachine, public ISynchronizeable<int>,
+    public std::enable_shared_from_this<StateMachine>
 {
 public:
   StateMachine();
