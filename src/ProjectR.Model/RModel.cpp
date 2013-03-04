@@ -60,9 +60,9 @@ struct RModelImpl : public RModel
   std::shared_ptr<BattleModel> _battleModel;
 };
 
-RModel* RModel::Create()
+std::shared_ptr<RModel> RModel::Create()
 {
-  return new RModelImpl();
+  return std::make_shared<RModelImpl>();
 }
 
 }

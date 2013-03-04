@@ -64,6 +64,10 @@ ifeq ($(config),release)
 endif
 
 OBJECTS := \
+	$(OBJDIR)/RLogic.o \
+	$(OBJDIR)/LogicState.o \
+	$(OBJDIR)/TitleScreenLogic.o \
+	$(OBJDIR)/RInput.o \
 
 RESOURCES := \
 
@@ -124,5 +128,17 @@ $(GCH): $(PCH)
 	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 endif
 
+$(OBJDIR)/RLogic.o: src/ProjectR.Logic/RLogic.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+$(OBJDIR)/LogicState.o: src/ProjectR.Logic/LogicState.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+$(OBJDIR)/TitleScreenLogic.o: src/ProjectR.Logic/TitleScreenLogic.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+$(OBJDIR)/RInput.o: src/ProjectR.Logic/RInput.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
 -include $(OBJECTS:%.o=%.d)

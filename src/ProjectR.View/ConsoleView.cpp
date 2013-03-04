@@ -7,8 +7,7 @@ namespace ProjectR
 struct ConsoleViewImpl : public ConsoleView
 {
   ConsoleViewImpl()
-    : _model(),
-      _titleScreen(TitleScreenView::Create())
+    : _model()
   {
     RConsole::InitializeRootConsole(1920.f / 8, 1080.f / 8);
   }
@@ -19,7 +18,7 @@ struct ConsoleViewImpl : public ConsoleView
 
   void Show()
   {
-    GetCurrentState()->Run();
+    RunCurrentState();
     RConsole::Draw();
   }
 
@@ -28,21 +27,19 @@ struct ConsoleViewImpl : public ConsoleView
     Show();
   }
 
-  void SetModel(std::shared_ptr<IModel> model)
+  void SetModel(std::shared_ptr<IModel> const& model)
   {
-    AddState(_titleScreen);
+    AddState(TitleScreenView::Create());
 
-    _model = model;
-    _titleScreen->SetModel(model);
+    _model = model;    
   }
 
-  std::shared_ptr<IModel> _model;
-  std::shared_ptr<ModelState> _titleScreen;
+  std::shared_ptr<IModel> _model;  
 };
 
-ConsoleView* ConsoleView::Create()
+std::shared_ptr<ConsoleView> ConsoleView::Create()
 {
-  return new ConsoleViewImpl();
+  return std::make_shared<ConsoleViewImpl>();
 }
 
 }

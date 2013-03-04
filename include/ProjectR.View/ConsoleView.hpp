@@ -8,7 +8,7 @@ namespace ProjectR
 class ConsoleView : public IView, public IObserver, public StateMachine
 {
 public:
-  static ConsoleView* Create();
+  static std::shared_ptr<ConsoleView> Create();
   virtual ~ConsoleView(){}
 };
 

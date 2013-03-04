@@ -66,6 +66,7 @@ endif
 OBJECTS := \
 	$(OBJDIR)/Observeable.o \
 	$(OBJDIR)/RModel.o \
+	$(OBJDIR)/ModelState.o \
 	$(OBJDIR)/StateMachineSynchronizer.o \
 	$(OBJDIR)/StateMachine.o \
 	$(OBJDIR)/RMap.o \
@@ -133,6 +134,9 @@ $(OBJDIR)/Observeable.o: src/ProjectR.Model/Observeable.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 $(OBJDIR)/RModel.o: src/ProjectR.Model/RModel.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+$(OBJDIR)/ModelState.o: src/ProjectR.Model/ModelState.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 $(OBJDIR)/StateMachineSynchronizer.o: src/ProjectR.Model/States/StateMachineSynchronizer.cpp

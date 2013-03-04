@@ -12,7 +12,7 @@ public:
   virtual void Deactivate() = 0;
   virtual void Run() = 0;
 
-  virtual void SetStateMachine(std::shared_ptr<IStateMachine> machine) = 0;
+  virtual void SetStateMachine(std::shared_ptr<IStateMachine> const& machine) = 0;
 
   virtual ~IState() {}
 };

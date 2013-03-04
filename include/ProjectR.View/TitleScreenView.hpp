@@ -6,7 +6,7 @@ namespace ProjectR
 class TitleScreenView : public ModelState
 {
 public:
-  static TitleScreenView* Create();
+  static std::shared_ptr<TitleScreenView> Create();
   virtual ~TitleScreenView(){}
 };
 }

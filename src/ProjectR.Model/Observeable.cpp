@@ -3,7 +3,7 @@
 
 namespace ProjectR
 {
-void Observeable::AddObserver(std::shared_ptr<IObserver> observer)
+void Observeable::AddObserver(std::shared_ptr<IObserver> const& observer)
 {
   _observers.push_back(observer);
 }

@@ -9,18 +9,9 @@ namespace ProjectR
 struct TitleScreenViewImpl : public TitleScreenView
 {
   TitleScreenViewImpl()
-    : _masterMachine(),
-      _mapConsole(1000, 1000)
+    : _mapConsole(1000, 1000)
   {
-  }
-
-  void Activate()
-  {
-  }
-
-  void Deactivate()
-  {
-  }
+  } 
 
   void Run()
   {
@@ -68,17 +59,11 @@ struct TitleScreenViewImpl : public TitleScreenView
     root->Blit(_mapConsole, Rectangle(heatZone.X, heatZone.Y, root->GetWidth(), root->GetHeight()), 0, 0);
   }
 
-  void SetStateMachine(std::shared_ptr<IStateMachine> machine)
-  {
-    _masterMachine = machine;
-  }
-
-  std::shared_ptr<IStateMachine> _masterMachine;
   RConsole _mapConsole;
 };
 
-TitleScreenView* TitleScreenView::Create()
+std::shared_ptr<TitleScreenView> TitleScreenView::Create()
 {
-  return new TitleScreenViewImpl();
+  return std::make_shared<TitleScreenViewImpl>();
 }
 }

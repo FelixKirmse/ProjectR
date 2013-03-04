@@ -8,7 +8,7 @@ class IObserver;
 class IObserveable
 {
 public:
-  virtual void AddObserver(std::shared_ptr<IObserver> observer) = 0;
+  virtual void AddObserver(std::shared_ptr<IObserver> const& observer) = 0;
   virtual void NotifyObservers() const = 0;
 
   virtual ~IObserveable() {}

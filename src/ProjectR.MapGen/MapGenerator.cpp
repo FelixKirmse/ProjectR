@@ -14,7 +14,7 @@ namespace ProjectR
 {
 struct MapGenImpl : public MapGenerator
 {
-  MapGenImpl(std::shared_ptr<RMap> map)
+  MapGenImpl(std::shared_ptr<RMap> const& map)
     : _map(map),
       Rows(map->Rows()),
       Cols(map->Columns()),
@@ -130,8 +130,8 @@ struct MapGenImpl : public MapGenerator
   }
 };
 
-MapGenerator* MapGenerator::Create(std::shared_ptr<RMap> map)
+std::shared_ptr<MapGenerator> MapGenerator::Create(std::shared_ptr<RMap> const& map)
 {
-  return new MapGenImpl(map);
+  return std::make_shared<MapGenImpl>(map);
 }
 }

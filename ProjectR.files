@@ -50,3 +50,13 @@ src/ProjectR.View/TitleScreenView.cpp
 include/ProjectR.Model/ModelState.hpp
 include/ProjectR.View/RConsole.hpp
 src/ProjectR.View/RConsole.cpp
+include/ProjectR.Logic/RLogic.hpp
+src/ProjectR.Model/ModelState.cpp
+src/ProjectR.Logic/RLogic.cpp
+include/ProjectR.Logic/TitleScreenLogic.hpp
+src/ProjectR.Logic/TitleScreenLogic.cpp
+include/ProjectR.Model/Input.hpp
+include/ProjectR.Logic/RInput.hpp
+src/ProjectR.Logic/RInput.cpp
+include/ProjectR.Logic/LogicState.hpp
+src/ProjectR.Logic/LogicState.cpp

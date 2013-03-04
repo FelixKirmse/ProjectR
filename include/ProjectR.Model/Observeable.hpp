@@ -7,7 +7,7 @@ namespace ProjectR
 class Observeable : public IObserveable
 {
 public:
-  void AddObserver(std::shared_ptr<IObserver> observer);
+  void AddObserver(std::shared_ptr<IObserver> const& observer);
   void NotifyObservers() const;
 
 private:

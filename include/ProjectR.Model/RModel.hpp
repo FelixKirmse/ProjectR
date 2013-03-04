@@ -7,7 +7,7 @@ namespace ProjectR
 class RModel : public IModel, public Observeable
 {
 public:
-  static RModel* Create();
+  static std::shared_ptr<RModel> Create();
   virtual ~RModel() {}
 };
 }

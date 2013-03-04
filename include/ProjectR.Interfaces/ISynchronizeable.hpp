@@ -11,7 +11,7 @@ class ISynchronizeable
 {
 public:
   virtual void Sync(T value) = 0;
-  virtual void SetSynchronizer(std::shared_ptr<ISynchronizer<T> > syncer) = 0;
+  virtual void SetSynchronizer(std::shared_ptr<ISynchronizer<T> > const& syncer) = 0;
 
   virtual ~ISynchronizeable() {}
 };

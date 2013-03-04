@@ -11,7 +11,7 @@ public:
   StateMachineSynchronizer();
 
   void Sync(int value);
-  void AddSynchronizeable(std::shared_ptr<ISynchronizeable<int> > sync);
+  void AddSynchronizeable(std::shared_ptr<ISynchronizeable<int> > const& sync);
   void ClearSynchronizeables();
 
 private:

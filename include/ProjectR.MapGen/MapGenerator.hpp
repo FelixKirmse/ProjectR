@@ -9,7 +9,7 @@ class MapGenerator
 {
 public:
   virtual void GenerateMap(int level) = 0;
-  static MapGenerator* Create(std::shared_ptr<RMap> map);
+  static std::shared_ptr<MapGenerator> Create(std::shared_ptr<RMap> const& map);
   virtual ~MapGenerator(){}
 };
 }

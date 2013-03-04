@@ -14,14 +14,14 @@ public:
 
   void Next();
   void Previous();
-  StatePtr GetCurrentState();
-  void AddState(StatePtr state);
+  std::shared_ptr<IState> const& GetCurrentState();
+  void AddState(std::shared_ptr<IState> const& state);
   void RunCurrentState();
   void Sync(int value);
-  void SetSynchronizer(std::shared_ptr<ISynchronizer<int> > syncer);
+  void SetSynchronizer(std::shared_ptr<ISynchronizer<int> > const& syncer);
 
 private:
-  std::vector<StatePtr> _states;
+  std::vector<std::shared_ptr<IState> > _states;
   int _currentState;
   std::shared_ptr<ISynchronizer<int> > _synchronizer;
 };

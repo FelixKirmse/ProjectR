@@ -1,17 +1,14 @@
 #pragma once
-#include <memory>
+#include "StateMachine.hpp"
 
 namespace ProjectR
 {
 class IModel;
-
-class IView
+class RLogic : public StateMachine
 {
 public:
-  virtual void Show() = 0;
   virtual void SetModel(std::shared_ptr<IModel> const& model) = 0;
-
-  virtual ~IView() {}
+  static std::shared_ptr<RLogic> Create();
+  virtual ~RLogic(){}
 };
-
 }
