@@ -67,7 +67,11 @@ OBJECTS := \
 	$(OBJDIR)/Observeable.o \
 	$(OBJDIR)/RModel.o \
 	$(OBJDIR)/ModelState.o \
+	$(OBJDIR)/MenuItem.o \
+	$(OBJDIR)/Menu.o \
 	$(OBJDIR)/StateMachineSynchronizer.o \
+	$(OBJDIR)/TitleModel.o \
+	$(OBJDIR)/MenuModel.o \
 	$(OBJDIR)/StateMachine.o \
 	$(OBJDIR)/RMap.o \
 
@@ -139,7 +143,19 @@ $(OBJDIR)/RModel.o: src/ProjectR.Model/RModel.cpp
 $(OBJDIR)/ModelState.o: src/ProjectR.Model/ModelState.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+$(OBJDIR)/MenuItem.o: src/ProjectR.Model/States/MenuItem.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+$(OBJDIR)/Menu.o: src/ProjectR.Model/States/Menu.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 $(OBJDIR)/StateMachineSynchronizer.o: src/ProjectR.Model/States/StateMachineSynchronizer.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+$(OBJDIR)/TitleModel.o: src/ProjectR.Model/States/TitleModel.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+$(OBJDIR)/MenuModel.o: src/ProjectR.Model/States/MenuModel.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 $(OBJDIR)/StateMachine.o: src/ProjectR.Model/States/StateMachine.cpp

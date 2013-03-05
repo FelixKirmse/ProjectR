@@ -41,7 +41,7 @@ void HallwayGenerator::GenerateImpl(int row, int col, Direction dir)
       if(r == row && c == col)
       {
         if(cell & Important)
-          cell = Door;
+          cell = Door | Important | Locked;
         else
           cell = Floor | Corridor;
       }

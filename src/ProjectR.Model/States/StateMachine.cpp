@@ -12,14 +12,23 @@ StateMachine::StateMachine()
 StateMachine::~StateMachine() = default;
 
 
+int StateMachine::GetStateCount()
+{
+  return _states.size();
+}
+
 void StateMachine::Next()
 {
-  _synchronizer->Sync(_currentState + 1);
+  Sync(_currentState + 1);
+  if(_synchronizer != nullptr)
+    _synchronizer->Sync(_currentState);
 }
 
 void StateMachine::Previous()
 {
-  _synchronizer->Sync(_currentState - 1);
+  Sync(_currentState - 1);
+  if(_synchronizer != nullptr)
+    _synchronizer->Sync(_currentState);
 }
 
 std::shared_ptr<IState> const& StateMachine::GetCurrentState()
@@ -36,10 +45,22 @@ void StateMachine::AddState(std::shared_ptr<IState> const& state)
 void StateMachine::RunCurrentState()
 {
   _states[_currentState]->Run();
+  if(_synchronizer != nullptr)
+    _synchronizer->Sync(_currentState);
+}
+
+void StateMachine::SetCurrentState(int state)
+{
+  _currentState = state;
+  if(_synchronizer != nullptr)
+    _synchronizer->Sync(_currentState);
 }
 
 void StateMachine::Sync(int value)
 {
+  if(_currentState == value)
+    return;
+
   _states[_currentState]->Deactivate();
   _currentState = value;
   _states[_currentState]->Activate();
@@ -48,6 +69,16 @@ void StateMachine::Sync(int value)
 void StateMachine::SetSynchronizer(std::shared_ptr<ISynchronizer<int> > const& syncer)
 {
   _synchronizer = syncer;
+}
+
+std::shared_ptr<IState> const& StateMachine::GetState(int state)
+{
+  return _states[state];
+}
+
+void StateMachine::ClearStates()
+{
+  _states.clear();
 }
 
 }

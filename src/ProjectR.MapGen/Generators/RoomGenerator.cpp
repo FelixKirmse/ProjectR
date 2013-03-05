@@ -25,7 +25,7 @@ void RoomGenerator::GenerateImpl(int row, int col, Direction dir)
         if(cell & Wall && !(cell & Important) && !((r == topRow && c ==leftCol) || (r == topRow && c == maxCol - 1) || (r == maxRow - 1 && c ==leftCol) || (r == maxRow - 1 && c == maxCol - 1)))
           cell = Floor;
         else
-          cell = Wall;
+          cell = Wall | Important;
       }
       else
         cell = Floor;
@@ -34,6 +34,6 @@ void RoomGenerator::GenerateImpl(int row, int col, Direction dir)
 
   auto& cell = Map()->Get(row, col);
   if(cell & Wall)
-    cell = Door;
+    cell = Door | Locked;
 }
 }

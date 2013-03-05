@@ -33,7 +33,13 @@ public:
 
   inline void Update()
   {
-    TCODSystem::waitForEvent(TCOD_EVENT_KEY_PRESS, &_currentInput, 0, true);
+    do
+    {
+      TCODConsole::flush();
+      _currentInput = TCODConsole::checkForKeypress(TCOD_KEY_PRESSED);
+      if(TCODConsole::isWindowClosed())
+        break;
+    }while(_currentInput.vk == TCODK_NONE);
   }
 
   virtual bool LoadConfig() = 0;

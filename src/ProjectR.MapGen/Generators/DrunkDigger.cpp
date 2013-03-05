@@ -45,7 +45,7 @@ void DrunkDigger::GenerateImpl(int row, int col, Direction dir)
   Rectangle digArea(leftCol + 1, topRow + 1, GetWidth() - 2, GetHeight() - 2);
   Digger digger(goalRow, goalCol, (digArea.Width * digArea.Height) / 25.f, digArea, Map().get());
   auto& cell = Map()->Get(row, col);
-  cell = cell & Important ? Door : Floor;
+  cell = cell & Important ? Door | Important | Locked : Floor;
   Digger::DigCell(row, col);
   Digger::DigCell(row + 1, col);
   Digger::DigCell(row - 1, col);
@@ -88,13 +88,16 @@ void Digger::Dig()
 inline void Digger::DigCell(int row, int col)
 {
   auto& cell = Map->Get(row, col);
-  if(cell & Diggable)
+  if(cell & Important)
+    return;
+
+  if(cell & (Diggable | Door))
     cell = Wall;
 }
 
 
 
-inline bool Digger::CanMove(int row, int col) { return DigArea.Contains(col, row); }
+inline bool Digger::CanMove(int row, int col) { return !(Map->Get(row, col) & Important);/*DigArea.Contains(col, row);*/ }
 inline bool Digger::CanDig() { return Map->Get(Row, Col) & (Diggable | Wall); }
 inline void Digger::DigOut()
 {

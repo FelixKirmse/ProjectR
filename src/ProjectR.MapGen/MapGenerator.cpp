@@ -19,15 +19,15 @@ struct MapGenImpl : public MapGenerator
       Rows(map->Rows()),
       Cols(map->Columns()),
       _featureTarget(0),
-      _roomGen(new RoomGenerator(5, 5, 15, 10, _map)),
+      _roomGen(new RoomGenerator(5, 5, 10, 10, _map)),
       _corridorGen(new HallwayGenerator(20, 20, 50, 50, _map)),
       _drunkDigger(new DrunkDigger(50, 50, 100, 100, _map)),
       _treasureRoom(new TreasureRoom(5, 5, 13, 13, _map)),
       _generators()
   {
     _generators.Add(_roomGen, 60);
-    _generators.Add(_corridorGen, 15);
-    _generators.Add(_drunkDigger, 120);
+    _generators.Add(_corridorGen, 5);
+    _generators.Add(_drunkDigger, 180);
     _generators.Add(_treasureRoom, 2);
   }
 

@@ -5,7 +5,7 @@ namespace ProjectR
 {
 RConsole::RConsole(int width, int height)
   : _console(new TCODConsole(width, height))
-{
+{  
 }
 
 RConsole::RConsole(TCODConsole *console)
@@ -23,7 +23,7 @@ void RConsole::SetForegroundColour(Colour const& colour)
   _console->setDefaultForeground(colour);
 }
 
-inline void RConsole::SetBackgroundColour(Colour const& colour)
+void RConsole::SetBackgroundColour(Colour const& colour)
 {
   _console->setDefaultBackground(colour);
 }
@@ -89,7 +89,7 @@ RConsole* RConsole::GetRootConsole()
 }
 
 void RConsole::InitializeRootConsole(int width, int height)
-{
+{  
   TCODConsole::initRoot(width, height, "ProjectR", false, TCOD_RENDERER_GLSL);
 }
 

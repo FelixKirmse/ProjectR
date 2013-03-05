@@ -12,11 +12,11 @@ public:
   virtual void Deactivate();
   void SetStateMachine(std::shared_ptr<IStateMachine> const& machine);
 
-  inline static void SetModel(std::shared_ptr<IModel> const& model) { _model = model; }
+  static void SetModel(std::shared_ptr<IModel> const& model);
 
 protected:
   std::shared_ptr<IStateMachine> const& Master();
-  inline static std::shared_ptr<IModel> Model(){ return _model; }
+  static std::shared_ptr<IModel> const& Model();
 
 private:
   std::shared_ptr<IStateMachine> _masterMachine;

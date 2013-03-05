@@ -5,9 +5,10 @@ namespace ProjectR
 {
 class IStateMachine;
 
+
 class IState
 {
-public:
+public: 
   virtual void Activate() = 0;
   virtual void Deactivate() = 0;
   virtual void Run() = 0;

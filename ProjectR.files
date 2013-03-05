@@ -60,3 +60,14 @@ include/ProjectR.Logic/RInput.hpp
 src/ProjectR.Logic/RInput.cpp
 include/ProjectR.Logic/LogicState.hpp
 src/ProjectR.Logic/LogicState.cpp
+src/ProjectR.Model/States/TitleModel.cpp
+include/ProjectR.Model/MenuItem.hpp
+src/ProjectR.Model/States/MenuItem.cpp
+include/ProjectR.Model/Menu.hpp
+src/ProjectR.Model/States/Menu.cpp
+src/ProjectR.Model/States/MenuModel.cpp
+include/ProjectR.Logic/MainMenuLogic.hpp
+src/ProjectR.Logic/MainMenuLogic.cpp
+include/ProjectR.View/MainMenuView.hpp
+src/ProjectR.View/MainMenuView.cpp
+include/ProjectR.Model/MainMenu.hpp

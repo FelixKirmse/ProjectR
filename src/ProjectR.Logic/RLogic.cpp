@@ -2,6 +2,7 @@
 #include "IModel.hpp"
 #include "TitleScreenLogic.hpp"
 #include "RInput.hpp"
+#include "MainMenuLogic.hpp"
 
 namespace ProjectR
 {
@@ -17,8 +18,9 @@ struct RLogicImpl : public RLogic
   }
 
   void SetModel(std::shared_ptr<IModel> const& model)
-  {
+  {   
     AddState(TitleScreenLogic::Create());
+    AddState(MainMenuLogic::Create());
 
     _model = model;
   }

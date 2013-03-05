@@ -2,20 +2,19 @@
 #include <iostream>
 #include "ProjectR.Model/RMap.hpp"
 #include "IModel.hpp"
-#include "RConsole.hpp"
+#include "libtcod/libtcod.hpp"
+#include "TitleModel.hpp"
 
 namespace ProjectR
 {
 struct TitleScreenViewImpl : public TitleScreenView
 {
-  TitleScreenViewImpl()
-    : _mapConsole(1000, 1000)
-  {
+  TitleScreenViewImpl()    
+  {   
   } 
 
   void Run()
-  {
-    _mapConsole.Clear();
+  {    /*
     auto map = Model()->GetMap();
     Rectangle heatZone = map->HeatZone();
     for(int row = heatZone.Top(); row < heatZone.Bottom(); ++row)
@@ -57,9 +56,9 @@ struct TitleScreenViewImpl : public TitleScreenView
 
     RConsole* root = RConsole::GetRootConsole();
     root->Blit(_mapConsole, Rectangle(heatZone.X, heatZone.Y, root->GetWidth(), root->GetHeight()), 0, 0);
-  }
-
-  RConsole _mapConsole;
+    */
+    Model()->GetTitleModel()->GetTitleScreen()->blit2x(TCODConsole::root, 0, 0);
+  }    
 };
 
 std::shared_ptr<TitleScreenView> TitleScreenView::Create()

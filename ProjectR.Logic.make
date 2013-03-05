@@ -68,6 +68,7 @@ OBJECTS := \
 	$(OBJDIR)/LogicState.o \
 	$(OBJDIR)/TitleScreenLogic.o \
 	$(OBJDIR)/RInput.o \
+	$(OBJDIR)/MainMenuLogic.o \
 
 RESOURCES := \
 
@@ -138,6 +139,9 @@ $(OBJDIR)/TitleScreenLogic.o: src/ProjectR.Logic/TitleScreenLogic.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 $(OBJDIR)/RInput.o: src/ProjectR.Logic/RInput.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+$(OBJDIR)/MainMenuLogic.o: src/ProjectR.Logic/MainMenuLogic.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 

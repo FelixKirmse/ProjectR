@@ -66,6 +66,7 @@ endif
 OBJECTS := \
 	$(OBJDIR)/TitleScreenView.o \
 	$(OBJDIR)/ConsoleView.o \
+	$(OBJDIR)/MainMenuView.o \
 	$(OBJDIR)/RConsole.o \
 
 RESOURCES := \
@@ -131,6 +132,9 @@ $(OBJDIR)/TitleScreenView.o: src/ProjectR.View/TitleScreenView.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 $(OBJDIR)/ConsoleView.o: src/ProjectR.View/ConsoleView.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+$(OBJDIR)/MainMenuView.o: src/ProjectR.View/MainMenuView.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 $(OBJDIR)/RConsole.o: src/ProjectR.View/RConsole.cpp
