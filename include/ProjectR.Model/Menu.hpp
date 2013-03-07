@@ -4,6 +4,8 @@
 
 namespace ProjectR
 {
+class MenuItem;
+
 class Menu : public StateMachine, public IState
 {
 public:
@@ -14,8 +16,9 @@ public:
   virtual void Next();
   virtual void Previous();
 
-private:
-  void Run();
+  virtual void Run();
+
+private:  
   void SetStateMachine(std::shared_ptr<IStateMachine> const& machine);
 };
 }

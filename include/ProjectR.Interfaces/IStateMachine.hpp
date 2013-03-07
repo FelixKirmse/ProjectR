@@ -17,6 +17,7 @@ public:
   virtual void SetCurrentState(int state) = 0;
   virtual void ClearStates() = 0;
   virtual int GetStateCount() = 0;
+  virtual bool FirstStateActive() = 0;
 
   virtual ~IStateMachine() {}
 };

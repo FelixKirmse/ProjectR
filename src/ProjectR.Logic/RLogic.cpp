@@ -3,6 +3,7 @@
 #include "TitleScreenLogic.hpp"
 #include "RInput.hpp"
 #include "MainMenuLogic.hpp"
+#include "PreGameLogic.hpp"
 
 namespace ProjectR
 {
@@ -21,6 +22,7 @@ struct RLogicImpl : public RLogic
   {   
     AddState(TitleScreenLogic::Create());
     AddState(MainMenuLogic::Create());
+    AddState(PreGameLogic::Create());
 
     _model = model;
   }

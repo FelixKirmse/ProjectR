@@ -10,17 +10,19 @@ class StateMachine : public IStateMachine, public ISynchronizeable<int>,
 {
 public:
   StateMachine();
-  virtual ~StateMachine() = 0;
+  virtual ~StateMachine(){}
 
   virtual void Next();
   virtual void Previous();
-  std::shared_ptr<IState> const& GetCurrentState();
   void AddState(std::shared_ptr<IState> const& state);
   void RunCurrentState();
   void Sync(int value);
   void SetSynchronizer(std::shared_ptr<ISynchronizer<int> > const& syncer);
   void SetCurrentState(int state);
   void ClearStates();
+  bool FirstStateActive();
+
+  std::shared_ptr<IState> const& GetCurrentState();
   std::shared_ptr<IState> const& GetState(int state);
   int GetStateCount();
 

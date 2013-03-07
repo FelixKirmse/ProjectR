@@ -122,11 +122,24 @@ struct MapGenImpl : public MapGenerator
     }
   }
 
+  void PlaceWarp()
+  {
+    Rectangle heatZone = _map->HeatZone();
+    int row = 0;
+    int col = 0;
+    do
+    {
+      row = Roll(heatZone.Top(), heatZone.Bottom());
+      col = Roll(heatZone.Left(), heatZone.Right());
+    }while(!(_map->Get(row, col) & Floor));
+  }
+
   void GenerateMap(int level)
   {
     _featureTarget = level * 2 + Roll(5, 15);
     PrepareMap();
     GenerateFeatures();
+    PlaceWarp();
   }
 };
 

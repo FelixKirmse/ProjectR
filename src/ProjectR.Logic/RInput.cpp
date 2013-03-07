@@ -30,6 +30,7 @@ struct RInputImpl : public RInput
     Set(Cancel, GetKey(TCODK_ESCAPE), GetKey(TCODK_CHAR, 'q'));
     Set(Inventory, GetKey(TCODK_CHAR, 'i'));
     Set(Party, GetKey(TCODK_CHAR, 'p'));
+    Set(Back, GetKey(TCODK_BACKSPACE));
   }
 
   inline void Set(int action, TCOD_key_t primary)

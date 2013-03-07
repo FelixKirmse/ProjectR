@@ -7,6 +7,11 @@ struct Point
   Point(int x, int y) : X(x), Y(y){}
   int X;
   int Y;
+
+  bool operator==(Point const& other) const
+  {
+    return X == other.X && Y == other.Y;
+  }
 };
 
 struct Rectangle

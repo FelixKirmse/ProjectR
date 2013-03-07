@@ -18,6 +18,7 @@ void Menu::Deactivate()
 
 void Menu::Run()
 {
+  RunCurrentState();
 }
 
 void Menu::Next()

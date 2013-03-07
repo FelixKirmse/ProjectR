@@ -19,7 +19,7 @@ struct ProjectRImpl : ProjectR
       _view(ConsoleView::Create()),
       _logic(RLogic::Create())
   {
-    ModelState::SetModel(_model);    
+    ModelState::SetModel(_model);
   }
 
   void SetupGameStructure()
@@ -33,10 +33,10 @@ struct ProjectRImpl : ProjectR
   }
 
   void RunGame()
-  {    
+  {
     _model->CommitChanges();
     do
-    {     
+    {
       _logic->RunCurrentState();
     }while(!_exitGame && !TCODConsole::isWindowClosed());
   }

@@ -9,9 +9,6 @@ StateMachine::StateMachine()
 {
 }
 
-StateMachine::~StateMachine() = default;
-
-
 int StateMachine::GetStateCount()
 {
   return _states.size();
@@ -29,6 +26,11 @@ void StateMachine::Previous()
   Sync(_currentState - 1);
   if(_synchronizer != nullptr)
     _synchronizer->Sync(_currentState);
+}
+
+bool StateMachine::FirstStateActive()
+{
+  return _currentState == 0;
 }
 
 std::shared_ptr<IState> const& StateMachine::GetCurrentState()

@@ -3,6 +3,7 @@
 #include "TitleScreenView.hpp"
 #include "MainMenuView.hpp"
 #include "libtcod/libtcod.hpp"
+#include "PreGameView.hpp"
 
 namespace ProjectR
 {
@@ -36,6 +37,7 @@ struct ConsoleViewImpl : public ConsoleView
   {
     AddState(TitleScreenView::Create());
     AddState(MainMenuView::Create());
+    AddState(PreGameView::Create());
 
     _model = model;    
   }

@@ -1,28 +1,34 @@
 #include "MainMenuView.hpp"
 #include "IModel.hpp"
-#include "MainMenu.hpp"
 #include "MenuModel.hpp"
+#include "MenuDrawer.hpp"
 #include "RConsole.hpp"
-#include "Menu.hpp"
-#include "MenuItem.hpp"
 
 namespace ProjectR
 {
 struct MainMenuViewImpl : public MainMenuView
 {
   MainMenuViewImpl()
+    :  _root(RConsole::GetRootConsole()),
+      _menuDrawer(MenuDrawer::Create()),
+      _rootWidth(_root->GetWidth()),
+      _rootHeight(_root->GetHeight()),
+      _menuConsole(9, 4)
   {
   }
 
   void Run()
   {
-    RConsole::GetRootConsole()->SetBackgroundColour(Colour::black);
-    RConsole::GetRootConsole()->SetForegroundColour(Colour::white);
-    TCODConsole::root->clear();
-    std::shared_ptr<MenuItem> menu = std::static_pointer_cast<MenuItem>(Model()->GetMenuModel()->GetMainMenu()->GetCurrentState());
-
-    TCODConsole::root->print(10, 10, menu->GetLabel().c_str());
+    _root->Clear();
+    _menuDrawer->DrawMenu(Model()->GetMenuModel()->GetActiveMenu(), 0, 0, &_menuConsole);
+    _root->Blit(_menuConsole, _menuConsole.GetBounds(), 5, _rootHeight - 9);
   }
+
+  RConsole* _root;
+  std::shared_ptr<MenuDrawer> _menuDrawer;
+  int _rootWidth;
+  int _rootHeight;
+  RConsole _menuConsole;
 };
 
 std::shared_ptr<MainMenuView> MainMenuView::Create()

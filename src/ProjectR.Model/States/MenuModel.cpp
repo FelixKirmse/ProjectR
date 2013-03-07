@@ -15,10 +15,24 @@ void SetupMainMenu(std::shared_ptr<Menu> const& menu)
   menu->GetState(NewGame)->Activate();
 }
 
+void MenuModel::SetActiveMenu(std::shared_ptr<Menu> const& menu)
+{
+  _activeMenu = menu;
+}
+
+std::shared_ptr<Menu> const& MenuModel::GetActiveMenu()
+{
+  return _activeMenu;
+}
+
 MenuModel::MenuModel()
-  : _mainMenu(new Menu())
+  : _mainMenu(new Menu()),
+    _optionsMenu(new Menu()),
+    _activeMenu(_mainMenu)
 {
   SetupMainMenu(_mainMenu);
+  SetupMainMenu(_optionsMenu);
+  _optionsMenu->GetState(2)->Activate();
 }
 
 std::shared_ptr<Menu> const& MenuModel::GetMainMenu()

@@ -14,7 +14,8 @@ enum Actions
   Confirm,
   Cancel,
   Inventory,
-  Party
+  Party,
+  Back
 };
 
 class RInput : public Input<int>

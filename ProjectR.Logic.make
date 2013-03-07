@@ -19,6 +19,14 @@ ifndef AR
   AR = ar
 endif
 
+ifndef RESCOMP
+  ifdef WINDRES
+    RESCOMP = $(WINDRES)
+  else
+    RESCOMP = windres
+  endif
+endif
+
 ifeq ($(config),debug)
   OBJDIR     = obj/Debug/ProjectR.Logic
   TARGETDIR  = build
@@ -28,11 +36,11 @@ ifeq ($(config),debug)
   CPPFLAGS  += -MMD -MP $(DEFINES) $(INCLUDES)
   CFLAGS    += $(CPPFLAGS) $(ARCH) -Wall -ffast-math -g -fPIC -std=c++11
   CXXFLAGS  += $(CFLAGS) 
-  LDFLAGS   += -shared -ltcod_debug -ltcodgui_debug -ltcodxx_debug -lboost_system -lboost_filesystem -lboost_serialization -Lbuild
-  LIBS      += -lProjectR.Model
+  LDFLAGS   += -Lbuild -shared -ltcod_debug -ltcodgui_debug -ltcodxx_debug -lboost_system -lboost_filesystem -lboost_serialization
   RESFLAGS  += $(DEFINES) $(INCLUDES) 
+  LIBS      += -lProjectR.Model
   LDDEPS    += build/libProjectR.Model.so
-  LINKCMD    = $(CXX) -o $(TARGET) $(OBJECTS) $(LDFLAGS) $(RESOURCES) $(ARCH) $(LIBS)
+  LINKCMD    = $(CXX) -o $(TARGET) $(OBJECTS) $(RESOURCES) $(ARCH) $(LIBS) $(LDFLAGS)
   define PREBUILDCMDS
   endef
   define PRELINKCMDS
@@ -50,11 +58,11 @@ ifeq ($(config),release)
   CPPFLAGS  += -MMD -MP $(DEFINES) $(INCLUDES)
   CFLAGS    += $(CPPFLAGS) $(ARCH) -Wall -ffast-math -O3 -fPIC -std=c++11
   CXXFLAGS  += $(CFLAGS) 
-  LDFLAGS   += -s -shared -ltcod -ltcodgui -ltcodxx -lboost_system -lboost_filesystem -lboost_serialization -Lbuild
-  LIBS      += -lProjectR.Model
+  LDFLAGS   += -Lbuild -s -shared -ltcod -ltcodgui -ltcodxx -lboost_system -lboost_filesystem -lboost_serialization
   RESFLAGS  += $(DEFINES) $(INCLUDES) 
+  LIBS      += -lProjectR.Model
   LDDEPS    += build/libProjectR.Model.so
-  LINKCMD    = $(CXX) -o $(TARGET) $(OBJECTS) $(LDFLAGS) $(RESOURCES) $(ARCH) $(LIBS)
+  LINKCMD    = $(CXX) -o $(TARGET) $(OBJECTS) $(RESOURCES) $(ARCH) $(LIBS) $(LDFLAGS)
   define PREBUILDCMDS
   endef
   define PRELINKCMDS
@@ -64,11 +72,14 @@ ifeq ($(config),release)
 endif
 
 OBJECTS := \
-	$(OBJDIR)/RLogic.o \
-	$(OBJDIR)/LogicState.o \
-	$(OBJDIR)/TitleScreenLogic.o \
-	$(OBJDIR)/RInput.o \
+	$(OBJDIR)/PreGameLogic.o \
 	$(OBJDIR)/MainMenuLogic.o \
+	$(OBJDIR)/TitleScreenLogic.o \
+	$(OBJDIR)/MenuController.o \
+	$(OBJDIR)/LogicState.o \
+	$(OBJDIR)/RInput.o \
+	$(OBJDIR)/RLogic.o \
+	$(OBJDIR)/OverworldLogic.o \
 
 RESOURCES := \
 
@@ -125,24 +136,37 @@ prelink:
 ifneq (,$(PCH))
 $(GCH): $(PCH)
 	@echo $(notdir $<)
+ifeq (posix,$(SHELLTYPE))
 	-$(SILENT) cp $< $(OBJDIR)
-	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+else
+	$(SILENT) xcopy /D /Y /Q "$(subst /,\,$<)" "$(subst /,\,$(OBJDIR))" 1>nul
+endif
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
 endif
 
-$(OBJDIR)/RLogic.o: src/ProjectR.Logic/RLogic.cpp
+$(OBJDIR)/PreGameLogic.o: src/ProjectR.Logic/PreGameLogic.cpp
 	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-$(OBJDIR)/LogicState.o: src/ProjectR.Logic/LogicState.cpp
-	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-$(OBJDIR)/TitleScreenLogic.o: src/ProjectR.Logic/TitleScreenLogic.cpp
-	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-$(OBJDIR)/RInput.o: src/ProjectR.Logic/RInput.cpp
-	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
 $(OBJDIR)/MainMenuLogic.o: src/ProjectR.Logic/MainMenuLogic.cpp
 	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+$(OBJDIR)/TitleScreenLogic.o: src/ProjectR.Logic/TitleScreenLogic.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+$(OBJDIR)/MenuController.o: src/ProjectR.Logic/MenuController.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+$(OBJDIR)/LogicState.o: src/ProjectR.Logic/LogicState.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+$(OBJDIR)/RInput.o: src/ProjectR.Logic/RInput.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+$(OBJDIR)/RLogic.o: src/ProjectR.Logic/RLogic.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+$(OBJDIR)/OverworldLogic.o: src/ProjectR.Logic/OverworldLogic.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
 
 -include $(OBJECTS:%.o=%.d)

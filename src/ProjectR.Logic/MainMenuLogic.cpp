@@ -3,13 +3,40 @@
 #include "Menu.hpp"
 #include "IModel.hpp"
 #include "MenuModel.hpp"
+#include "MenuController.hpp"
+#include "MainMenu.hpp"
+#include "MenuItem.hpp"
+#include "ProjectR.hpp"
 
 namespace ProjectR
 {
 struct MainMenuLogicImpl : public MainMenuLogic
 {
   MainMenuLogicImpl()
+    : _mainMenuStateMachine(new StateMachine()),
+      _menuController(MenuController::Create())
   {
+    _mainMenuStateMachine->AddState(Model()->GetMenuModel()->GetMainMenu());
+    _mainMenuStateMachine->AddState(Model()->GetMenuModel()->GetOptionsMenu());
+
+    auto mainMenu = Model()->GetMenuModel()->GetMainMenu();
+    std::static_pointer_cast<MenuItem>(mainMenu->GetState(Quit))->SetCallBack(&ProjectR::Exit);
+    std::static_pointer_cast<MenuItem>(mainMenu->GetState(Options))->SetCallBack([&](){NextState();});
+    std::static_pointer_cast<MenuItem>(mainMenu->GetState(LoadGame))->Disabled(true);
+    std::static_pointer_cast<MenuItem>(mainMenu->GetState(NewGame))->SetCallBack([&](){Master()->Next();});
+  }
+
+  void NextState()
+  {
+    _mainMenuStateMachine->Next();
+  }
+
+  void CancelAction()
+  {
+    if(_mainMenuStateMachine->FirstStateActive())
+      ProjectR::Exit();
+    else
+      _mainMenuStateMachine->Previous();
   }
 
   void Activate()
@@ -19,17 +46,16 @@ struct MainMenuLogicImpl : public MainMenuLogic
 
   void Run()
   {
-    auto mainMenu = Model()->GetMenuModel()->GetMainMenu();
-    Input()->Update();
-
-    if(Input()->Action(Up))
-      mainMenu->Previous();
-    else if(Input()->Action(Down))
-      mainMenu->Next();
-    else if(Input()->Action(Cancel))
-      Master()->Previous();
+    _menuController->ControlMenu(std::static_pointer_cast<Menu>(_mainMenuStateMachine->GetCurrentState()),
+                                 Input(),
+                                 [&](){CancelAction();});
+    Model()->GetMenuModel()->SetActiveMenu(
+        std::static_pointer_cast<Menu>(_mainMenuStateMachine->GetCurrentState()));
     Model()->CommitChanges();
   }
+
+  std::shared_ptr<StateMachine> _mainMenuStateMachine;
+  std::shared_ptr<MenuController> _menuController;
 };
 
 std::shared_ptr<MainMenuLogic> MainMenuLogic::Create()

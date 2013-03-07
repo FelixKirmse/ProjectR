@@ -26,6 +26,18 @@ public:
     _inputs[action] = keys;
   }
 
+  inline void BindActionPrimary(T action)
+  {
+    Update();
+    SetActionPrimary(action, _currentInput);
+  }
+
+  inline void BindActionSecondary(T action)
+  {
+    Update();
+    SetActionSecondary(action, _currentInput);
+  }
+
   inline bool Action(T action)
   {
     return Check(_inputs[action][0]) || Check(_inputs[action][1]);
@@ -40,6 +52,11 @@ public:
       if(TCODConsole::isWindowClosed())
         break;
     }while(_currentInput.vk == TCODK_NONE);
+  }
+
+  inline char GetChar()
+  {
+    return _currentInput.vk == TCODK_CHAR ? _currentInput.c : 0;
   }
 
   virtual bool LoadConfig() = 0;

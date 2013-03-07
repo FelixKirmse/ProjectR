@@ -19,6 +19,14 @@ ifndef AR
   AR = ar
 endif
 
+ifndef RESCOMP
+  ifdef WINDRES
+    RESCOMP = $(WINDRES)
+  else
+    RESCOMP = windres
+  endif
+endif
+
 ifeq ($(config),debug)
   OBJDIR     = obj/Debug/ProjectR.Model
   TARGETDIR  = build
@@ -29,10 +37,10 @@ ifeq ($(config),debug)
   CFLAGS    += $(CPPFLAGS) $(ARCH) -Wall -ffast-math -g -fPIC -std=c++11
   CXXFLAGS  += $(CFLAGS) 
   LDFLAGS   += -shared
-  LIBS      += 
   RESFLAGS  += $(DEFINES) $(INCLUDES) 
+  LIBS      += 
   LDDEPS    += 
-  LINKCMD    = $(CXX) -o $(TARGET) $(OBJECTS) $(LDFLAGS) $(RESOURCES) $(ARCH) $(LIBS)
+  LINKCMD    = $(CXX) -o $(TARGET) $(OBJECTS) $(RESOURCES) $(ARCH) $(LIBS) $(LDFLAGS)
   define PREBUILDCMDS
   endef
   define PRELINKCMDS
@@ -51,10 +59,10 @@ ifeq ($(config),release)
   CFLAGS    += $(CPPFLAGS) $(ARCH) -Wall -ffast-math -O3 -fPIC -std=c++11
   CXXFLAGS  += $(CFLAGS) 
   LDFLAGS   += -s -shared
-  LIBS      += 
   RESFLAGS  += $(DEFINES) $(INCLUDES) 
+  LIBS      += 
   LDDEPS    += 
-  LINKCMD    = $(CXX) -o $(TARGET) $(OBJECTS) $(LDFLAGS) $(RESOURCES) $(ARCH) $(LIBS)
+  LINKCMD    = $(CXX) -o $(TARGET) $(OBJECTS) $(RESOURCES) $(ARCH) $(LIBS) $(LDFLAGS)
   define PREBUILDCMDS
   endef
   define PRELINKCMDS
@@ -64,15 +72,20 @@ ifeq ($(config),release)
 endif
 
 OBJECTS := \
-	$(OBJDIR)/Observeable.o \
 	$(OBJDIR)/RModel.o \
 	$(OBJDIR)/ModelState.o \
-	$(OBJDIR)/MenuItem.o \
-	$(OBJDIR)/Menu.o \
+	$(OBJDIR)/Observeable.o \
+	$(OBJDIR)/InputBuffer.o \
+	$(OBJDIR)/OverworldPlayer.o \
+	$(OBJDIR)/Statistics.o \
 	$(OBJDIR)/StateMachineSynchronizer.o \
-	$(OBJDIR)/TitleModel.o \
 	$(OBJDIR)/MenuModel.o \
+	$(OBJDIR)/TitleModel.o \
+	$(OBJDIR)/OverworldModel.o \
 	$(OBJDIR)/StateMachine.o \
+	$(OBJDIR)/PreGameModel.o \
+	$(OBJDIR)/Menu.o \
+	$(OBJDIR)/MenuItem.o \
 	$(OBJDIR)/RMap.o \
 
 RESOURCES := \
@@ -130,39 +143,58 @@ prelink:
 ifneq (,$(PCH))
 $(GCH): $(PCH)
 	@echo $(notdir $<)
+ifeq (posix,$(SHELLTYPE))
 	-$(SILENT) cp $< $(OBJDIR)
-	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+else
+	$(SILENT) xcopy /D /Y /Q "$(subst /,\,$<)" "$(subst /,\,$(OBJDIR))" 1>nul
+endif
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
 endif
 
-$(OBJDIR)/Observeable.o: src/ProjectR.Model/Observeable.cpp
-	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 $(OBJDIR)/RModel.o: src/ProjectR.Model/RModel.cpp
 	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
 $(OBJDIR)/ModelState.o: src/ProjectR.Model/ModelState.cpp
 	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-$(OBJDIR)/MenuItem.o: src/ProjectR.Model/States/MenuItem.cpp
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+$(OBJDIR)/Observeable.o: src/ProjectR.Model/Observeable.cpp
 	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-$(OBJDIR)/Menu.o: src/ProjectR.Model/States/Menu.cpp
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+$(OBJDIR)/InputBuffer.o: src/ProjectR.Model/InputBuffer.cpp
 	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+$(OBJDIR)/OverworldPlayer.o: src/ProjectR.Model/OverworldPlayer.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+$(OBJDIR)/Statistics.o: src/ProjectR.Model/Statistics.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
 $(OBJDIR)/StateMachineSynchronizer.o: src/ProjectR.Model/States/StateMachineSynchronizer.cpp
 	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-$(OBJDIR)/TitleModel.o: src/ProjectR.Model/States/TitleModel.cpp
-	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
 $(OBJDIR)/MenuModel.o: src/ProjectR.Model/States/MenuModel.cpp
 	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+$(OBJDIR)/TitleModel.o: src/ProjectR.Model/States/TitleModel.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+$(OBJDIR)/OverworldModel.o: src/ProjectR.Model/States/OverworldModel.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
 $(OBJDIR)/StateMachine.o: src/ProjectR.Model/States/StateMachine.cpp
 	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+$(OBJDIR)/PreGameModel.o: src/ProjectR.Model/States/PreGameModel.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+$(OBJDIR)/Menu.o: src/ProjectR.Model/States/Menu.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+$(OBJDIR)/MenuItem.o: src/ProjectR.Model/States/MenuItem.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
 $(OBJDIR)/RMap.o: src/ProjectR.Model/Map/RMap.cpp
 	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
 
 -include $(OBJECTS:%.o=%.d)
