@@ -18,7 +18,8 @@ struct InputBufferImpl : public InputBuffer
 
   void RemoveChar()
   {
-    --_pos;
+    if(_pos != 0)
+      --_pos;
   }
 
   int GetLength()

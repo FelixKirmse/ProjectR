@@ -13,6 +13,11 @@ struct PreGameLogicImpl : public PreGameLogic
   {
   }
 
+  void Deactivate()
+  {
+    Model()->GetPreGameModel()->GetInputBuffer()->Reset();
+  }
+
   void Run()
   {
     Input()->Update();
@@ -28,7 +33,7 @@ struct PreGameLogicImpl : public PreGameLogic
       buffer->RemoveChar();
     else if(Input()->Action(Cancel))
       Master()->Previous();
-    else if(buffer->GetLength() < 12 && input != 0)
+    else if(buffer->GetLength() < 16 && input != 0)
       buffer->AddChar(input);
 
     Model()->CommitChanges();

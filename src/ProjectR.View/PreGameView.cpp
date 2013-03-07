@@ -11,7 +11,7 @@ struct PreGameViewImpl : public PreGameView
   PreGameViewImpl()
     : _text("Name: "),
       _printOffset(_text.size()),
-      _console(20, 1)
+      _console(25, 1)
   {
     _console.SetBackgroundColour(Colour::black);
     _console.SetForegroundColour(Colour::white);
