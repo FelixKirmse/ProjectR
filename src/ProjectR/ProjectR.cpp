@@ -20,6 +20,7 @@ struct ProjectRImpl : ProjectR
       _logic(RLogic::Create())
   {
     ModelState::SetModel(_model);
+    _model->LoadResources();
   }
 
   void SetupGameStructure()

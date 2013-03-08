@@ -6,6 +6,7 @@
 #include "BattleModel.hpp"
 #include "Statistics.hpp"
 #include "PreGameModel.hpp"
+#include "RaceTemplates.hpp"
 
 namespace ProjectR
 {
@@ -19,7 +20,8 @@ struct RModelImpl : public RModel
       _preGameModel(PreGameModel::Create()),
       _overWorldModel(new OverWorldModel()),
       _battleModel(new BattleModel()),
-      _statistics(Statistics::Create())
+      _statistics(Statistics::Create()),
+      _raceTemplates(RaceTemplates::Create())
   {
   }
 
@@ -58,6 +60,11 @@ struct RModelImpl : public RModel
     return _preGameModel;
   }
 
+  std::shared_ptr<RaceTemplates> const& GetRaceTemplates() const
+  {
+    return _raceTemplates;
+  }
+
   std::string const& GetPlayerName() const
   {
     return _playerName;
@@ -70,6 +77,7 @@ struct RModelImpl : public RModel
 
   void LoadResources()
   {
+    _raceTemplates->LoadTemplates();
   }
 
   void CommitChanges()
@@ -84,6 +92,7 @@ struct RModelImpl : public RModel
   std::shared_ptr<OverWorldModel> _overWorldModel;
   std::shared_ptr<BattleModel> _battleModel;
   std::shared_ptr<Statistics> _statistics;
+  std::shared_ptr<RaceTemplates> _raceTemplates;
   std::string _playerName;
 };
 

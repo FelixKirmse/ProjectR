@@ -91,3 +91,8 @@ include/ProjectR.Logic/PreGameLogic.hpp
 src/ProjectR.Logic/PreGameLogic.cpp
 include/ProjectR.View/PreGameView.hpp
 src/ProjectR.View/PreGameView.cpp
+include/ProjectR.Model/RaceTemplate.hpp
+include/ProjectR.Model/Stats.hpp
+src/ProjectR.Model/Stats.cpp
+include/ProjectR.Model/RaceTemplates.hpp
+src/ProjectR.Model/RaceTemplates.cpp

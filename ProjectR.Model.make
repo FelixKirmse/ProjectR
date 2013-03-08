@@ -72,11 +72,13 @@ ifeq ($(config),release)
 endif
 
 OBJECTS := \
+	$(OBJDIR)/RaceTemplates.o \
 	$(OBJDIR)/RModel.o \
 	$(OBJDIR)/ModelState.o \
 	$(OBJDIR)/Observeable.o \
 	$(OBJDIR)/InputBuffer.o \
 	$(OBJDIR)/OverworldPlayer.o \
+	$(OBJDIR)/Stats.o \
 	$(OBJDIR)/Statistics.o \
 	$(OBJDIR)/StateMachineSynchronizer.o \
 	$(OBJDIR)/MenuModel.o \
@@ -151,6 +153,9 @@ endif
 	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
 endif
 
+$(OBJDIR)/RaceTemplates.o: src/ProjectR.Model/RaceTemplates.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
 $(OBJDIR)/RModel.o: src/ProjectR.Model/RModel.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
@@ -164,6 +169,9 @@ $(OBJDIR)/InputBuffer.o: src/ProjectR.Model/InputBuffer.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
 $(OBJDIR)/OverworldPlayer.o: src/ProjectR.Model/OverworldPlayer.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+$(OBJDIR)/Stats.o: src/ProjectR.Model/Stats.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
 $(OBJDIR)/Statistics.o: src/ProjectR.Model/Statistics.cpp
