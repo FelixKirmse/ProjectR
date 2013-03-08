@@ -1,4 +1,4 @@
 syntax: glob
-build/
 obj/
+*.so
 ProjectR.creator.user
