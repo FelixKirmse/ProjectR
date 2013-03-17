@@ -6,6 +6,13 @@ namespace ProjectR
 
 struct StatsImpl : public Stats
 {
+  float GetTotalStat(int stat)
+  {
+    return stat <= CHA ? GetTotalStat((BaseStat)(stat)) :
+                         stat <= LGT ? GetTotalStat((EleMastery)stat) :
+                                       stat <= SIL ? GetTotalStat((DebuffResistance)stat) : 0.f;
+  }
+
   float GetTotalStat(BaseStat stat)
   {
     SingleStat& s = _stats[stat];
@@ -25,6 +32,11 @@ struct StatsImpl : public Stats
   {
     SingleStat& s = _stats[stat];
     return (s[Base] + s[Item1] + s[Item2] + s[Item3]) * s[BattleMod];
+  }
+
+  void SetSingleStat(SingleStat const& stat, int whichStat)
+  {
+    _stats[whichStat] = stat;
   }
 
   void LvlUp(int currentLevel, int amount)

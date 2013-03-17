@@ -1,11 +1,12 @@
 local LIBTCOD_LIBRARIES = "-ltcod -ltcodgui -ltcodxx"
 local LIBTCOD_LIBRARIES_DEBUG = "-ltcod_debug -ltcodgui_debug -ltcodxx_debug"
 local BOOST_LIBRARIES = "-lboost_system -lboost_filesystem -lboost_serialization"
+local LUA_LIBRARIES = "-llua5.1 -lluabind"
 
 solution "ProjectR"
     configurations { "Debug", "Release" }
     flags { "ExtraWarnings","FloatFast" }
-    includedirs { "include", "include/ProjectR", "include/ProjectR.Interfaces", "include/ProjectR.Model", "include/ProjectR.Logic", "include/ProjectR.View", "include/ProjectR.MapGen" }
+    includedirs { "include", "include/ProjectR", "include/ProjectR.Interfaces", "include/ProjectR.Model", "include/ProjectR.Logic", "include/ProjectR.View", "include/ProjectR.MapGen", "/usr/include/lua5.1" }
 
     configuration "Debug"
         defines { "DEBUG" }
@@ -20,7 +21,12 @@ solution "ProjectR"
         language "C++"
         targetdir "build"
         files { "src/ProjectR.Model/**.cpp" }
-        buildoptions { "-std=c++11" }       
+        buildoptions { "-std=c++11" }
+        configuration { "Release" }
+          linkoptions { LIBTCOD_LIBRARIES, BOOST_LIBRARIES, LUA_LIBRARIES }
+        configuration { "Debug" }
+          linkoptions { LIBTCOD_LIBRARIES_DEBUG, BOOST_LIBRARIES, LUA_LIBRARIES }
+
 
     project "ProjectR.Logic"
         kind "SharedLib"

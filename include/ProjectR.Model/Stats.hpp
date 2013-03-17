@@ -41,8 +41,8 @@ enum DebuffResistance
 
 enum EVAType
 {
-  Dodge,
-  Block
+  Dodge = 0,
+  Block = 1
 };
 
 /*
@@ -55,18 +55,20 @@ enum EVAType
  */
 enum StatType
 {
-  Base,
-  Item1,
-  Item2,
-  Item3,
-  BattleMod,
-  Growth,
-  Multiplier
+  Base = 0,
+  Item1 = 1,
+  Item2 = 2,
+  Item3 = 3,
+  BattleMod = 4,
+  Growth = 5,
+  Multiplier = 6
 };
 class SingleStat
 {
 public:
-  float& operator[](StatType index) { return _statType[index]; }
+  float& operator[](int index) { return _statType[index]; }
+  float Get(int index) { return _statType[index]; }
+  void Set(int index, float value) { _statType[index] = value; }
 
 private:
   float _statType[7] = {0.f, 0.f, 0.f, 0.f, 1.f, 0.f, 1.f};
@@ -78,8 +80,10 @@ public:
   virtual float GetTotalStat(BaseStat stat) = 0;
   virtual float GetTotalStat(EleMastery stat) = 0;
   virtual float GetTotalStat(DebuffResistance stat) = 0;
+  virtual float GetTotalStat(int stat) = 0;
 
   virtual SingleStat& GetSingleStat(int stat) = 0;
+  virtual void SetSingleStat(SingleStat const& stat, int whichStat) = 0;
 
   virtual float GetXPMultiplier() const = 0;
   virtual void SetXPMultiplier(float xpMul) = 0;

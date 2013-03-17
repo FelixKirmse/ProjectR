@@ -13,6 +13,8 @@ class BattleModel;
 class Statistics;
 class PreGameModel;
 class RaceTemplates;
+class CharacterFactory;
+class SpellFactory;
 
 class IModel
 {
@@ -26,6 +28,8 @@ public:
   virtual std::shared_ptr<PreGameModel> const& GetPreGameModel() const = 0;
   virtual std::shared_ptr<Statistics> const& GetStatistics() const = 0;
   virtual std::shared_ptr<RaceTemplates> const& GetRaceTemplates() const = 0;
+  virtual std::shared_ptr<CharacterFactory> const& GetCharacterFactory() const = 0;
+  virtual std::shared_ptr<SpellFactory> const& GetSpellFactory() const = 0;
 
   virtual std::string const& GetPlayerName() const = 0;
   virtual void SetPlayerName(std::string const&) = 0;

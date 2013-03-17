@@ -19,28 +19,20 @@ ifndef AR
   AR = ar
 endif
 
-ifndef RESCOMP
-  ifdef WINDRES
-    RESCOMP = $(WINDRES)
-  else
-    RESCOMP = windres
-  endif
-endif
-
 ifeq ($(config),debug)
   OBJDIR     = obj/Debug/ProjectR.MapGen
   TARGETDIR  = build
   TARGET     = $(TARGETDIR)/libProjectR.MapGen.so
   DEFINES   += -DDEBUG
-  INCLUDES  += -Iinclude -Iinclude/ProjectR -Iinclude/ProjectR.Interfaces -Iinclude/ProjectR.Model -Iinclude/ProjectR.Logic -Iinclude/ProjectR.View -Iinclude/ProjectR.MapGen
+  INCLUDES  += -Iinclude -Iinclude/ProjectR -Iinclude/ProjectR.Interfaces -Iinclude/ProjectR.Model -Iinclude/ProjectR.Logic -Iinclude/ProjectR.View -Iinclude/ProjectR.MapGen -I/usr/include/lua5.1
   CPPFLAGS  += -MMD -MP $(DEFINES) $(INCLUDES)
   CFLAGS    += $(CPPFLAGS) $(ARCH) -Wall -ffast-math -g -fPIC -std=c++11
   CXXFLAGS  += $(CFLAGS) 
-  LDFLAGS   += -Lbuild -shared
-  RESFLAGS  += $(DEFINES) $(INCLUDES) 
+  LDFLAGS   += -shared -Lbuild
   LIBS      += -lProjectR.Model
+  RESFLAGS  += $(DEFINES) $(INCLUDES) 
   LDDEPS    += build/libProjectR.Model.so
-  LINKCMD    = $(CXX) -o $(TARGET) $(OBJECTS) $(RESOURCES) $(ARCH) $(LIBS) $(LDFLAGS)
+  LINKCMD    = $(CXX) -o $(TARGET) $(OBJECTS) $(LDFLAGS) $(RESOURCES) $(ARCH) $(LIBS)
   define PREBUILDCMDS
   endef
   define PRELINKCMDS
@@ -54,15 +46,15 @@ ifeq ($(config),release)
   TARGETDIR  = build
   TARGET     = $(TARGETDIR)/libProjectR.MapGen.so
   DEFINES   += -DNDEBUG
-  INCLUDES  += -Iinclude -Iinclude/ProjectR -Iinclude/ProjectR.Interfaces -Iinclude/ProjectR.Model -Iinclude/ProjectR.Logic -Iinclude/ProjectR.View -Iinclude/ProjectR.MapGen
+  INCLUDES  += -Iinclude -Iinclude/ProjectR -Iinclude/ProjectR.Interfaces -Iinclude/ProjectR.Model -Iinclude/ProjectR.Logic -Iinclude/ProjectR.View -Iinclude/ProjectR.MapGen -I/usr/include/lua5.1
   CPPFLAGS  += -MMD -MP $(DEFINES) $(INCLUDES)
   CFLAGS    += $(CPPFLAGS) $(ARCH) -Wall -ffast-math -O3 -fPIC -std=c++11
   CXXFLAGS  += $(CFLAGS) 
-  LDFLAGS   += -Lbuild -s -shared
-  RESFLAGS  += $(DEFINES) $(INCLUDES) 
+  LDFLAGS   += -s -shared -Lbuild
   LIBS      += -lProjectR.Model
+  RESFLAGS  += $(DEFINES) $(INCLUDES) 
   LDDEPS    += build/libProjectR.Model.so
-  LINKCMD    = $(CXX) -o $(TARGET) $(OBJECTS) $(RESOURCES) $(ARCH) $(LIBS) $(LDFLAGS)
+  LINKCMD    = $(CXX) -o $(TARGET) $(OBJECTS) $(LDFLAGS) $(RESOURCES) $(ARCH) $(LIBS)
   define PREBUILDCMDS
   endef
   define PRELINKCMDS
@@ -73,11 +65,11 @@ endif
 
 OBJECTS := \
 	$(OBJDIR)/MapGenerator.o \
-	$(OBJDIR)/Generator.o \
-	$(OBJDIR)/DrunkDigger.o \
-	$(OBJDIR)/TreasureRoom.o \
 	$(OBJDIR)/HallwayGenerator.o \
 	$(OBJDIR)/RoomGenerator.o \
+	$(OBJDIR)/TreasureRoom.o \
+	$(OBJDIR)/Generator.o \
+	$(OBJDIR)/DrunkDigger.o \
 
 RESOURCES := \
 
@@ -134,31 +126,27 @@ prelink:
 ifneq (,$(PCH))
 $(GCH): $(PCH)
 	@echo $(notdir $<)
-ifeq (posix,$(SHELLTYPE))
 	-$(SILENT) cp $< $(OBJDIR)
-else
-	$(SILENT) xcopy /D /Y /Q "$(subst /,\,$<)" "$(subst /,\,$(OBJDIR))" 1>nul
-endif
-	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 endif
 
 $(OBJDIR)/MapGenerator.o: src/ProjectR.MapGen/MapGenerator.cpp
 	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
-$(OBJDIR)/Generator.o: src/ProjectR.MapGen/Generators/Generator.cpp
-	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
-$(OBJDIR)/DrunkDigger.o: src/ProjectR.MapGen/Generators/DrunkDigger.cpp
-	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
-$(OBJDIR)/TreasureRoom.o: src/ProjectR.MapGen/Generators/TreasureRoom.cpp
-	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 $(OBJDIR)/HallwayGenerator.o: src/ProjectR.MapGen/Generators/HallwayGenerator.cpp
 	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 $(OBJDIR)/RoomGenerator.o: src/ProjectR.MapGen/Generators/RoomGenerator.cpp
 	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+$(OBJDIR)/TreasureRoom.o: src/ProjectR.MapGen/Generators/TreasureRoom.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+$(OBJDIR)/Generator.o: src/ProjectR.MapGen/Generators/Generator.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+$(OBJDIR)/DrunkDigger.o: src/ProjectR.MapGen/Generators/DrunkDigger.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
 -include $(OBJECTS:%.o=%.d)

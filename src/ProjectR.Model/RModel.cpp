@@ -7,6 +7,8 @@
 #include "Statistics.hpp"
 #include "PreGameModel.hpp"
 #include "RaceTemplates.hpp"
+#include "CharacterFactory.hpp"
+#include "SpellFactory.hpp"
 
 namespace ProjectR
 {
@@ -21,7 +23,9 @@ struct RModelImpl : public RModel
       _overWorldModel(new OverWorldModel()),
       _battleModel(new BattleModel()),
       _statistics(Statistics::Create()),
-      _raceTemplates(RaceTemplates::Create())
+      _raceTemplates(RaceTemplates::Create()),
+      _charFactory(CharacterFactory::Create(*this)),
+      _spellFactory(SpellFactory::Create(*this))
   {
   }
 
@@ -70,6 +74,16 @@ struct RModelImpl : public RModel
     return _playerName;
   }
 
+  std::shared_ptr<CharacterFactory> const& GetCharacterFactory() const
+  {
+    return _charFactory;
+  }
+
+  std::shared_ptr<SpellFactory> const& GetSpellFactory() const
+  {
+    return _spellFactory;
+  }
+
   void SetPlayerName(std::string const& playerName)
   {
     _playerName = playerName;
@@ -77,7 +91,9 @@ struct RModelImpl : public RModel
 
   void LoadResources()
   {
+    _spellFactory->LoadSpells();
     _raceTemplates->LoadTemplates();
+    _charFactory->LoadCharacters();
   }
 
   void CommitChanges()
@@ -93,6 +109,8 @@ struct RModelImpl : public RModel
   std::shared_ptr<BattleModel> _battleModel;
   std::shared_ptr<Statistics> _statistics;
   std::shared_ptr<RaceTemplates> _raceTemplates;
+  std::shared_ptr<CharacterFactory> _charFactory;
+  std::shared_ptr<SpellFactory> _spellFactory;
   std::string _playerName;
 };
 
