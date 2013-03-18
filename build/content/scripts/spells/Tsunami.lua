@@ -3,7 +3,7 @@ function GetTargetType()
 end
 
 function GetName()
-  return "Glimmering Trap"
+  return "Tsunami"
 end
 
 function GetDescription()

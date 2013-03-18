@@ -3,10 +3,10 @@
 #include "Spell.hpp"
 #include "Character.hpp"
 #include "Stats.hpp"
-#include <exception>
-#include <luabind/luabind.hpp>
 #include <boost/filesystem.hpp>
+#include "Extensions.hpp"
 #include <iostream>
+#include "ErrorCodes.hpp"
 
 namespace ProjectR
 {
@@ -29,29 +29,21 @@ struct SpellFacImpl : public SpellFactory
       if(is_directory(i->path()) || i->path().extension() != ".lua")
         continue;
 
-      auto spell = Spell::Create(_model, i->path().c_str());
-      auto character = Character::Create("LuaTester");
-      auto stats = Stats::GetRandomBaseStats();
-      character->SetStats(stats);
-      try
-      {
-        spell->DamageCalculation(character, character, 5.f);
-      }
-      catch(luabind::error& e)
-      {
-        std::cout << e.what() << std::endl;
-        std::cout << "error: lua: " << luabind::object(luabind::from_stack(e.state(), -1)) << std::endl;
-        exit(1);
-      }
+      auto spell = Spell::Create(_model, i->path().c_str());     
       _spells.push_back(spell);
       _stringIndexMap[spell->GetName()] = _spells.size() - 1;
-    }
-    exit(0);
+    }    
   }
 
   std::shared_ptr<ISpell> const& GetSpell(std::string const& name)
   {
-    return _spells[0];
+    if(_stringIndexMap.find(name) == _stringIndexMap.end())
+    {
+      std::cerr << "Spell not found: " << name << std::endl;
+      exit(ERROR_SPELL_NOT_FOUND);
+    }
+
+    return _spells[_stringIndexMap[name]];
   }
 
   std::shared_ptr<ISpell> const& GetRandomSpell()

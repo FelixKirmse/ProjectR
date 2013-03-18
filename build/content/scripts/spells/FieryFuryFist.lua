@@ -3,11 +3,11 @@ function GetTargetType()
 end
 
 function GetName()
-  return "Wind Strike"
+  return "Fiery Fury Fist"
 end
 
 function GetDescription()
-    return "Strike with the power of the wind.\nDeals physical WND damage."
+    return "Strike with your flame-imbued fist.\nThe heat causes you to ignore some of the enemies DEF.\nDeals physical FIR damage."
 end
 
 function IsSupportSpell()
@@ -15,14 +15,14 @@ function IsSupportSpell()
 end
 
 function GetMPCost()
-    return .32
+    return .58
 end
 
 function GetDelay()
-  return .65
+  return 0
 end
 
 function SpellEffect()
-  local damage = (3.3 * aAD * (aWND/100) - dDEF) * (100/dWND)
+  local damage = (5 * aAD * (aFIR/100) - .8 * dDEF) * (100/dFIR)
   d:TakeDamage(damage)
 end

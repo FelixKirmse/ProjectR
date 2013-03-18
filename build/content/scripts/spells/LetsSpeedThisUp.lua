@@ -3,7 +3,7 @@ function GetTargetType()
 end
 
 function GetName()
-  return "Let speed this up"
+  return "Let's speed this up"
 end
 
 function GetDescription()

@@ -1,13 +1,13 @@
 function GetTargetType()
-    return Single
+    return Enemies
 end
 
 function GetName()
-  return "Wind Strike"
+  return "Storm Dash"
 end
 
 function GetDescription()
-    return "Strike with the power of the wind.\nDeals physical WND damage."
+    return "Quickly strike all enemies.\nDeals physical WND damage."
 end
 
 function IsSupportSpell()
@@ -15,14 +15,14 @@ function IsSupportSpell()
 end
 
 function GetMPCost()
-    return .32
+    return .5
 end
 
 function GetDelay()
-  return .65
+  return .6
 end
 
 function SpellEffect()
-  local damage = (3.3 * aAD * (aWND/100) - dDEF) * (100/dWND)
+  local damage = (2.875 * aAD * (aWND/100) - 1.25 * dDEF) * (100/dWND)
   d:TakeDamage(damage)
 end

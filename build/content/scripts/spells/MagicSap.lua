@@ -3,7 +3,7 @@ function GetTargetType()
 end
 
 function GetName()
-  return "Stun Bomb"
+  return "Magic Sap"
 end
 
 function GetDescription()

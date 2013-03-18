@@ -1,13 +1,13 @@
 function GetTargetType()
-    return Myself
+    return Single
 end
 
 function GetName()
-    return "Meditate"
+    return "Kon Slash"
 end
 
 function GetDescription()
-    return "A defensive stance that recovers double the MP of a normal Defend action."
+    return "Strong Physical attack that bypasses some of the enemies armor."
 end
 
 function IsSupportSpell()
@@ -23,7 +23,6 @@ function GetDelay()
 end
 
 function SpellEffect()
-  as:BuffStat(DEF, .2)
-  as:BuffStat(MR, .2)
-  a:UseMP(-(aMP * .4))
+    local damage = 3 * aAD - .8 * dDEF
+    d:TakeDamage(damage)
 end

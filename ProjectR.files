@@ -272,3 +272,9 @@ build/content/scripts/spells/SupportTechniqueSword.lua
 build/content/scripts/spells/SupportTechniqueWand.lua
 build/content/scripts/spells/SupportTechniqueShield.lua
 build/content/scripts/spells/NumberOfTheBeast.lua
+include/ProjectR.Model/ErrorCodes.hpp
+build/content/scripts/spells/KonSlash.lua
+build/content/scripts/spells/FieryFuryFist.lua
+build/content/scripts/spells/StormDash.lua
+build/content/scripts/spells/SoulVacuum.lua
+build/content/scripts/spells/ReapersScythe.lua

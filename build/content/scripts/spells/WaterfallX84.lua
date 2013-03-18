@@ -3,7 +3,7 @@ function GetTargetType()
 end
 
 function GetName()
-  return "Waterfall X84"
+  return "Waterfall X86"
 end
 
 function GetDescription()

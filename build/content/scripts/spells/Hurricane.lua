@@ -3,7 +3,7 @@ function GetTargetType()
 end
 
 function GetName()
-  return "Surge of Lightning"
+  return "Hurricane"
 end
 
 function GetDescription()

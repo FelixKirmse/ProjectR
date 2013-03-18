@@ -9,6 +9,8 @@
 #include <luabind/luabind.hpp>
 #include "Extensions.hpp"
 
+#include "ErrorCodes.hpp"
+
 namespace ProjectR
 {
 void ForEachAttackerParty(char const* functionName)
@@ -93,11 +95,16 @@ struct LuaSpell : public Spell
       _mpCost = luabind::call_function<float>(_spellState, "GetMPCost");
       _attackDelay = luabind::call_function<float>(_spellState, "GetDelay");
     }
-    catch(luabind::error& e)
+    catch(luabind::error const& e)
     {
-      std::cout << e.what() << std::endl;
-      std::cout << "error: lua: " << luabind::object(luabind::from_stack(e.state(), -1)) << std::endl;
-      exit(1);
+      std::cerr << e.what() << std::endl;
+      std::cerr << luabind::object(luabind::from_stack(e.state(), -1)) << std::endl;
+      exit(LUA_ERROR_RELOAD);
+    }
+    catch(...)
+    {
+      std::cerr << "Unknown Error at " << __LINE__ << " in " << __FILE__ << std::endl;
+      exit(UNKNOWN_ERROR);
     }
   }
 
@@ -194,11 +201,16 @@ struct LuaSpell : public Spell
           .def("GetTurnCounter", &Character::GetTurnCounter)
           ];
     }
-    catch(luabind::error& e)
+    catch(luabind::error const& e)
     {
-      std::cout << e.what() << std::endl;
-      std::cout << "error: lua: " << luabind::object(luabind::from_stack(e.state(), -1)) << std::endl;
-      exit(1);
+      std::cerr << e.what() << std::endl;
+      std::cerr << luabind::object(luabind::from_stack(e.state(), -1)) << std::endl;
+      exit(LUA_ERROR_BINDING);
+    }
+    catch(...)
+    {
+      std::cerr << "Unknown Error at " << __LINE__ << " in " << __FILE__ << std::endl;
+      exit(UNKNOWN_ERROR);
     }
   }
 
@@ -266,11 +278,16 @@ struct LuaSpell : public Spell
       luabind::globals(_spellState)["dDTH"] = ds->GetTotalStat(DTH);
       luabind::globals(_spellState)["dSIL"] = ds->GetTotalStat(SIL);
     }
-    catch(luabind::error& e)
+    catch(luabind::error const& e)
     {
-      std::cout << e.what() << std::endl;
-      std::cout << "error: lua: " << luabind::object(luabind::from_stack(e.state(), -1)) << std::endl;
-      exit(1);
+      std::cerr << e.what() << std::endl;
+      std::cerr << luabind::object(luabind::from_stack(e.state(), -1)) << std::endl;
+      exit(LUA_ERROR_ASSIGNING);
+    }
+    catch(...)
+    {
+      std::cerr << "Unknown Error at " << __LINE__ << " in " << __FILE__ << std::endl;
+      exit(UNKNOWN_ERROR);
     }
   }
 
@@ -278,8 +295,22 @@ struct LuaSpell : public Spell
                          std::shared_ptr<Character> const& defender,
                          float specialModifier)
   {
-    AssignEssentials(attacker, defender, specialModifier);
-    luabind::call_function<void>(_spellState, "SpellEffect");
+    try
+    {
+      AssignEssentials(attacker, defender, specialModifier);
+      luabind::call_function<void>(_spellState, "SpellEffect");
+    }
+    catch(luabind::error const& e)
+    {
+      std::cerr << e.what() << std::endl;
+      std::cerr << luabind::object(luabind::from_stack(e.state(), -1)) << std::endl;
+      exit(LUA_ERROR_CASTING);
+    }
+    catch(...)
+    {
+      std::cerr << "Unknown Error at " << __LINE__ << " in " << __FILE__ << std::endl;
+      exit(UNKNOWN_ERROR);
+    }
   }
 
   TargetInfo::TargetType GetTargetType()
