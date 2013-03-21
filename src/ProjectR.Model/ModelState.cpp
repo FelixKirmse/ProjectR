@@ -5,7 +5,7 @@ namespace ProjectR
 std::shared_ptr<IModel> ModelState::_model;
 void ModelState::SetModel(std::shared_ptr<IModel> const& model)
 {
-  _model = model;
+  _model = model;  
 }
 
 std::shared_ptr<IModel> const& ModelState::Model()

@@ -72,11 +72,15 @@ ifeq ($(config),release)
 endif
 
 OBJECTS := \
+	$(OBJDIR)/BattleLogic.o \
+	$(OBJDIR)/CharacterSpellSelect.o \
 	$(OBJDIR)/PreGameLogic.o \
 	$(OBJDIR)/MainMenuLogic.o \
+	$(OBJDIR)/IdleBattleLogic.o \
 	$(OBJDIR)/TitleScreenLogic.o \
 	$(OBJDIR)/MenuController.o \
 	$(OBJDIR)/LogicState.o \
+	$(OBJDIR)/ConsequenceBattleLogic.o \
 	$(OBJDIR)/RInput.o \
 	$(OBJDIR)/RLogic.o \
 	$(OBJDIR)/OverworldLogic.o \
@@ -144,10 +148,19 @@ endif
 	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
 endif
 
+$(OBJDIR)/BattleLogic.o: src/ProjectR.Logic/BattleLogic.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+$(OBJDIR)/CharacterSpellSelect.o: src/ProjectR.Logic/CharacterSpellSelect.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
 $(OBJDIR)/PreGameLogic.o: src/ProjectR.Logic/PreGameLogic.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
 $(OBJDIR)/MainMenuLogic.o: src/ProjectR.Logic/MainMenuLogic.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+$(OBJDIR)/IdleBattleLogic.o: src/ProjectR.Logic/IdleBattleLogic.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
 $(OBJDIR)/TitleScreenLogic.o: src/ProjectR.Logic/TitleScreenLogic.cpp
@@ -157,6 +170,9 @@ $(OBJDIR)/MenuController.o: src/ProjectR.Logic/MenuController.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
 $(OBJDIR)/LogicState.o: src/ProjectR.Logic/LogicState.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+$(OBJDIR)/ConsequenceBattleLogic.o: src/ProjectR.Logic/ConsequenceBattleLogic.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
 $(OBJDIR)/RInput.o: src/ProjectR.Logic/RInput.cpp

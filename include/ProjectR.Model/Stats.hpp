@@ -1,5 +1,6 @@
 #pragma once
 #include <memory>
+#include <boost/unordered_map.hpp>
 
 namespace ProjectR
 {
@@ -43,6 +44,62 @@ enum EVAType
 {
   Dodge = 0,
   Block = 1
+};
+
+static boost::unordered::unordered_map<std::string, int> StatMapStringInt =
+{
+  {"HP", HP},
+  {"MP", MP},
+  {"AD", AD},
+  {"MD", MD},
+  {"DEF", DEF},
+  {"MR", MR},
+  {"EVA", EVA},
+  {"SPD", SPD},
+  {"CHA", CHA},
+  {"FIR", FIR},
+  {"WAT", WAT},
+  {"ICE", ICE},
+  {"ARC", ARC},
+  {"WND", WND},
+  {"HOL", HOL},
+  {"DRK", DRK},
+  {"GRN", GRN},
+  {"LGT", LGT},
+  {"PSN", PSN},
+  {"PAR", PAR},
+  {"SLW", SLW},
+  {"STD", STD},
+  {"DTH", DTH},
+  {"SIL", SIL}
+};
+
+static boost::unordered::unordered_map<int, std::string> StatMapIntString =
+{
+  {HP, "HP"},
+  {MP, "MP"},
+  {AD, "AD"},
+  {MD, "MD"},
+  {DEF, "DEF"},
+  {MR, "MR"},
+  {EVA, "EVA"},
+  {SPD, "SPD"},
+  {CHA, "CHA"},
+  {FIR, "FIR"},
+  {WAT, "WAT"},
+  {ICE, "ICE"},
+  {ARC, "ARC"},
+  {WND, "WND"},
+  {HOL, "HOL"},
+  {DRK, "DRK"},
+  {GRN, "GRN"},
+  {LGT, "LGT"},
+  {PSN, "PSN"},
+  {PAR, "PAR"},
+  {SLW, "SLW"},
+  {STD, "STD"},
+  {DTH, "DTH"},
+  {SIL, "SIL"}
 };
 
 /*

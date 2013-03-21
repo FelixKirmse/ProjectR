@@ -4,66 +4,14 @@
 #include "Stats.hpp"
 #include "IModel.hpp"
 #include "SpellFactory.hpp"
-
 #include <lua5.1/lua.hpp>
 #include <luabind/luabind.hpp>
 #include "Extensions.hpp"
-
 #include "ErrorCodes.hpp"
+#include "LuaInterface/LuaInterfaceFwd.hpp"
 
 namespace ProjectR
 {
-void ForEachAttackerParty(char const* functionName)
-{
-}
-
-void ForEachDefenderParty(char const* functionName)
-{
-}
-
-void ForEachBackRow(char const* functionName)
-{
-}
-
-bool IsSameChar(Character& char1, Character& char2)
-{
-  return &char1 == &char2;
-}
-
-int RollWrapper(int min, int max)
-{
-  return Roll(min, max);
-}
-
-Stats& GetStats(Character& character)
-{
-  return *character.GetStats();
-}
-
-int GetAliveCount()
-{
-  return 4;
-}
-
-void BuffAttackersReserveParty(int stat, float amount)
-{
-}
-
-void ApplyDebuffWrapper(Character* character, int debuff, int strength)
-{
-  character->ApplyDebuff(debuff, strength);
-}
-
-int GetDeadMemberCountAttackerParty()
-{
-  return 0;
-}
-
-int GetDeadMemberCountDefenderParty()
-{
-  return 0;
-}
-
 struct LuaSpell : public Spell
 {
   LuaSpell(IModel const& model,
@@ -72,7 +20,8 @@ struct LuaSpell : public Spell
       _model(model),
       _fileName(fileName)
   {    
-    ForceReload();
+    SetModel(&model);
+    ForceReload();    
   }
 
   void ForceReload()
@@ -177,7 +126,7 @@ struct LuaSpell : public Spell
           .def("GetTotalStat", (float(Stats::*)(int))&Stats::GetTotalStat)
           .def("GetSingleStat", &Stats::GetSingleStat)
           .def("SetSingleStat", &Stats::SetSingleStat)
-          .def("BuffStat", &Stats::BuffStat)
+          .def("BuffStat", &Character::BuffStat)
           .def("RemoveBuffs", &Stats::RemoveBuffs)
           .def("RemoveDebuffs", &Stats::RemoveBuffs)
           .def("ReduceBuffeffectiveness", &Stats::ReduceBuffEffectiveness)
@@ -360,3 +309,4 @@ std::shared_ptr<Spell> Spell::Create(IModel const& model,
   return std::make_shared<LuaSpell>(model, fileName);
 }
 }
+#include "LuaInterface/LuaInterfaceImpl.cc"

@@ -4,6 +4,8 @@
 #include "MainMenuView.hpp"
 #include "libtcod/libtcod.hpp"
 #include "PreGameView.hpp"
+#include "OverworldView.hpp"
+#include "BattleView.hpp"
 
 namespace ProjectR
 {
@@ -38,6 +40,8 @@ struct ConsoleViewImpl : public ConsoleView
     AddState(TitleScreenView::Create());
     AddState(MainMenuView::Create());
     AddState(PreGameView::Create());
+    AddState(OverworldView::Create());
+    AddState(BattleView::Create());
 
     _model = model;    
   }

@@ -78,8 +78,10 @@ OBJECTS := \
 	$(OBJDIR)/SpellFactory.o \
 	$(OBJDIR)/CharacterFactory.o \
 	$(OBJDIR)/Observeable.o \
+	$(OBJDIR)/BattleLog.o \
 	$(OBJDIR)/InputBuffer.o \
 	$(OBJDIR)/Character.o \
+	$(OBJDIR)/Party.o \
 	$(OBJDIR)/Spell.o \
 	$(OBJDIR)/OverworldPlayer.o \
 	$(OBJDIR)/Stats.o \
@@ -92,6 +94,7 @@ OBJECTS := \
 	$(OBJDIR)/PreGameModel.o \
 	$(OBJDIR)/Menu.o \
 	$(OBJDIR)/MenuItem.o \
+	$(OBJDIR)/BattleModel.o \
 	$(OBJDIR)/RMap.o \
 
 RESOURCES := \
@@ -175,10 +178,16 @@ $(OBJDIR)/CharacterFactory.o: src/ProjectR.Model/CharacterFactory.cpp
 $(OBJDIR)/Observeable.o: src/ProjectR.Model/Observeable.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+$(OBJDIR)/BattleLog.o: src/ProjectR.Model/BattleLog.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
 $(OBJDIR)/InputBuffer.o: src/ProjectR.Model/InputBuffer.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
 $(OBJDIR)/Character.o: src/ProjectR.Model/Character.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+$(OBJDIR)/Party.o: src/ProjectR.Model/Party.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
 $(OBJDIR)/Spell.o: src/ProjectR.Model/Spell.cpp
@@ -215,6 +224,9 @@ $(OBJDIR)/Menu.o: src/ProjectR.Model/States/Menu.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
 $(OBJDIR)/MenuItem.o: src/ProjectR.Model/States/MenuItem.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+$(OBJDIR)/BattleModel.o: src/ProjectR.Model/States/BattleModel.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
 $(OBJDIR)/RMap.o: src/ProjectR.Model/Map/RMap.cpp

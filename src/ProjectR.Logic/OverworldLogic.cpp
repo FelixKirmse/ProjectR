@@ -1,4 +1,5 @@
 #include "OverworldLogic.hpp"
+#include "IStateMachine.hpp"
 
 namespace ProjectR
 {
@@ -10,6 +11,7 @@ struct OverworldLogicImpl : public OverworldLogic
 
   void Run()
   {
+    Master()->Next();
   }
 };
 

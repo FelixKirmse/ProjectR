@@ -1,7 +1,7 @@
 #include "MainMenuLogic.hpp"
+#include "IModel.hpp"
 #include "RInput.hpp"
 #include "Menu.hpp"
-#include "IModel.hpp"
 #include "MenuModel.hpp"
 #include "MenuController.hpp"
 #include "MainMenu.hpp"

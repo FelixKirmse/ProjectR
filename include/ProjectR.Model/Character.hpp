@@ -30,9 +30,27 @@ public:
   virtual void RemoveDebuffs() = 0;
   virtual float GetTurnCounter() = 0;
   virtual void SetTurnCounter(float newTurnCounter) = 0;
-  virtual float GetTimeToAction() = 0;
+  static float GetTimeToAction();
+  static void SetTimeToAction(float value);
+  virtual void LvlUp(int levels = 1) = 0;
+  virtual void LvlUp(long long experience) = 0;
+  virtual bool IsDead() = 0;
+  virtual bool UpdateTurnCounter() = 0;
+  virtual bool IsSilenced() = 0;
+  virtual void SetCurrentHP(float newValue) = 0;
+  virtual void ResetDamageTaken() = 0;
+  virtual float GetDamageTaken() = 0;
+  virtual bool WasHealed() = 0;
+  virtual bool BlockedDamage() = 0;
+  virtual bool DodgedAttack() = 0;
+  virtual bool WasAfflicted() = 0;
+  virtual std::string const& AfflictedBy() = 0;
+  virtual void BuffStat(int stat, float value) = 0;
 
   virtual ~Character(){}
   static std::shared_ptr<Character> Create(std::string const& name);
+
+protected:
+  static float TimeToAction;
 };
 }

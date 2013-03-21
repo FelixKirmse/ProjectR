@@ -38,17 +38,18 @@ struct SpellFacImpl : public SpellFactory
   std::shared_ptr<ISpell> const& GetSpell(std::string const& name)
   {
     if(_stringIndexMap.find(name) == _stringIndexMap.end())
-    {
-      std::cerr << "Spell not found: " << name << std::endl;
-      exit(ERROR_SPELL_NOT_FOUND);
-    }
+      Exit(ERROR_SPELL_NOT_FOUND, "Spell not found:" + name);
 
     return _spells[_stringIndexMap[name]];
   }
 
   std::shared_ptr<ISpell> const& GetRandomSpell()
-  {
-    return _spells[0];
+  {    
+    auto const& spell = _spells[Roll(0, _spells.size() - 1)];
+    if(spell->GetName() == "Attack" || spell->GetName() == "Defend" || spell->GetName() == "Switch")
+      return GetRandomSpell();
+
+    return spell;
   }
 
   std::vector<std::shared_ptr<ISpell> > _spells;

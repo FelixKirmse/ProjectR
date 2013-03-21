@@ -12,18 +12,17 @@ public:
     StepsTaken,
     MapsGenerated,
     SquaresRevealed,
-    BattlesFought,
-    EnemiesKilled,
+    BattlesFought,    // Taken Care Of by ConsequenceBattleLogic
+    EnemiesKilled,    // Taken Care Of by ConsequenceBattleLogic
     EnemiesJoined,
     HighestPartyCount,
-    SpellsCast,
-    DamageDone,
-    DamageTaken,
-    HealingDone,
-    HealingTaken,
-    SuccessfulDodges,
-    DamageBlocked,
-    PartyMembersLost,
+    SpellsCast,       // Taken Care Of by ConsequenceBattleLogic
+    DamageDone,       // Taken Care Of by ConsequenceBattleLogic
+    DamageTaken,      // Taken Care Of by ConsequenceBattleLogic
+    HealingTaken,     // Taken Care Of by ConsequenceBattleLogic
+    SuccessfulDodges, // Taken Care Of by ConsequenceBattleLogic
+    DamageBlocked,    // Taken Care Of by ConsequenceBattleLogic
+    PartyMembersLost, // Taken Care Of by ConsequenceBattleLogic
     KeysUsed,
     DoorsOpened,
     ChestsOpened,

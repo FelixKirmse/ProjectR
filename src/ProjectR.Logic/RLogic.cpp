@@ -4,6 +4,8 @@
 #include "RInput.hpp"
 #include "MainMenuLogic.hpp"
 #include "PreGameLogic.hpp"
+#include "OverworldLogic.hpp"
+#include "BattleLogic.hpp"
 
 namespace ProjectR
 {
@@ -23,6 +25,8 @@ struct RLogicImpl : public RLogic
     AddState(TitleScreenLogic::Create());
     AddState(MainMenuLogic::Create());
     AddState(PreGameLogic::Create());
+    AddState(OverworldLogic::Create());
+    AddState(BattleLogic::Create());
 
     _model = model;
   }

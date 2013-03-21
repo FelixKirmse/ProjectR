@@ -15,6 +15,7 @@ class PreGameModel;
 class RaceTemplates;
 class CharacterFactory;
 class SpellFactory;
+class Party;
 
 class IModel
 {
@@ -30,6 +31,7 @@ public:
   virtual std::shared_ptr<RaceTemplates> const& GetRaceTemplates() const = 0;
   virtual std::shared_ptr<CharacterFactory> const& GetCharacterFactory() const = 0;
   virtual std::shared_ptr<SpellFactory> const& GetSpellFactory() const = 0;
+  virtual std::shared_ptr<Party> const& GetParty() const = 0;
 
   virtual std::string const& GetPlayerName() const = 0;
   virtual void SetPlayerName(std::string const&) = 0;

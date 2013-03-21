@@ -48,7 +48,7 @@ struct StatsImpl : public Stats
       for(int i = 0; i < SPD; ++i)
       {
         if(i == MP)
-          return;
+          continue;
         SingleStat& stat = _stats[i];
 
         float const threshold = i == HP ? 6.66f : 5.f;

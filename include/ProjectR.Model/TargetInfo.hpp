@@ -16,7 +16,6 @@ struct TargetInfo
     Enemies = 3,
     Decaying = 4
   };
-
   std::shared_ptr<Character> Target;
   std::shared_ptr<ISpell> Spell;
 };

@@ -1,42 +1,18 @@
 #include "CharacterFactory.hpp"
 #include "IModel.hpp"
-#include "Character.hpp"
 #include <boost/unordered_map.hpp>
 #include <libtcod/libtcod.hpp>
 #include "Stats.hpp"
 #include <boost/filesystem.hpp>
 #include "SpellFactory.hpp"
+#include "RaceTemplates.hpp"
+#include "ISpell.hpp"
+#include <fstream>
+#include "Extensions.hpp"
+#include "SpecialCharacter.hpp"
 
 namespace ProjectR
 {
-static boost::unordered::unordered_map<std::string, int> _statMap =
-{
-  {"HP", 0},
-  {"MP", 1},
-  {"AD", 2},
-  {"MD", 3},
-  {"DEF", 4},
-  {"MR", 5},
-  {"EVA", 6},
-  {"SPD", 7},
-  {"CHA", 8},
-  {"FIR", 9},
-  {"WAT", 10},
-  {"ICE", 11},
-  {"ARC", 12},
-  {"WND", 13},
-  {"HOL", 14},
-  {"DRK", 15},
-  {"GRN", 16},
-  {"LGT", 17},
-  {"PSN", 18},
-  {"PAR", 19},
-  {"SLW", 20},
-  {"STD", 21},
-  {"DTH", 22},
-  {"SIL", 23}
-};
-
 struct CharacterFacImpl : public CharacterFactory, public ITCODParserListener
 {
   CharacterFacImpl(IModel const& model)
@@ -156,7 +132,7 @@ struct CharacterFacImpl : public CharacterFactory, public ITCODParserListener
 
       stat[Growth] = valueList.pop();
       stat[Base] = valueList.pop();
-      _currentStats->SetSingleStat(stat, _statMap[propname]);
+      _currentStats->SetSingleStat(stat, StatMapStringInt[propname]);
       return true;
     }
 
@@ -197,9 +173,67 @@ struct CharacterFacImpl : public CharacterFactory, public ITCODParserListener
     throw msg;
   }
 
-  std::shared_ptr<Character> CreateRandomCharacter()
+  std::shared_ptr<SpecialCharacter> CreateRandomEnemy(int level)
   {
-    return nullptr;
+    auto newChar = SpecialCharacter::CreateEnemy(GetRandomName());
+    SharedGenerationFunction(newChar, level);
+    return newChar;
+  }
+
+  std::shared_ptr<Character> CreateRandomCharacter(int level, RaceTemplate* race)
+  {
+    auto newChar = Character::Create(GetRandomName());
+    SharedGenerationFunction(newChar, level, race);
+    return newChar;
+  }
+
+  void SharedGenerationFunction(std::shared_ptr<Character>const & newChar, int level, RaceTemplate* race = 0)
+  {
+    auto const& rTemplate = race == nullptr ? _model.GetRaceTemplates()->GetRandomTemplate() :
+                                              *race;
+    auto randomStats = Stats::GetRandomBaseStats();
+    randomStats->LvlUp(0, level);
+    auto& spellFactory = _model.GetSpellFactory();
+    newChar->SetRace(rTemplate.GetName());
+    newChar->SetLore(rTemplate.GetDescription());
+    ApplyRaceTemplate(rTemplate, randomStats);
+    newChar->SetStats(randomStats);
+    std::vector<std::shared_ptr<ISpell> > spells;
+    spells.push_back(spellFactory->GetSpell("Attack"));
+    spells.push_back(spellFactory->GetSpell("Defend"));
+    int spellCount = Roll(2, 5);
+    for(int i = 0; i < spellCount; ++i)
+    {
+      spells.push_back(spellFactory->GetRandomSpell());
+    }
+    newChar->SetSpells(spells);
+  }
+
+  void ApplyRaceTemplate(RaceTemplate const& tpl, std::shared_ptr<Stats> const& stats)
+  {
+    for(int i = HP; i <= SIL; ++i)
+    {
+      stats->GetSingleStat(i)[Base] *= tpl[i];
+      stats->GetSingleStat(i)[Growth] *= tpl[i];
+    }
+  }
+
+  std::string GetRandomName()
+  {
+    std::fstream nameFile("content/etc/Names.txt");
+    GoToLine(nameFile, Roll(1, 13874));
+    std::string name;
+    std::getline(nameFile, name);
+    return name;
+  }
+
+  void GoToLine(std::fstream& file, int line)
+  {
+    file.seekg(std::ios::beg);
+    for(int i = 0; i < line - 1; ++i)
+    {
+      file.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    }
   }
 
   std::shared_ptr<Character> const& GetSpecialCharacter(std::string const& name)

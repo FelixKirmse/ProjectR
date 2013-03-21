@@ -2,37 +2,14 @@
 #include <boost/unordered_map.hpp>
 #include "libtcod/libtcod.hpp"
 #include <boost/filesystem.hpp>
+#include <vector>
+#include <iostream>
+#include "ErrorCodes.hpp"
+#include "Extensions.hpp"
+#include "Stats.hpp"
 
 namespace ProjectR
 {
-static boost::unordered::unordered_map<std::string, int> _statMap =
-{
-  {"HP", 0},
-  {"MP", 1},
-  {"AD", 2},
-  {"MD", 3},
-  {"DEF", 4},
-  {"MR", 5},
-  {"EVA", 6},
-  {"SPD", 7},
-  {"CHA", 8},
-  {"FIR", 9},
-  {"WAT", 10},
-  {"ICE", 11},
-  {"ARC", 12},
-  {"WND", 13},
-  {"HOL", 14},
-  {"DRK", 15},
-  {"GRN", 16},
-  {"LGT", 17},
-  {"PSN", 18},
-  {"PAR", 19},
-  {"SLW", 20},
-  {"STD", 21},
-  {"DTH", 22},
-  {"SIL", 23}
-};
-
 struct RaceTemplatesImpl : public RaceTemplates, public ITCODParserListener
 {
   std::string const RacePath = "content/scripts/races/";
@@ -84,6 +61,7 @@ struct RaceTemplatesImpl : public RaceTemplates, public ITCODParserListener
   {
     _currentTemplate = RaceTemplate();
     _currentRace = name;
+    _currentTemplate.SetName(name);
     return true;
   }
 
@@ -95,15 +73,16 @@ struct RaceTemplatesImpl : public RaceTemplates, public ITCODParserListener
   bool parserProperty(TCODParser *parser, const char *propname, TCOD_value_type_t type, TCOD_value_t value)
   {
     if(type == TCOD_TYPE_FLOAT)
-      _currentTemplate[_statMap[propname]] = value.f;
+      _currentTemplate[StatMapStringInt[propname]] = value.f;
     else
       _currentTemplate.SetDescription(value.s);
     return true;
   }
 
   bool parserEndStruct(TCODParser *parser, const TCODParserStruct *str, const char *name)
-  {
-    _templates[_currentRace] = _currentTemplate;
+  {    
+    _stringIndexMap[_currentRace] = _templates.size();
+    _templates.push_back(_currentTemplate);
     return true;
   }
 
@@ -114,10 +93,19 @@ struct RaceTemplatesImpl : public RaceTemplates, public ITCODParserListener
 
   RaceTemplate const& GetTemplate(std::string const& name)
   {
-    return _templates[name];
+    if(_stringIndexMap.find(name) == _stringIndexMap.end())
+      Exit(ERROR_TEMPLATE_NOT_FOUND, "Racetemplate not found: " + name);
+
+    return _templates[_stringIndexMap[name]];
   }
 
-  boost::unordered::unordered_map<std::string, RaceTemplate> _templates;
+  RaceTemplate const& GetRandomTemplate()
+  {
+    return _templates[Roll(0, _templates.size() - 1)];
+  }
+
+  std::vector<RaceTemplate> _templates;
+  boost::unordered::unordered_map<std::string, int> _stringIndexMap;
   RaceTemplate _currentTemplate;
   std::string _currentRace;
 };

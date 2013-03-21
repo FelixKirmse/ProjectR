@@ -74,9 +74,11 @@ endif
 OBJECTS := \
 	$(OBJDIR)/ConsoleView.o \
 	$(OBJDIR)/MenuDrawer.o \
+	$(OBJDIR)/OverworldView.o \
 	$(OBJDIR)/TitleScreenView.o \
 	$(OBJDIR)/PreGameView.o \
 	$(OBJDIR)/RConsole.o \
+	$(OBJDIR)/BattleView.o \
 	$(OBJDIR)/MainMenuView.o \
 
 RESOURCES := \
@@ -148,6 +150,9 @@ $(OBJDIR)/ConsoleView.o: src/ProjectR.View/ConsoleView.cpp
 $(OBJDIR)/MenuDrawer.o: src/ProjectR.View/MenuDrawer.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+$(OBJDIR)/OverworldView.o: src/ProjectR.View/OverworldView.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
 $(OBJDIR)/TitleScreenView.o: src/ProjectR.View/TitleScreenView.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
@@ -155,6 +160,9 @@ $(OBJDIR)/PreGameView.o: src/ProjectR.View/PreGameView.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
 $(OBJDIR)/RConsole.o: src/ProjectR.View/RConsole.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+$(OBJDIR)/BattleView.o: src/ProjectR.View/BattleView.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
 $(OBJDIR)/MainMenuView.o: src/ProjectR.View/MainMenuView.cpp

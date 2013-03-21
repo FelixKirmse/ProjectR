@@ -1,14 +1,33 @@
-#include "Character.hpp"
+#include "Extensions.hpp"
+#include "SpecialCharacter.hpp"
 #include "Stats.hpp"
 #include <string>
 
 namespace ProjectR
 {
-struct CharacterImpl : public Character
+static unsigned long const XPRequiredForLvlUp = 2000UL;
+
+struct CharacterImpl : public SpecialCharacter
 {
   CharacterImpl(std::string const& name)
     : _name(name)
   {
+  }
+
+  virtual std::shared_ptr<Character> ConvertToNormalCharacter()
+  {
+    auto newChar = Character::Create(_name);
+    newChar->SetSpells(_spells);
+    newChar->SetLore(_lore);
+    newChar->SetRace(_race);
+    newChar->SetStats(_stats);
+    newChar->SetTurnCounter(_turnCounter);
+    return newChar;
+  }
+
+  void SetCurrentHP(float newValue)
+  {
+    _currentHP = newValue;
   }
 
   std::string const& GetName()
@@ -26,9 +45,12 @@ struct CharacterImpl : public Character
     _race = race;
   }
 
-  void SetStats(std::shared_ptr<Stats> const& stats)
+  virtual void SetStats(std::shared_ptr<Stats> const& stats)
   {
     _stats = stats;
+    _currentHP = _stats->GetTotalStat(HP);
+    _currentMP = _stats->GetTotalStat(MP);
+    _xpRequired = _stats->GetXPMultiplier() * XPRequiredForLvlUp;
   }
 
   std::shared_ptr<Stats> const& GetStats()
@@ -58,7 +80,29 @@ struct CharacterImpl : public Character
 
   void TakeDamage(float value)
   {
+    if(value < 0.f)
+      value = 0.f;
+    bool attackEvaded = Roll(0,99) < _stats->GetEVAChance(_currentLevel);
+    if(attackEvaded && _stats->GetEVAType() == Dodge)
+    {
+      _attackedDodged = true;
+      return;
+    }
+    _attackBlocked = true;
+    value /= attackEvaded ? 2.f : 1.f;
+    TakeTrueDamage(value);
+  }
+
+  void TakeTrueDamage(float value)
+  {
+    _damageTaken += value;
     _currentHP -= value;
+    _currentHP = (_currentHP  < 0.f) ? 0.f : _currentHP;
+  }
+
+  bool IsDead()
+  {
+    return _currentHP < 1.f;
   }
 
   float GetCurrentHP()
@@ -74,6 +118,10 @@ struct CharacterImpl : public Character
   void UseMP(float value)
   {
     _currentMP -= value;
+    _currentMP =
+        (_currentMP < 0.f) ? 0.f :
+                             _currentMP > _stats->GetTotalStat(MP) ?
+                               _stats->GetTotalStat(MP) : _currentMP;
   }
 
   void RemoveDebuffs()
@@ -82,7 +130,11 @@ struct CharacterImpl : public Character
 
   void Heal(float value)
   {
+    _healed = true;
+    _damageTaken += value;
     _currentHP += value;
+    _currentHP = (_currentHP > _stats->GetTotalStat(HP)) ?
+          _stats->GetTotalStat(HP) : _currentHP;
   }
 
   void ApplyDebuff(int debuff, int strength, int level)
@@ -93,40 +145,256 @@ struct CharacterImpl : public Character
 
   int GetLvl()
   {
-    return 10;
+    return _currentLevel;
   }
 
-  void TakeTrueDamage(float value)
+  void LvlUp(int levels)
   {
-    TakeDamage(value);
+    _stats->LvlUp(_currentLevel, levels);
+    _currentLevel += levels;
+    _currentHP = _stats->GetTotalStat(HP);
+    _currentMP = _stats->GetTotalStat(MP);
+  }
+
+  void LvlUp(long long experience)
+  {
+    if(IsDead())
+      return;
+
+    long long currentLevelXP = _currentLevel * _xpRequired;
+    long long difference = experience - currentLevelXP;
+
+    while(difference > _xpRequired)
+    {
+      _stats->LvlUp(_currentLevel, 1);
+      ++_currentLevel;
+      difference -= _xpRequired;
+    }
+
+    Heal(_stats->GetTotalStat(HP));
+    ResetDamageTaken();
   }
 
   void SetTurnCounter(float newTurnCounter)
   {
+    _turnCounter = newTurnCounter;
   }
 
   float GetTurnCounter()
   {
-    return 123.f;
+    return _turnCounter;
   }
 
-  float GetTimeToAction()
+  bool UpdateTurnCounter()
   {
-    return 0.f;
+    if(IsDead())
+      return false;
+
+    float timeStep = _stats->GetTotalStat(SPD);
+    // OnTurnCounterUpdate()
+
+    bool result = false;
+    _turnCounter += timeStep;
+
+    if(_turnCounter >= TimeToAction)
+    {
+      UseMP(-10.f);
+      _turnCounter -= TimeToAction;
+      result = true;
+      _stats->ReduceBuffEffectiveness();
+      // OnTurnCounterActive
+    }
+
+    // OnTurnCounterUpdated
+    return result;
   }
 
-  float _currentHP = 300.f;
-  float _currentMP = 200.f;
+  bool IsSilenced()
+  {
+    return false;
+  }
+
+  void ResetDamageTaken()
+  {
+    _damageTaken = 0.f;
+    _healed = false;
+    _attackBlocked = false;
+    _attackedDodged = false;
+    _afflictedBy = "";
+  }
+
+  float GetDamageTaken()
+  {
+    return _damageTaken;
+  }
+
+  bool WasHealed()
+  {
+    return _healed;
+  }
+
+  bool BlockedDamage()
+  {
+    return _attackBlocked;
+  }
+
+  bool DodgedAttack()
+  {
+    return _attackedDodged;
+  }
+
+  bool WasAfflicted()
+  {
+    return _afflictedBy != "";
+  }
+
+  std::string const& AfflictedBy()
+  {
+    return _afflictedBy;
+  }
+
+  void BuffStat(int stat, float value)
+  {
+    std::string add = (value > 0 ? "+" : "") + std::to_string(value) + "%" + StatMapIntString[stat];
+    if(_afflictedBy == "")
+      _afflictedBy = add;
+    else
+    _afflictedBy += std::string(", ") + add;
+    _stats->BuffStat(stat, value);
+  }
+
+  float _currentHP;
+  float _currentMP;
 
   std::vector<std::shared_ptr<ISpell> > _spells;
   std::shared_ptr<Stats> _stats;
   std::string _race;
   std::string const _name;
   std::string _lore;
+  int _currentLevel = 1;
+  float _damageTaken = 0.f;
+  bool _attackedDodged = false;
+  bool _attackBlocked = false;
+  bool _healed = false;
+  float _turnCounter = 0.f;  
+  std::string _afflictedBy = "";
+  long long _xpRequired;
+};
+
+float Character::TimeToAction;
+
+void Character::SetTimeToAction(float value)
+{
+  TimeToAction = value;
+}
+
+float Character::GetTimeToAction()
+{
+  return TimeToAction;
+}
+
+struct EnemyImpl : public CharacterImpl
+{
+  EnemyImpl(std::string const& name)
+    : CharacterImpl(name)
+  {
+  }
+
+  virtual float GetHPMod()
+  {
+    return 5.f;
+  }
+
+  virtual float GetBaseMod()
+  {
+    return .4f;
+  }
+
+  void SetStats(std::shared_ptr<Stats> const& stats_)
+  {
+    auto stats = stats_;
+    stats->GetSingleStat(HP)[Base] *= GetHPMod();
+    float baseMod = GetBaseMod();
+    for(int i = AD; i < CHA; ++i)
+    {
+      stats->GetSingleStat(i)[Base] *= baseMod;
+    }
+    CharacterImpl::SetStats(stats);
+  }
+
+  std::shared_ptr<Character> ConvertToNormalCharacter()
+  {
+    auto newChar = Character::Create(GetName());
+    newChar->SetSpells(GetSpells());
+    newChar->SetLore(GetLore());
+    newChar->SetRace(GetRace());
+    newChar->SetTurnCounter(GetTurnCounter());
+
+    auto stats = GetStats();
+    stats->GetSingleStat(HP)[Base] /= GetHPMod();
+    float baseMod = GetBaseMod();
+    for(int i = AD; i < CHA; ++i)
+    {
+      stats->GetSingleStat(i)[Base] /= baseMod;
+    }
+    newChar->SetStats(stats);
+    return newChar;
+  }
+};
+
+struct BossImpl : public EnemyImpl
+{
+  BossImpl(std::string const& name)
+    : EnemyImpl(name)
+  {
+  }
+
+  float GetHPMod()
+  {
+    return 20.f;
+  }
+
+  float GetBaseMod()
+  {
+    return .6f;
+  }
+};
+
+struct MinionImpl : public EnemyImpl
+{
+  MinionImpl(std::string const& name)
+    : EnemyImpl(name)
+  {
+  }
+
+  float GetHPMod()
+  {
+    return .3f;
+  }
+
+  float GetBaseMod()
+  {
+    return .2f;
+  }
 };
 
 std::shared_ptr<Character> Character::Create(std::string const& name)
 {
   return std::make_shared<CharacterImpl>(name);
+}
+
+std::shared_ptr<SpecialCharacter> SpecialCharacter::CreateEnemy(std::string const& name)
+{
+  return std::make_shared<EnemyImpl>(name);
+}
+
+std::shared_ptr<SpecialCharacter> SpecialCharacter::CreateBoss(std::string const& name)
+{
+  return std::make_shared<BossImpl>(name);
+}
+
+std::shared_ptr<SpecialCharacter> SpecialCharacter::CreateMinion(std::string const& name)
+{
+  return std::make_shared<MinionImpl>(name);
 }
 }
