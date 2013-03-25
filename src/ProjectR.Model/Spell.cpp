@@ -115,6 +115,9 @@ struct LuaSpell : public Spell
           luabind::def("IsSameChar", IsSameChar),
           luabind::def("GetDeadMemberCountAttackerParty", GetDeadMemberCountAttackerParty),
           luabind::def("GetDeadMemberCountDefenderParty", GetDeadMemberCountDefenderParty),
+          luabind::def("SummonNamedMinion", SummonNamedMinion),
+          luabind::def("SummonRandomMinion", SummonRandomMinion),
+          luabind::def("SummonMinionOfSpecificRace", SummonMinionOfSpecificRace),
           luabind::class_<SingleStat>("SingleStat")
           .def("Get", &SingleStat::Get)
           .def("Set", &SingleStat::Set)

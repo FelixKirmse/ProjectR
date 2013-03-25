@@ -3,6 +3,9 @@
 #include "IModel.hpp"
 #include "BattleModel.hpp"
 #include "Party.hpp"
+#include "CharacterFactory.hpp"
+#include "SpecialCharacter.hpp"
+#include "RaceTemplates.hpp"
 
 namespace ProjectR
 {
@@ -95,5 +98,42 @@ int GetDeadMemberCountDefenderParty()
 {
   auto const& battleModel = Model->GetBattleModel();
   return battleModel->AttackerIsEnemy() ? battleModel->GetDeadCountPlayer() : battleModel->GetDeadCountEnemy();
+}
+
+void CreateMinion(std::shared_ptr<Character> const& minion)
+{
+  auto const& battleModel = Model->GetBattleModel();
+  auto& minionVec = battleModel->AttackerIsEnemy() ? battleModel->GetEnemyMinions() : battleModel->GetPlayerMinions();
+  auto const& specialChar = SpecialCharacter::CreateMinion(minion->GetName());
+  specialChar->SetLore(minion->GetLore());
+  specialChar->SetRace(minion->GetRace());
+  specialChar->SetSpells(minion->GetSpells());
+  specialChar->SetStats(minion->GetStats());
+  specialChar->LvlUp(battleModel->GetCurrentAttacker()->GetLvl());
+  minionVec.insert(minionVec.begin(), specialChar);
+  if(minionVec.size() != 3)
+    return;
+
+  auto it = minionVec.end();
+  --it;
+  minionVec.erase(it);
+}
+
+void SummonNamedMinion(char const* name)
+{
+  CreateMinion(Model->GetCharacterFactory()->GetSpecialCharacter(name));
+}
+
+void SummonRandomMinion()
+{
+  CreateMinion(Model->GetCharacterFactory()->CreateRandomCharacter());
+}
+
+void SummonMinionOfSpecificRace(char const* race)
+{
+  CreateMinion(
+        Model->GetCharacterFactory()->CreateRandomCharacter(
+          1,
+          &Model->GetRaceTemplates()->GetTemplate(race)));
 }
 }

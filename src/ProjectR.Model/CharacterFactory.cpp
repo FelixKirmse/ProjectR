@@ -69,7 +69,8 @@ struct CharacterFacImpl : public CharacterFactory, public ITCODParserListener
         ->addProperty("Attack", TCOD_TYPE_STRING, false)
         ->addProperty("Defend", TCOD_TYPE_STRING, false)
         ->addProperty("Description", TCOD_TYPE_STRING, true)
-        ->addListProperty("Spells", TCOD_TYPE_STRING, true);
+        ->addListProperty("Spells", TCOD_TYPE_STRING, true)
+        ->addFlag("Minion");
   }
 
   bool parserNewStruct(TCODParser* parser, TCODParserStruct const* str, char const* name)
@@ -88,6 +89,8 @@ struct CharacterFacImpl : public CharacterFactory, public ITCODParserListener
   {
     if(name == std::string("Block"))
       _currentStats->SetEVAType(Block);
+    if(name == std::string("Dodge"))
+      _currentChar->IsMinion(true);
     return true;
   }
 
@@ -164,7 +167,8 @@ struct CharacterFacImpl : public CharacterFactory, public ITCODParserListener
     _currentChar->SetStats(_currentStats);
     _currentChar->SetSpells(_currentSpells);
     _specialChars[_currentChar->GetName()] = _currentChar;
-    _specialCharList.push_back(_currentChar->GetName());
+    if(!_currentChar->IsMinion())
+      _specialCharList.push_back(_currentChar->GetName());
     return true;
   }
 
@@ -180,14 +184,14 @@ struct CharacterFacImpl : public CharacterFactory, public ITCODParserListener
     return newChar;
   }
 
-  std::shared_ptr<Character> CreateRandomCharacter(int level, RaceTemplate* race)
+  std::shared_ptr<Character> CreateRandomCharacter(int level, RaceTemplate const* race)
   {
     auto newChar = Character::Create(GetRandomName());
     SharedGenerationFunction(newChar, level, race);
     return newChar;
   }
 
-  void SharedGenerationFunction(std::shared_ptr<Character>const & newChar, int level, RaceTemplate* race = 0)
+  void SharedGenerationFunction(std::shared_ptr<Character>const & newChar, int level, RaceTemplate const* race = nullptr)
   {
     auto const& rTemplate = race == nullptr ? _model.GetRaceTemplates()->GetRandomTemplate() :
                                               *race;
@@ -236,12 +240,12 @@ struct CharacterFacImpl : public CharacterFactory, public ITCODParserListener
     }
   }
 
-  std::shared_ptr<Character> const& GetSpecialCharacter(std::string const& name)
+  std::shared_ptr<Character> GetSpecialCharacter(std::string const& name)
   {
-    return _specialChars[name];
+    return _specialChars[name]->Clone();
   }
 
-  std::vector<std::string> const& GetSpecialCharacterList()
+  std::vector<std::string> const& GetBossList()
   {
     return _specialCharList;
   }

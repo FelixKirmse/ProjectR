@@ -84,6 +84,7 @@ struct BattleModelImpl : public BattleModel
   void StartBattle(int level, std::string const& bossName)
   {
     _currentState = Idle;
+    _level = level;
     _isBossFight = bossName != "";
     _enemies.clear();
     _enemyMinions.clear();
@@ -197,6 +198,21 @@ struct BattleModelImpl : public BattleModel
     ++_deadCountParty;
   }
 
+  int GetBattleLvl()
+  {
+    return _level;
+  }
+
+  void SetExperienceEarned(int amount)
+  {
+    _xpEarned = amount;
+  }
+
+  int GetExperienceEarned()
+  {
+    return _xpEarned;
+  }
+
 
   TargetInfo _targetInfo;
   std::vector<std::shared_ptr<Character> > _enemies;
@@ -211,6 +227,8 @@ struct BattleModelImpl : public BattleModel
   std::shared_ptr<BattleLog> _battleLog = BattleLog::Create();
   int _deadCountEnemy = 0;
   int _deadCountParty = 0;
+  int _level;
+  int _xpEarned;
 };
 
 BattleModel* BattleModel::Create(IModel const* model)

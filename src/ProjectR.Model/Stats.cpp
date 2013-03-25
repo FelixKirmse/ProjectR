@@ -154,6 +154,16 @@ struct StatsImpl : public Stats
     return _stats[stat];
   }
 
+  std::shared_ptr<Stats> Clone()
+  {
+    std::shared_ptr<StatsImpl> const& clone = std::make_shared<StatsImpl>();
+    clone->_evaType = _evaType;
+    clone->_xpMultiplier = _xpMultiplier;
+    for(int i = HP; i <= SIL; ++i)
+      clone->_stats[i] = _stats[i];
+    return clone;
+  }
+
   SingleStat _stats[24];
   float _xpMultiplier = 1.f;
   EVAType _evaType;
@@ -211,5 +221,4 @@ std::shared_ptr<Stats> Stats::GetRandomBaseStats()
   stats->_xpMultiplier = Roll(70, 140) / 100.f;
   return stats;
 }
-
 }

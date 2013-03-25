@@ -159,6 +159,8 @@ public:
 
   virtual float GetEVAChance(int level) = 0;
 
+  virtual std::shared_ptr<Stats> Clone() = 0;
+
   virtual ~Stats(){}
   static std::shared_ptr<Stats> Create();
   static std::shared_ptr<Stats> GetRandomBaseStats();

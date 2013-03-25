@@ -55,6 +55,10 @@ public:
   virtual void EnemyDied() = 0;
   virtual void PlayerDied() = 0;
 
+  virtual int GetBattleLvl() = 0;
+  virtual void SetExperienceEarned(int amount) = 0;
+  virtual int GetExperienceEarned() = 0;
+
   static BattleModel* Create(IModel const* model);
   ~BattleModel(){}
 };

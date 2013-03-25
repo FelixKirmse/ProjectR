@@ -14,6 +14,16 @@ struct CharacterImpl : public SpecialCharacter
   {
   }
 
+  bool IsMinion()
+  {
+    return _isMinion;
+  }
+
+  void IsMinion(bool isMinion)
+  {
+    _isMinion = isMinion;
+  }
+
   virtual std::shared_ptr<Character> ConvertToNormalCharacter()
   {
     auto newChar = Character::Create(_name);
@@ -263,6 +273,16 @@ struct CharacterImpl : public SpecialCharacter
     _stats->BuffStat(stat, value);
   }
 
+  std::shared_ptr<Character> Clone()
+  {
+    auto const& clone = Create(_name);
+    clone->SetLore(_lore);
+    clone->SetRace(_race);
+    clone->SetSpells(_spells);
+    clone->SetStats(_stats->Clone());
+    return clone;
+  }
+
   float _currentHP;
   float _currentMP;
 
@@ -279,6 +299,7 @@ struct CharacterImpl : public SpecialCharacter
   float _turnCounter = 0.f;  
   std::string _afflictedBy = "";
   long long _xpRequired;
+  bool _isMinion = false;
 };
 
 float Character::TimeToAction;

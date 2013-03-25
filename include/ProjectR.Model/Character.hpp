@@ -47,6 +47,10 @@ public:
   virtual std::string const& AfflictedBy() = 0;
   virtual void BuffStat(int stat, float value) = 0;
 
+  virtual std::shared_ptr<Character> Clone() = 0;
+  virtual bool IsMinion() = 0;
+  virtual void IsMinion(bool isMinion) = 0;
+
   virtual ~Character(){}
   static std::shared_ptr<Character> Create(std::string const& name);
 

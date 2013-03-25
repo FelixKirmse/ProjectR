@@ -298,3 +298,9 @@ include/ProjectR.Model/Party.hpp
 src/ProjectR.Model/Party.cpp
 src/ProjectR.Model/LuaInterface/LuaInterfaceFwd.hpp
 src/ProjectR.Model/LuaInterface/LuaInterfaceImpl.cc
+include/ProjectR.Logic/BattleWonLogic.hpp
+src/ProjectR.Logic/BattleWonLogic.cpp
+include/ProjectR.Logic/GameOverLogic.hpp
+src/ProjectR.Logic/GameOverLogic.cpp
+include/ProjectR.View/BattleWonView.hpp
+src/ProjectR.View/BattleWonView.cpp
