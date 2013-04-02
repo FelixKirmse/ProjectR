@@ -7,7 +7,7 @@ function GetName()
 end
 
 function GetDescription()
-    return "The targets heart is embraced by demonic energy. Deals unresistable DRK damage\nand has a chance to instantly kill the target.\nTargets under 25% health receive triple damage."
+    return "The targets heart is embraced by demonic energy. Deals unresistable DRK damage\nand has a chance to instantly kill the target.\nTargets under 25%% health receive triple damage."
 end
 
 function IsSupportSpell()

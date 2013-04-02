@@ -139,7 +139,7 @@ struct PartyImpl : public Party
   bool _cached = false;
   int _averagePartyLvl = 0;
   int const FrontRowLimit = 4;
-  int const BackSeatLimit = 12;
+  int const BackSeatLimit = 8;
   IModel const* _model;
 };
 

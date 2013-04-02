@@ -23,5 +23,5 @@ function GetDelay()
 end
 
 function SpellEffect()
-  ds:BuffStat(DEF, .48)
+  d:BuffStat(DEF, .48)
 end

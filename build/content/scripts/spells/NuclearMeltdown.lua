@@ -23,9 +23,9 @@ function GetDelay()
 end
 
 function SpellEffect()
-  as:BuffStat(MD, .35)
-  as:BuffStat(MR, -.2)
-  as:BuffStat(DEF, -.2)
+  a:BuffStat(MD, .35)
+  a:BuffStat(MR, -.2)
+  a:BuffStat(DEF, -.2)
   ForEachDefenderParty("MeltdownDamageCalc")
 end
 

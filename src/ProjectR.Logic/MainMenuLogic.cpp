@@ -42,20 +42,23 @@ struct MainMenuLogicImpl : public MainMenuLogic
   void Activate()
   {
     Model()->GetMenuModel()->GetMainMenu()->Activate();
+    _mainMenuStateMachine->SetCurrentState(0);
   }
 
   void Run()
   {
-    _menuController->ControlMenu(std::static_pointer_cast<Menu>(_mainMenuStateMachine->GetCurrentState()),
+    auto const& state = _mainMenuStateMachine->GetCurrentState();
+
+    _menuController->ControlMenu(std::static_pointer_cast<Menu>(state),
                                  Input(),
                                  [&](){CancelAction();});
-    Model()->GetMenuModel()->SetActiveMenu(
-        std::static_pointer_cast<Menu>(_mainMenuStateMachine->GetCurrentState()));
+    Model()->GetMenuModel()->SetActiveMenu(std::static_pointer_cast<Menu>(_mainMenuStateMachine->GetCurrentState()));
     Model()->CommitChanges();
   }
 
   std::shared_ptr<StateMachine> _mainMenuStateMachine;
   std::shared_ptr<MenuController> _menuController;
+  bool _firstTime = true;
 };
 
 std::shared_ptr<MainMenuLogic> MainMenuLogic::Create()

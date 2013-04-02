@@ -7,7 +7,7 @@ function GetName()
 end
 
 function GetDescription()
-  return "Instantly fills the speed bar of your allies to 100%."
+  return "Instantly fills the speed bar of your allies to 100%%."
 end
 
 function IsSupportSpell()
@@ -24,6 +24,6 @@ end
 
 function SpellEffect()
   if not IsSameChar(a, d) then
-    d:SetTurnCounter(d:GetTimeToAction())
+    d:SetTurnCounter(GetTimeToAction())
   end
 end

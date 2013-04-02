@@ -27,6 +27,6 @@ function SpellEffect()
   d:TakeDamage(damage)
 
   for i = HP, SIL do
-    ds:BuffStat(i, -.15)
+    d:BuffStat(i, -.15)
   end
 end

@@ -24,6 +24,6 @@ end
 
 function SpellEffect()
   for i = HP, SIL do
-    as:BuffStat(i, .75)
+    a:BuffStat(i, .75)
   end
 end

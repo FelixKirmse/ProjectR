@@ -7,7 +7,7 @@ function GetName()
 end
 
 function GetDescription()
-    return "A deadly slash with your scythe.\nDeals DRK damage.\nChance to instantly kill target.\nHeals for 100% of damage done.\nDoesn't target DEF nor MR."
+    return "A deadly slash with your scythe.\nDeals DRK damage.\nChance to instantly kill target.\nHeals for 100%% of damage done.\nDoesn't target DEF nor MR."
 end
 
 function IsSupportSpell()

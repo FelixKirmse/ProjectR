@@ -20,8 +20,7 @@ struct PreGameViewImpl : public PreGameView
   void Run()
   {
     auto buffer = Model()->GetPreGameModel()->GetInputBuffer();
-    auto rootConsole = RConsole::GetRootConsole();
-    rootConsole->Clear();
+    auto rootConsole = RConsole::GetRootConsole();    
     _console.Clear();
     _console.PrintString(0, 0, _text);
     auto string = buffer->GetString();

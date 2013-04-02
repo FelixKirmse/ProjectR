@@ -19,6 +19,14 @@ ifndef AR
   AR = ar
 endif
 
+ifndef RESCOMP
+  ifdef WINDRES
+    RESCOMP = $(WINDRES)
+  else
+    RESCOMP = windres
+  endif
+endif
+
 ifeq ($(config),debug)
   OBJDIR     = obj/Debug/ProjectR.View
   TARGETDIR  = build
@@ -28,11 +36,11 @@ ifeq ($(config),debug)
   CPPFLAGS  += -MMD -MP $(DEFINES) $(INCLUDES)
   CFLAGS    += $(CPPFLAGS) $(ARCH) -Wall -ffast-math -g -fPIC -std=c++11
   CXXFLAGS  += $(CFLAGS) 
-  LDFLAGS   += -shared -ltcod_debug -ltcodgui_debug -ltcodxx_debug -lboost_system -lboost_filesystem -lboost_serialization -Lbuild
-  LIBS      += -lProjectR.Model
+  LDFLAGS   += -Lbuild -shared -ltcod_debug -ltcodgui_debug -ltcodxx_debug -lboost_system -lboost_filesystem -lboost_serialization
   RESFLAGS  += $(DEFINES) $(INCLUDES) 
+  LIBS      += -lProjectR.Model
   LDDEPS    += build/libProjectR.Model.so
-  LINKCMD    = $(CXX) -o $(TARGET) $(OBJECTS) $(LDFLAGS) $(RESOURCES) $(ARCH) $(LIBS)
+  LINKCMD    = $(CXX) -o $(TARGET) $(OBJECTS) $(RESOURCES) $(ARCH) $(LIBS) $(LDFLAGS)
   define PREBUILDCMDS
   endef
   define PRELINKCMDS
@@ -50,11 +58,11 @@ ifeq ($(config),release)
   CPPFLAGS  += -MMD -MP $(DEFINES) $(INCLUDES)
   CFLAGS    += $(CPPFLAGS) $(ARCH) -Wall -ffast-math -O3 -fPIC -std=c++11
   CXXFLAGS  += $(CFLAGS) 
-  LDFLAGS   += -s -shared -ltcod -ltcodgui -ltcodxx -lboost_system -lboost_filesystem -lboost_serialization -Lbuild
-  LIBS      += -lProjectR.Model
+  LDFLAGS   += -Lbuild -s -shared -ltcod -ltcodgui -ltcodxx -lboost_system -lboost_filesystem -lboost_serialization
   RESFLAGS  += $(DEFINES) $(INCLUDES) 
+  LIBS      += -lProjectR.Model
   LDDEPS    += build/libProjectR.Model.so
-  LINKCMD    = $(CXX) -o $(TARGET) $(OBJECTS) $(LDFLAGS) $(RESOURCES) $(ARCH) $(LIBS)
+  LINKCMD    = $(CXX) -o $(TARGET) $(OBJECTS) $(RESOURCES) $(ARCH) $(LIBS) $(LDFLAGS)
   define PREBUILDCMDS
   endef
   define PRELINKCMDS
@@ -64,15 +72,24 @@ ifeq ($(config),release)
 endif
 
 OBJECTS := \
-	$(OBJDIR)/PreGameView.o \
-	$(OBJDIR)/TitleScreenView.o \
-	$(OBJDIR)/ConsoleView.o \
-	$(OBJDIR)/MainMenuView.o \
-	$(OBJDIR)/RConsole.o \
 	$(OBJDIR)/BattleWonView.o \
-	$(OBJDIR)/OverworldView.o \
-	$(OBJDIR)/BattleView.o \
+	$(OBJDIR)/ConsoleView.o \
+	$(OBJDIR)/BattleMenuView.o \
 	$(OBJDIR)/MenuDrawer.o \
+	$(OBJDIR)/CharDescriptionDrawer.o \
+	$(OBJDIR)/SpellSelectView.o \
+	$(OBJDIR)/OverworldView.o \
+	$(OBJDIR)/TitleScreenView.o \
+	$(OBJDIR)/StatScreenDrawer.o \
+	$(OBJDIR)/PreGameView.o \
+	$(OBJDIR)/ActionSelectView.o \
+	$(OBJDIR)/RConsole.o \
+	$(OBJDIR)/BattleLogDrawer.o \
+	$(OBJDIR)/TargetSelectView.o \
+	$(OBJDIR)/SpellDescriptionDrawer.o \
+	$(OBJDIR)/BattleView.o \
+	$(OBJDIR)/MainMenuView.o \
+	$(OBJDIR)/CharBattleFrame.o \
 
 RESOURCES := \
 
@@ -129,36 +146,67 @@ prelink:
 ifneq (,$(PCH))
 $(GCH): $(PCH)
 	@echo $(notdir $<)
+ifeq (posix,$(SHELLTYPE))
 	-$(SILENT) cp $< $(OBJDIR)
-	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+else
+	$(SILENT) xcopy /D /Y /Q "$(subst /,\,$<)" "$(subst /,\,$(OBJDIR))" 1>nul
+endif
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
 endif
 
-$(OBJDIR)/PreGameView.o: src/ProjectR.View/PreGameView.cpp
-	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-$(OBJDIR)/TitleScreenView.o: src/ProjectR.View/TitleScreenView.cpp
-	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-$(OBJDIR)/ConsoleView.o: src/ProjectR.View/ConsoleView.cpp
-	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-$(OBJDIR)/MainMenuView.o: src/ProjectR.View/MainMenuView.cpp
-	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-$(OBJDIR)/RConsole.o: src/ProjectR.View/RConsole.cpp
-	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 $(OBJDIR)/BattleWonView.o: src/ProjectR.View/BattleWonView.cpp
 	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-$(OBJDIR)/OverworldView.o: src/ProjectR.View/OverworldView.cpp
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+$(OBJDIR)/ConsoleView.o: src/ProjectR.View/ConsoleView.cpp
 	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-$(OBJDIR)/BattleView.o: src/ProjectR.View/BattleView.cpp
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+$(OBJDIR)/BattleMenuView.o: src/ProjectR.View/BattleMenuView.cpp
 	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
 $(OBJDIR)/MenuDrawer.o: src/ProjectR.View/MenuDrawer.cpp
 	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+$(OBJDIR)/CharDescriptionDrawer.o: src/ProjectR.View/CharDescriptionDrawer.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+$(OBJDIR)/SpellSelectView.o: src/ProjectR.View/SpellSelectView.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+$(OBJDIR)/OverworldView.o: src/ProjectR.View/OverworldView.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+$(OBJDIR)/TitleScreenView.o: src/ProjectR.View/TitleScreenView.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+$(OBJDIR)/StatScreenDrawer.o: src/ProjectR.View/StatScreenDrawer.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+$(OBJDIR)/PreGameView.o: src/ProjectR.View/PreGameView.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+$(OBJDIR)/ActionSelectView.o: src/ProjectR.View/ActionSelectView.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+$(OBJDIR)/RConsole.o: src/ProjectR.View/RConsole.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+$(OBJDIR)/BattleLogDrawer.o: src/ProjectR.View/BattleLogDrawer.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+$(OBJDIR)/TargetSelectView.o: src/ProjectR.View/TargetSelectView.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+$(OBJDIR)/SpellDescriptionDrawer.o: src/ProjectR.View/SpellDescriptionDrawer.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+$(OBJDIR)/BattleView.o: src/ProjectR.View/BattleView.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+$(OBJDIR)/MainMenuView.o: src/ProjectR.View/MainMenuView.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+$(OBJDIR)/CharBattleFrame.o: src/ProjectR.View/CharBattleFrame.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
 
 -include $(OBJECTS:%.o=%.d)

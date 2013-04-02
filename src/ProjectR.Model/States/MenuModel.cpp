@@ -20,9 +20,24 @@ void MenuModel::SetActiveMenu(std::shared_ptr<Menu> const& menu)
   _activeMenu = menu;
 }
 
+void MenuModel::SetBattleMenu(std::shared_ptr<Menu> const& menu)
+{
+  _battleMenu = menu;
+}
+
 std::shared_ptr<Menu> const& MenuModel::GetActiveMenu()
 {
   return _activeMenu;
+}
+
+int MenuModel::GetBattleMenuState()
+{
+  return _battleMenuState;
+}
+
+void MenuModel::SetBattleMenuState(int state)
+{
+  _battleMenuState = state;
 }
 
 MenuModel::MenuModel()
@@ -73,6 +88,11 @@ std::shared_ptr<Menu> const& MenuModel::GetBattleMenu()
 std::shared_ptr<Menu> const& MenuModel::GetSpellSelectMenu()
 {
   return _spellSelectMenu;
+}
+
+void MenuModel::SetSpellSelectMenu(std::shared_ptr<Menu> const& menu)
+{
+  _spellSelectMenu = menu;
 }
 
 std::shared_ptr<Menu> const& MenuModel::GetTargetSelectMenu()

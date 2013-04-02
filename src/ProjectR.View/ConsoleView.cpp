@@ -26,12 +26,15 @@ struct ConsoleViewImpl : public ConsoleView
 
   void Show()
   {
+    RConsole::GetRootConsole()->Clear();
     RunCurrentState();
     RConsole::Draw();
   }
 
   void Notify()
   {
+    if(TCODConsole::isWindowClosed())
+      exit(0);
     Show();
   }
 

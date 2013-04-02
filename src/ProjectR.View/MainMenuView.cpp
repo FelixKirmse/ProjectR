@@ -18,11 +18,10 @@ struct MainMenuViewImpl : public MainMenuView
   }
 
   void Run()
-  {
-    _root->Clear();
-    _menuDrawer->DrawMenu(Model()->GetMenuModel()->GetActiveMenu(), 0, 0, &_menuConsole);
-    _root->Blit(_menuConsole, _menuConsole.GetBounds(), 5, _rootHeight - 9);
-  }
+  {   
+    _menuDrawer->DrawMenu(Model()->GetMenuModel()->GetActiveMenu(), 0, 0, 0, &_menuConsole);
+    _root->Blit(_menuConsole, _menuConsole.GetBounds(), 5, _rootHeight - 9);    
+  } 
 
   RConsole* _root;
   std::shared_ptr<MenuDrawer> _menuDrawer;

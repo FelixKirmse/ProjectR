@@ -7,7 +7,7 @@ function GetName()
 end
 
 function GetDescription()
-    return "Attempts to execute the target.\nLess effective against enemies with high DEF.\nDeals triple damage to targets below 25% HP."
+    return "Attempts to execute the target.\nLess effective against enemies with high DEF.\nDeals triple damage to targets below 25%% HP."
 end
 
 function IsSupportSpell()

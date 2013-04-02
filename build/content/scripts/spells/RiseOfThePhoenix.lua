@@ -29,6 +29,6 @@ function SpellEffect()
   end
   a:Heal(as:GetTotalStat(HP))
   for i = HP, SIL do
-    as:BuffStat(i, 2)
+    a:BuffStat(i, 2)
   end
 end

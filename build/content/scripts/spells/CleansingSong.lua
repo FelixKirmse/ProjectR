@@ -27,7 +27,7 @@ function SpellEffect()
   for i = HP, SIL do
     local battleMod = ds:GetSingleStat(i):Get(BattleMod)
     if battleMod < 1 then
-      ds:BuffStat(i, 1 - battleMod)
+      d:BuffStat(i, 1 - battleMod)
     end
   end
 end

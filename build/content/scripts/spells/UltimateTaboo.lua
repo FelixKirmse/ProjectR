@@ -7,7 +7,7 @@ return "Ultimate Taboo"
 end
 
 function GetDescription()
-return "Drain energy from your allies to empower your strike.\nUses 10% of max HP per target hit from each ally.\nDeals composite FIR damage."
+return "Drain energy from your allies to empower your strike.\nUses 10%% of max HP per target hit from each ally.\nDeals composite FIR damage."
 end
 
 function IsSupportSpell()

@@ -92,6 +92,7 @@ struct BattleModelImpl : public BattleModel
     _frontRow = &_model->GetParty()->GetFrontRow();
     _deadCountEnemy = 0;
     _deadCountParty = 0;
+    _battleLog->ClearLog();
     GenerateEnemies(level, bossName);
     Character::SetTimeToAction(GetAvgSPD());
     SetInitialSpeed(_enemies);
@@ -211,6 +212,16 @@ struct BattleModelImpl : public BattleModel
   int GetExperienceEarned()
   {
     return _xpEarned;
+  }
+
+  bool CharacterIsEnemy(std::shared_ptr<Character> const& chara)
+  {
+    for(auto const& enemy : _enemies)
+    {
+      if(chara == enemy)
+        return true;
+    }
+    return false;
   }
 
 

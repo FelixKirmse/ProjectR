@@ -43,12 +43,18 @@ struct ConsequenceBattleLogicImpl : public ConsequenceBattleLogic
       Model()->GetStatistics()->AddToStatistic(Statistics::SpellsCast, 1);
 
     float charHPBefore[4];
+    float enemyHPBefore[4];
     auto const& frontRow = _battleModel->GetFrontRow();
     auto const& enemies = _battleModel->GetEnemies();
     auto const& log = _battleModel->GetBattleLog();
-    for(size_t i = 0; i < frontRow.size(); ++i)
+    for(auto i = 0u; i < frontRow.size(); ++i)
     {
       charHPBefore[i] = frontRow[i]->GetCurrentHP();
+    }
+
+    for(auto i = 0u; i < enemies.size(); ++i)
+    {
+      enemyHPBefore[i] = enemies[i]->GetCurrentHP();
     }
 
     auto targetType = _targetInfo.Spell->GetTargetType();
@@ -117,6 +123,14 @@ struct ConsequenceBattleLogicImpl : public ConsequenceBattleLogic
       frontRow[i]->SetCurrentHP(charHPBefore[i] - _charHPStep[i]);
     }
 
+    for(size_t i = 0; i < enemies.size(); ++i)
+    {
+      float currentHP = enemies[i]->GetCurrentHP();
+      _enemyHPShouldHave[i] = currentHP;
+      _enemyHPStep[i] = (enemyHPBefore[i] - currentHP) / ConsequenceFrames;
+      enemies[i]->SetCurrentHP(enemyHPBefore[i] - _enemyHPStep[i]);
+    }
+
     auto const& statistics = Model()->GetStatistics();
     for(std::shared_ptr<Character> const& playerChar : frontRow)
     {
@@ -144,6 +158,12 @@ struct ConsequenceBattleLogicImpl : public ConsequenceBattleLogic
     {
       frontRow[i]->SetCurrentHP(frontRow[i]->GetCurrentHP() - _charHPStep[i]);
     }
+
+    auto const& enemies = _battleModel->GetEnemies();
+    for(size_t i = 0; i < enemies.size(); ++i)
+    {
+      enemies[i]->SetCurrentHP(enemies[i]->GetCurrentHP() - _enemyHPStep[i]);
+    }
   }
 
   void FrameLimitReached()
@@ -151,10 +171,16 @@ struct ConsequenceBattleLogicImpl : public ConsequenceBattleLogic
     _battleModel->SetCurrentState(Idle);
     _frameCounter = 0;
     auto const& frontRow = _battleModel->GetFrontRow();
-    for(int i = 0; i < (int)frontRow.size(); ++i)
+    for(auto i = 0u; i < frontRow.size(); ++i)
     {
       frontRow[i]->SetCurrentHP(_charHPShouldHave[i]);
       frontRow[i]->ResetDamageTaken();
+    }
+
+    auto const& enemies = _battleModel->GetEnemies();
+    for(auto i = 0u; i < enemies.size(); ++i)
+    {
+      enemies[i]->SetCurrentHP(_enemyHPShouldHave[i]);
     }
 
     bool someoneAlive = false;
@@ -182,7 +208,7 @@ struct ConsequenceBattleLogicImpl : public ConsequenceBattleLogic
     }
 
     bool enemyAlive = false;
-    auto const& enemies = _battleModel->GetEnemies();    
+
     for(std::shared_ptr<Character> const& enemy : enemies)
     {
       enemy->ResetDamageTaken();
@@ -223,6 +249,9 @@ struct ConsequenceBattleLogicImpl : public ConsequenceBattleLogic
   int const ConsequenceFrames = 90;
   float _charHPShouldHave[4];
   float _charHPStep[4];
+
+  float _enemyHPShouldHave[4];
+  float _enemyHPStep[4];
 };
 
 std::shared_ptr<ConsequenceBattleLogic> ConsequenceBattleLogic::Create()

@@ -23,7 +23,7 @@ function GetDelay()
 end
 
 function SpellEffect()
-  as:BuffStat(DEF, .5)
-  as:BuffStat(MR, .5)
-  as:BuffStat(ICE, 1)
+  a:BuffStat(DEF, .5)
+  a:BuffStat(MR, .5)
+  a:BuffStat(ICE, 1)
 end

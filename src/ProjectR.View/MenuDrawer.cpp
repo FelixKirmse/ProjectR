@@ -17,15 +17,33 @@ struct MenuDrawerImpl : public MenuDrawer
   }
 
   void DrawMenu(std::shared_ptr<Menu> const& menu,
-                int row, int col,
-                RConsole* target)
+                        int row, int col, int offset)
   {
+    DrawMenu(menu, row, col, offset, nullptr);
+  }
+
+  void DrawMenu(std::shared_ptr<Menu> const& menu,
+                RConsole* target,
+                int row, int col, int offset)
+  {
+    DrawMenu(menu, row, col, offset, target);
+  }
+
+  void DrawMenu(std::shared_ptr<Menu> const& menu,
+                          int row, int col, int offset,
+                          RConsole* target)
+  {
+    if(menu == nullptr)
+      return;
+
+    _menuConsole.Clear();
     RConsole* targetConsole = target == nullptr ? RConsole::GetRootConsole() : target;
 
     int rightMostCol = 0;
     int itemCount = menu->GetStateCount();
     for(int i = 0; i < itemCount; ++i)
     {
+      int printRow = i + i * offset;
       std::shared_ptr<MenuItem> item = std::static_pointer_cast<MenuItem>(menu->GetState(i));
       std::string const& label = item->GetLabel();
       int labelLength = label.size();
@@ -38,11 +56,11 @@ struct MenuDrawerImpl : public MenuDrawer
         _menuConsole.SetForegroundColour(Colour::grey);
       else
         _menuConsole.SetForegroundColour(Colour::white);
-      _menuConsole.PrintString(0, i, label);
+      _menuConsole.PrintString(0, printRow, label);
     }
 
     _heatZone.Width = rightMostCol;
-    _heatZone.Height = itemCount;
+    _heatZone.Height = itemCount + (offset * itemCount);
 
     targetConsole->Blit(_menuConsole, _heatZone, row, col);
   }

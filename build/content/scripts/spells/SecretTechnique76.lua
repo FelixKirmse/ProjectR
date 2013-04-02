@@ -30,9 +30,9 @@ function SpellEffect()
     local singleStat = ds:GetSingleStat(i)
     local battleMod = singleStat:Get(BattleMod)
     if battleMod > 1 and Roll(0, 99) < 40 then
-      as:BuffStat(i, battleMod - 1)
+      a:BuffStat(i, battleMod - 1)
       singleStat:Set(BattleMod, 1)
-      ds:SetSingleStat(singleStat)
+      ds:SetSingleStat(singleStat, i)
     end
   end
 end

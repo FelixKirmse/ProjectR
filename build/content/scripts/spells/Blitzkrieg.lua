@@ -7,7 +7,7 @@ return "Blitzkrieg"
 end
 
 function GetDescription()
-    return "Use the moment of surprise and increase SPD of all allies by 40%."
+    return "Use the moment of surprise and increase SPD of all allies by 40%%."
 end
 
 function IsSupportSpell()
@@ -23,5 +23,5 @@ function GetDelay()
 end
 
 function SpellEffect()
-  ds:BuffStat(SPD, .4)
+  d:BuffStat(SPD, .4)
 end

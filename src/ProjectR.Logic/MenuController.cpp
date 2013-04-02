@@ -19,7 +19,7 @@ struct MenuControllerImpl : public MenuController
     else if(input->Action(Cancel))
       cancelCallback();
     else if(input->Action(Confirm))
-      menu->Run();
+      menu->Menu::Run();
   }
 };
 

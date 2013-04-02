@@ -6,6 +6,10 @@
 #include "ConsequenceBattleLogic.hpp"
 #include "BattleWonLogic.hpp"
 #include "GameOverLogic.hpp"
+#include "Party.hpp"
+#include "CharacterFactory.hpp"
+#include "Character.hpp"
+#include "BattleMenuLogic.hpp"
 
 namespace ProjectR
 {
@@ -21,11 +25,25 @@ struct BattleLogicImpl : public BattleLogic, public StateMachine
   {
     ClearStates();
     AddState(IdleBattleLogic::Create());
+    AddState(BattleMenuLogic::Create());
     AddState(ConsequenceBattleLogic::Create());
     AddState(_battleWonLogic);
     AddState(_gameOverLogic);
     SetCurrentState(Idle);
-    _initialized = true;
+    _initialized = true;    
+  } 
+
+  void Activate()
+  {
+    auto const& party = Model()->GetParty();
+    auto const& fac = Model()->GetCharacterFactory();
+    party->Reset();
+    party->AddCharacter(fac->CreateRandomCharacter(5000), FrontRow);
+    party->AddCharacter(fac->CreateRandomCharacter(5000), FrontRow);
+    party->AddCharacter(fac->CreateRandomCharacter(5000), FrontRow);
+    party->AddCharacter(fac->CreateRandomCharacter(5000), FrontRow);
+
+    Model()->GetBattleModel()->StartBattle(5000);
   }
 
   void Run()
@@ -34,18 +52,24 @@ struct BattleLogicImpl : public BattleLogic, public StateMachine
       Initialize();
 
     SetCurrentState(Model()->GetBattleModel()->GetCurrentState());
-    RunCurrentState();
+    if(GetCurrentState() != nullptr)
+      RunCurrentState();
     Model()->CommitChanges();
 
     if(_battleWonLogic->BattleOver())
     {
        Master()->Previous();
-       Model()->GetBattleModel()->SetExperienceEarned(0);
+       Master()->Next();
+       /*
+       Master()->Previous();
+       Model()->GetBattleModel()->SetExperienceEarned(0);*/
     }
 
     if(_gameOverLogic->GameOver())
-    {
-      Master()->SetCurrentState(0);
+    {      
+      Master()->Previous();
+      Master()->Next();
+      //Master()->SetCurrentState(0);
     }
   }
 

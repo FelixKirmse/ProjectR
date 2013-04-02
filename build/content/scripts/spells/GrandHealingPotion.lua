@@ -7,7 +7,7 @@ return "Grand Healing Potion"
 end
 
 function GetDescription()
-return "Heals target for 50% of their max. HP."
+return "Heals target for 50%% of their max. HP."
 end
 
 function IsSupportSpell()

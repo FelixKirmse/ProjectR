@@ -26,9 +26,9 @@ function SpellEffect()
   local damage = .5 * aMD
   d:TakeDamage(damage)
 
-  ds:BuffStat(AD, .75)
-  ds:BuffStat(MD, .75)
-  ds:BuffStat(DEF, .75)
-  ds:BuffStat(MR, .75)
+  d:BuffStat(AD, .75)
+  d:BuffStat(MD, .75)
+  d:BuffStat(DEF, .75)
+  d:BuffStat(MR, .75)
   d:SetTurnCounter(d:GetTurnCounter() / 2)
 end

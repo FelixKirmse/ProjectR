@@ -30,8 +30,8 @@ function SpellEffect()
   d:ApplyDebuff(PSN, 45)
   d:ApplyDebuff(PAR, 30)
 
-  ds:BuffStat(EVA, -1.5)
-  ds:BuffStat(DEF, -.25)
-  ds:BuffStat(MR, -.25)
-  ds:BuffStat(SPD, -.25)
+  d:BuffStat(EVA, -1.5)
+  d:BuffStat(DEF, -.25)
+  d:BuffStat(MR, -.25)
+  d:BuffStat(SPD, -.25)
 end

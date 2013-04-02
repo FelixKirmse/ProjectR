@@ -5,7 +5,7 @@
 namespace ProjectR
 {
 StateMachine::StateMachine()
-  : _states(), _currentState(0), _synchronizer()
+  : _states(), _currentState(-1), _synchronizer()
 {
 }
 
@@ -34,38 +34,46 @@ bool StateMachine::FirstStateActive()
 }
 
 std::shared_ptr<IState> const& StateMachine::GetCurrentState()
-{
-  return _states[_currentState];
+{  
+  return _states.at(_currentState);
 }
 
 void StateMachine::AddState(std::shared_ptr<IState> const& state)
 {
-  state->SetStateMachine(shared_from_this());
+  if(state != nullptr)
+    state->SetStateMachine(shared_from_this());
   _states.push_back(state);
 }
 
 void StateMachine::RunCurrentState()
 {
-  _states[_currentState]->Run();
+  auto const& state = _states[_currentState];
+  if(state != nullptr)
+  state->Run();
   if(_synchronizer != nullptr)
     _synchronizer->Sync(_currentState);
 }
 
 void StateMachine::SetCurrentState(int state)
 {
-  _currentState = state;
   if(_synchronizer != nullptr)
     _synchronizer->Sync(_currentState);
+  else
+    Sync(state);
 }
 
 void StateMachine::Sync(int value)
 {
-  if(_currentState == value)
+  if(_currentState == value || _states.size() == 0)
     return;
 
-  _states[_currentState]->Deactivate();
+  if(_currentState != -1 && _states[_currentState] != nullptr)
+    _states[_currentState]->Deactivate();
+
   _currentState = value;
-  _states[_currentState]->Activate();
+
+  if(_states[_currentState] != nullptr)
+    _states[_currentState]->Activate();
 }
 
 void StateMachine::SetSynchronizer(std::shared_ptr<ISynchronizer<int> > const& syncer)

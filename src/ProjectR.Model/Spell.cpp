@@ -57,6 +57,11 @@ struct LuaSpell : public Spell
     }
   }
 
+  float GetDelay()
+  {
+    return _attackDelay;
+  }
+
   void BindStuffToLua()
   {
     try
@@ -118,6 +123,7 @@ struct LuaSpell : public Spell
           luabind::def("SummonNamedMinion", SummonNamedMinion),
           luabind::def("SummonRandomMinion", SummonRandomMinion),
           luabind::def("SummonMinionOfSpecificRace", SummonMinionOfSpecificRace),
+          luabind::def("GetTimeToAction", &Character::GetTimeToAction),
           luabind::class_<SingleStat>("SingleStat")
           .def("Get", &SingleStat::Get)
           .def("Set", &SingleStat::Set)
@@ -128,8 +134,7 @@ struct LuaSpell : public Spell
           luabind::class_<Stats>("Stats")
           .def("GetTotalStat", (float(Stats::*)(int))&Stats::GetTotalStat)
           .def("GetSingleStat", &Stats::GetSingleStat)
-          .def("SetSingleStat", &Stats::SetSingleStat)
-          .def("BuffStat", &Character::BuffStat)
+          .def("SetSingleStat", &Stats::SetSingleStat)          
           .def("RemoveBuffs", &Stats::RemoveBuffs)
           .def("RemoveDebuffs", &Stats::RemoveBuffs)
           .def("ReduceBuffeffectiveness", &Stats::ReduceBuffEffectiveness)
@@ -149,8 +154,8 @@ struct LuaSpell : public Spell
           .def("GetLvl", &Character::GetLvl)
           .def("RemoveDebuffs", &Character::RemoveDebuffs)
           .def("SetTurnCounter", &Character::SetTurnCounter)
-          .def("GetTimeToAction", &Character::GetTimeToAction)
           .def("GetTurnCounter", &Character::GetTurnCounter)
+          .def("BuffStat", &Character::BuffStat)
           ];
     }
     catch(luabind::error const& e)
@@ -251,11 +256,13 @@ struct LuaSpell : public Spell
     {
       AssignEssentials(attacker, defender, specialModifier);
       luabind::call_function<void>(_spellState, "SpellEffect");
+      attacker->SetTurnCounter(_attackDelay * Character::GetTimeToAction());
     }
     catch(luabind::error const& e)
     {
       std::cerr << e.what() << std::endl;
       std::cerr << luabind::object(luabind::from_stack(e.state(), -1)) << std::endl;
+      std::cerr << "Error with Spell " << _name << std::endl;
       exit(LUA_ERROR_CASTING);
     }
     catch(...)

@@ -23,8 +23,8 @@ function GetDelay()
 end
 
 function SpellEffect()
-  ds:BuffStat(DEF, .2)
-  ds:BuffStat(MR, .2)
+  d:BuffStat(DEF, .2)
+  d:BuffStat(MR, .2)
 
   local aliveCount = GetAliveCount()
   local amount = .2 / aliveCount

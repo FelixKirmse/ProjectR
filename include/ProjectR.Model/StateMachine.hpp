@@ -18,7 +18,7 @@ public:
   void RunCurrentState();
   void Sync(int value);
   void SetSynchronizer(std::shared_ptr<ISynchronizer<int> > const& syncer);
-  void SetCurrentState(int state);
+  virtual void SetCurrentState(int state);
   void ClearStates();
   bool FirstStateActive();
 

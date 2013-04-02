@@ -7,7 +7,7 @@ function GetName()
 end
 
 function GetDescription()
-  return "Dark energy fills the air.\nDeals DRK damage to enemies.\nHeals allies by 10% of their max HP."
+  return "Dark energy fills the air.\nDeals DRK damage to enemies.\nHeals allies by 10%% of their max HP."
 end
 
 function IsSupportSpell()

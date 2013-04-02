@@ -3,7 +3,7 @@ function GetTargetType()
 end
 
 function GetName()
-  return "5 ExaWatts Hyper Extermination Laser X1337"
+  return "5 ExaWatts Xtermination Laser X1337"
 end
 
 function GetDescription()

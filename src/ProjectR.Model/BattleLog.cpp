@@ -3,6 +3,7 @@
 #include "ISpell.hpp"
 #include <string>
 #include <sstream>
+#include "NumberSanitizer.hpp"
 
 namespace ProjectR
 {
@@ -15,6 +16,7 @@ struct BattleLogImpl : public BattleLog
     TargetInfo::TargetType targetType = spell->GetTargetType();
     float damageValue = receiver->GetDamageTaken();
 
+
     std::stringstream stream;
     stream << caster->GetName() << " uses " << spell->GetName() << " on ";
 
@@ -22,7 +24,7 @@ struct BattleLogImpl : public BattleLog
     if(receiver->DodgedAttack())
         stream << " but the attack was dodged";
     else
-      stream << (receiver->WasHealed() ? " healing for " : " dealing ") << damageValue << (receiver->WasHealed() ? " healing" : " damage");
+      stream << (receiver->WasHealed() ? " healing for " : " dealing ") << (damageValue == 0.f ? "no" : NumberSanitizer::Sanitize(damageValue)) << (receiver->WasHealed() ? " healing" : " damage");
 
     if(receiver->BlockedDamage())
       stream << " (blocked)";
@@ -34,11 +36,12 @@ struct BattleLogImpl : public BattleLog
       return;
     }
 
-    stream << " and inflicted " << receiver->AfflictedBy() << "!";
+    stream << " and inflicting " << receiver->AfflictedBy() << "!";
 
     _log.push_back(stream.str());
 
-    if(!receiver->IsDead())
+    float currentHP = receiver->GetCurrentHP();
+    if(currentHP - damageValue > 0.f)
       return;
 
     stream.str("");

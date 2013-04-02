@@ -146,12 +146,14 @@ struct CharacterFacImpl : public CharacterFactory, public ITCODParserListener
       {
         _currentSpells.push_back(_spellFactory->GetSpell(*it));
       }
+      return true;
     }
 
     case TCOD_TYPE_FLOAT:
     {
       SingleStat stat;
       stat[Base] = value.f;
+      _currentStats->SetSingleStat(stat, StatMapStringInt[propname]);
       return true;
     }
 
@@ -195,13 +197,13 @@ struct CharacterFacImpl : public CharacterFactory, public ITCODParserListener
   {
     auto const& rTemplate = race == nullptr ? _model.GetRaceTemplates()->GetRandomTemplate() :
                                               *race;
-    auto randomStats = Stats::GetRandomBaseStats();
-    randomStats->LvlUp(0, level);
+    auto randomStats = Stats::GetRandomBaseStats();    
     auto& spellFactory = _model.GetSpellFactory();
     newChar->SetRace(rTemplate.GetName());
     newChar->SetLore(rTemplate.GetDescription());
     ApplyRaceTemplate(rTemplate, randomStats);
     newChar->SetStats(randomStats);
+    newChar->LvlUp(level);
     std::vector<std::shared_ptr<ISpell> > spells;
     spells.push_back(spellFactory->GetSpell("Attack"));
     spells.push_back(spellFactory->GetSpell("Defend"));

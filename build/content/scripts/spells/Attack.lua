@@ -7,7 +7,7 @@ function GetName()
 end
 
 function GetDescription()
-    return "Physical Attack dealing 100% A.AD - 100% D.DEF Damage"
+    return "Physical Attack dealing 100%% A.AD - 100%% D.DEF Damage"
 end
 
 function IsSupportSpell()

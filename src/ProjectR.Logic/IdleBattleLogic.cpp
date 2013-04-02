@@ -12,6 +12,10 @@ struct IdleBattleLogicImpl : public IdleBattleLogic
   {
     auto battleModel = Model()->GetBattleModel();
     auto frontRow = battleModel->GetFrontRow();
+
+    if(_lastAttacker != nullptr)
+      _lastAttacker->TurnEnded();
+
     for(int i = _playerLeftOff; i < (int)frontRow.size(); ++i)
     {
       if(!frontRow[i]->UpdateTurnCounter())
@@ -21,6 +25,7 @@ struct IdleBattleLogicImpl : public IdleBattleLogic
       _playerLeftOff = i + 1;
       battleModel->SetCurrentAttacker(frontRow[i]);
       battleModel->IsEnemyTurn(false);
+      _lastAttacker = frontRow[i];
       return;
     }
 
@@ -44,6 +49,7 @@ struct IdleBattleLogicImpl : public IdleBattleLogic
       battleModel->SetCurrentState(Consequences);
       battleModel->SetCurrentAttacker(vec[i]);
       battleModel->IsEnemyTurn(enemyTurn);
+      _lastAttacker = vec[i];
       return;
     }
 
@@ -55,6 +61,7 @@ struct IdleBattleLogicImpl : public IdleBattleLogic
   int _enemyLeftOff = 0;
   int _enemyMinionLeftOff = 0;
   int _playerMinionLeftOff = 0;  
+  std::shared_ptr<Character> _lastAttacker = nullptr;
 };
 
 std::shared_ptr<IdleBattleLogic> IdleBattleLogic::Create()

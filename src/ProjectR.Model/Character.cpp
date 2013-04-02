@@ -2,6 +2,7 @@
 #include "SpecialCharacter.hpp"
 #include "Stats.hpp"
 #include <string>
+#include "boost/format.hpp"
 
 namespace ProjectR
 {
@@ -98,7 +99,7 @@ struct CharacterImpl : public SpecialCharacter
       _attackedDodged = true;
       return;
     }
-    _attackBlocked = true;
+    _attackBlocked = attackEvaded;
     value /= attackEvaded ? 2.f : 1.f;
     TakeTrueDamage(value);
   }
@@ -112,7 +113,7 @@ struct CharacterImpl : public SpecialCharacter
 
   bool IsDead()
   {
-    return _currentHP < 1.f;
+    return _currentHP <= 0.f;
   }
 
   float GetCurrentHP()
@@ -130,8 +131,8 @@ struct CharacterImpl : public SpecialCharacter
     _currentMP -= value;
     _currentMP =
         (_currentMP < 0.f) ? 0.f :
-                             _currentMP > _stats->GetTotalStat(MP) ?
-                               _stats->GetTotalStat(MP) : _currentMP;
+                             _currentMP > 200.f ?
+                               200.f : _currentMP;
   }
 
   void RemoveDebuffs()
@@ -216,6 +217,7 @@ struct CharacterImpl : public SpecialCharacter
     }
 
     // OnTurnCounterUpdated
+    _myTurn = result;
     return result;
   }
 
@@ -265,7 +267,11 @@ struct CharacterImpl : public SpecialCharacter
 
   void BuffStat(int stat, float value)
   {
-    std::string add = (value > 0 ? "+" : "") + std::to_string(value) + "%" + StatMapIntString[stat];
+    boost::format addFormat("%+d%%%%%s");
+    addFormat
+        % (value * 100.f)
+        % StatMapIntString[stat];
+    std::string add = addFormat.str();
     if(_afflictedBy == "")
       _afflictedBy = add;
     else
@@ -281,6 +287,26 @@ struct CharacterImpl : public SpecialCharacter
     clone->SetSpells(_spells);
     clone->SetStats(_stats->Clone());
     return clone;
+  }
+
+  bool TakesTurn()
+  {
+    return _myTurn;
+  }
+
+  void TurnEnded()
+  {
+    _myTurn = false;
+  }
+
+  void IsMarked(bool isMarked)
+  {
+    _isMarked = isMarked;
+  }
+
+  bool IsMarked()
+  {
+    return _isMarked;
   }
 
   float _currentHP;
@@ -300,6 +326,8 @@ struct CharacterImpl : public SpecialCharacter
   std::string _afflictedBy = "";
   long long _xpRequired;
   bool _isMinion = false;
+  bool _myTurn = false;
+  bool _isMarked = false;
 };
 
 float Character::TimeToAction;

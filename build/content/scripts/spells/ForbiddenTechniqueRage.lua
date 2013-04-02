@@ -7,7 +7,7 @@ return "Forbidden Technique: Rage"
 end
 
 function GetDescription()
-return "Infuse your weapon with arcane and strike all enemies.\nDrops the wait gauge of allies by 15% for each enemy hit.\nDeals composite ARC damage."
+return "Infuse your weapon with arcane and strike all enemies.\nDrops the wait gauge of allies by 15%% for each enemy hit.\nDeals composite ARC damage."
 end
 
 function IsSupportSpell()

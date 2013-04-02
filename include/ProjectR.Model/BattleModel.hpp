@@ -14,7 +14,6 @@ enum BattleState
 {
   Idle,
   BattleMenu,
-  PerformAction,
   Consequences,
   GameOver,
   BattleWon
@@ -58,6 +57,8 @@ public:
   virtual int GetBattleLvl() = 0;
   virtual void SetExperienceEarned(int amount) = 0;
   virtual int GetExperienceEarned() = 0;
+
+  virtual bool CharacterIsEnemy(std::shared_ptr<Character> const& chara) = 0;
 
   static BattleModel* Create(IModel const* model);
   ~BattleModel(){}

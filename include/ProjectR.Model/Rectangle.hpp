@@ -5,6 +5,7 @@ namespace ProjectR
 struct Point
 {
   Point(int x, int y) : X(x), Y(y){}
+  Point() : Point(0,0){}
   int X;
   int Y;
 

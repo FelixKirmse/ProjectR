@@ -39,6 +39,11 @@ void RConsole::SetCharacter(int x, int y, char character)
   _console->putChar(x, y, character);
 }
 
+void RConsole::SetCharacter(int x, int y, int character)
+{
+  _console->putChar(x, y, character);
+}
+
 void RConsole::SetCharacter(int x, int y, char character,Colour const& foreground, Colour const& background)
 {
   _console->putCharEx(x, y, character, foreground, background);
@@ -60,6 +65,11 @@ void RConsole::Blit(RConsole& src, Rectangle const& srcRect, int dstX, int dstY,
                     srcRect.X, srcRect.Y, srcRect.Width, srcRect.Height,
                     _console,
                     dstX, dstY, fgAlpha, bgAlpha);
+}
+
+void RConsole::SetColourControl(TCOD_colctrl_t con, Colour const& fore, Colour const& back)
+{
+  _console->setColorControl(con, fore, back);
 }
 
 void RConsole::Clear()
@@ -96,6 +106,31 @@ void RConsole::InitializeRootConsole(int width, int height)
 bool RConsole::ConsoleWindowClosed()
 {
   return TCODConsole::isWindowClosed();
+}
+
+void RConsole::DrawBorder()
+{
+  for(int col = 0; col < GetWidth(); ++col)
+  {
+    int drawChar = col == 0 ? TCOD_CHAR_NW :
+                              col == GetWidth() - 1 ? TCOD_CHAR_NE :
+                                                      TCOD_CHAR_HLINE;
+    SetCharacter(col, 0, drawChar);
+  }
+
+  for(int col = 0; col < GetWidth(); ++col)
+  {
+    int drawChar = col == 0 ? TCOD_CHAR_SW :
+                              col == GetWidth() - 1 ? TCOD_CHAR_SE :
+                                                      TCOD_CHAR_HLINE;
+    SetCharacter(col, GetHeight() - 1, drawChar);
+  }
+
+  for(int row = 1; row < GetHeight() - 1; ++row)
+  {
+    SetCharacter(0, row, TCOD_CHAR_VLINE);
+    SetCharacter(GetWidth() - 1, row, TCOD_CHAR_VLINE);
+  }
 }
 
 void RConsole::Draw()

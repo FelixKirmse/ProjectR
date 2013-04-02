@@ -16,6 +16,7 @@ public:
   virtual float GetMPCost(std::shared_ptr<Character> const& caster) = 0;
   virtual bool IsSupportSpell() = 0;
   virtual void ForceReload() = 0;
+  virtual float GetDelay() = 0;
 
   virtual ~ISpell(){}
 };

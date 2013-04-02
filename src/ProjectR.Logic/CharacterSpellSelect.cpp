@@ -16,12 +16,13 @@ std::shared_ptr<Character> getTarget(std::vector<std::shared_ptr<Character> > co
    * 5% each to attack back row   *
    ********************************/
   std::shared_ptr<Character> target = nullptr;
+  int size = chars.size();
   do
   {
     int targetRoll = Roll(99);
-    target = chars[(targetRoll < 60) ?
-          0 : (targetRoll < 90) ?
-            1 : (targetRoll < 95) ?
+    target = chars[(targetRoll < 60) || size == 1 ?
+          0 : (targetRoll < 90) || size == 2 ?
+            1 : (targetRoll < 95) || size == 3 ?
               2 : 3];
   }while(target->IsDead());
   return target;
@@ -68,7 +69,7 @@ TargetInfo CharacterSpellSelect::SelectSpell(std::shared_ptr<Character> const& c
 
   if(targetInfo.Spell->IsSupportSpell())
   {
-    int rollMax = isEnemy ? enemies.size() : frontRow.size();
+    int rollMax = isEnemy ? enemies.size() - 1 : frontRow.size() - 1;
     do
     {
       targetInfo.Target = isEnemy ? enemies[Roll(rollMax)] : frontRow[Roll(rollMax)];

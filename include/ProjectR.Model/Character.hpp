@@ -51,6 +51,12 @@ public:
   virtual bool IsMinion() = 0;
   virtual void IsMinion(bool isMinion) = 0;
 
+  virtual bool TakesTurn() = 0;
+  virtual void TurnEnded() = 0;
+
+  virtual void IsMarked(bool isMarked) = 0;
+  virtual bool IsMarked() = 0;
+
   virtual ~Character(){}
   static std::shared_ptr<Character> Create(std::string const& name);
 

@@ -37,7 +37,8 @@ struct ProjectRImpl : ProjectR
   {
     _model->CommitChanges();
     do
-    {
+    {      
+      TCODConsole::checkForKeypress(TCOD_KEY_PRESSED);
       _logic->RunCurrentState();
     }while(!_exitGame && !TCODConsole::isWindowClosed());
   }

@@ -183,7 +183,7 @@ std::shared_ptr<Stats> Stats::GetRandomBaseStats()
 
   stats->_stats[MP][Base] = 200.f;
 
-  for(int i = AD; i < EVA; ++i)
+  for(int i = AD; i <= CHA; ++i)
   {
     SingleStat& s = stats->_stats[i];
     s[Base] = Roll(20, 80);

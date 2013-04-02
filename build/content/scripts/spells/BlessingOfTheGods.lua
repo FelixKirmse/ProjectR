@@ -7,7 +7,7 @@ function GetName()
 end
 
 function GetDescription()
-  return "Bless the target, increasing all their stats.\nAlso sets their speed bar to 100%."
+  return "Bless the target, increasing all their stats.\nAlso sets their speed bar to 100%%."
 end
 
 function IsSupportSpell()
@@ -23,9 +23,9 @@ function GetDelay()
 end
 
 function SpellEffect()
-  d:SetTurnCounter(d:GetTimeToAction() * .99)
+  d:SetTurnCounter(GetTimeToAction() * .99)
 
   for i = HP, SIL, 1 do
-    ds:BuffStat(i, .25)
+    d:BuffStat(i, .25)
   end
 end

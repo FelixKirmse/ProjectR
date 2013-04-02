@@ -50,7 +50,7 @@ public:
       TCODConsole::flush();
       _currentInput = TCODConsole::checkForKeypress(TCOD_KEY_PRESSED);
       if(TCODConsole::isWindowClosed())
-        break;
+        exit(0);
     }while(_currentInput.vk == TCODK_NONE);
   }
 

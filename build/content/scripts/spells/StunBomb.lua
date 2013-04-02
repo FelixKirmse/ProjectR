@@ -25,5 +25,5 @@ end
 function SpellEffect()
   local damage = (5 * aMD * (aFIR/100) - dDEF) * (100/dFIR)
   d:TakeDamage(damage)
-  ds:BuffStat(AD, -.18)
+  d:BuffStat(AD, -.18)
 end
