@@ -37,6 +37,9 @@ public:
   int GetBattleMenuState();
   void SetBattleMenuState(int state);
 
+  int GetSelectedSwitchIndex();
+  void SetSelectedSwitchIndex(int index);
+
 private:
   std::shared_ptr<Menu> _mainMenu;
   std::shared_ptr<Menu> _optionsMenu;
@@ -49,5 +52,6 @@ private:
   std::shared_ptr<Menu> _targetSelectMenu;
   std::shared_ptr<Menu> _activeMenu;
   int _battleMenuState;
+  int _selectedSwitchIndex;
 };
 }

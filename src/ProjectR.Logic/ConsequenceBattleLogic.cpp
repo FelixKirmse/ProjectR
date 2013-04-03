@@ -63,11 +63,13 @@ struct ConsequenceBattleLogicImpl : public ConsequenceBattleLogic
     case TargetInfo::Single:
       _targetInfo.Spell->DamageCalculation(_currentAttacker, _targetInfo.Target);
       log->LogAction(_currentAttacker, _targetInfo.Target, _targetInfo.Spell);
+      _targetInfo.Target->IsMarked(true);
       break;
 
     case TargetInfo::Myself:
       _targetInfo.Spell->DamageCalculation(_currentAttacker, _currentAttacker);
       log->LogAction(_currentAttacker, _currentAttacker, _targetInfo.Spell);
+      _currentAttacker->IsMarked(true);
       break;
 
     case TargetInfo::Allies:
@@ -82,6 +84,7 @@ struct ConsequenceBattleLogicImpl : public ConsequenceBattleLogic
       {
         _targetInfo.Spell->DamageCalculation(_currentAttacker, targetRow[i]);
         log->LogAction(_currentAttacker, targetRow[i], _targetInfo.Spell);
+        targetRow.at(i)->IsMarked(true);
       }
       break;
     }
@@ -101,12 +104,14 @@ struct ConsequenceBattleLogicImpl : public ConsequenceBattleLogic
       {
         _targetInfo.Spell->DamageCalculation(_currentAttacker, targetRow[i], mod);
         log->LogAction(_currentAttacker, targetRow[i], _targetInfo.Spell);
+        targetRow.at(i)->IsMarked(true);
       }
 
       for(size_t i = attackerIndex + 1, mod = 2; i < targetRow.size(); ++i, ++mod)
       {
         _targetInfo.Spell->DamageCalculation(_currentAttacker, targetRow[i], mod);
         log->LogAction(_currentAttacker, targetRow[i], _targetInfo.Spell);
+        targetRow.at(i)->IsMarked(true);
       }
 
       break;
@@ -175,12 +180,14 @@ struct ConsequenceBattleLogicImpl : public ConsequenceBattleLogic
     {
       frontRow[i]->SetCurrentHP(_charHPShouldHave[i]);
       frontRow[i]->ResetDamageTaken();
+      frontRow.at(i)->IsMarked(false);
     }
 
     auto const& enemies = _battleModel->GetEnemies();
     for(auto i = 0u; i < enemies.size(); ++i)
     {
       enemies[i]->SetCurrentHP(_enemyHPShouldHave[i]);
+      enemies.at(i)->IsMarked(false);
     }
 
     bool someoneAlive = false;

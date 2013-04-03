@@ -43,7 +43,12 @@ struct BattleLogicImpl : public BattleLogic, public StateMachine
     party->AddCharacter(fac->CreateRandomCharacter(5000), FrontRow);
     party->AddCharacter(fac->CreateRandomCharacter(5000), FrontRow);
 
-    Model()->GetBattleModel()->StartBattle(5000);
+    for(int i = 0; i < 6; ++i)
+    {
+      party->AddCharacter(fac->CreateRandomCharacter(5000), BackSeat);
+    }
+
+    Model()->GetBattleModel()->StartBattle(4000);
   }
 
   void Run()

@@ -72,24 +72,26 @@ ifeq ($(config),release)
 endif
 
 OBJECTS := \
-	$(OBJDIR)/BattleWonView.o \
-	$(OBJDIR)/ConsoleView.o \
-	$(OBJDIR)/BattleMenuView.o \
-	$(OBJDIR)/MenuDrawer.o \
-	$(OBJDIR)/CharDescriptionDrawer.o \
-	$(OBJDIR)/SpellSelectView.o \
-	$(OBJDIR)/OverworldView.o \
-	$(OBJDIR)/TitleScreenView.o \
-	$(OBJDIR)/StatScreenDrawer.o \
+	$(OBJDIR)/BattleView.o \
+	$(OBJDIR)/TargetSelectView.o \
+	$(OBJDIR)/SwitchView.o \
+	$(OBJDIR)/SpellDescriptionDrawer.o \
 	$(OBJDIR)/PreGameView.o \
 	$(OBJDIR)/ActionSelectView.o \
-	$(OBJDIR)/RConsole.o \
-	$(OBJDIR)/BattleLogDrawer.o \
-	$(OBJDIR)/TargetSelectView.o \
-	$(OBJDIR)/SpellDescriptionDrawer.o \
-	$(OBJDIR)/BattleView.o \
-	$(OBJDIR)/MainMenuView.o \
+	$(OBJDIR)/BattleMenuView.o \
+	$(OBJDIR)/SpellSelectView.o \
+	$(OBJDIR)/ConsoleView.o \
 	$(OBJDIR)/CharBattleFrame.o \
+	$(OBJDIR)/BattleLogDrawer.o \
+	$(OBJDIR)/MainMenuView.o \
+	$(OBJDIR)/StatScreenDrawer.o \
+	$(OBJDIR)/OverworldView.o \
+	$(OBJDIR)/RConsole.o \
+	$(OBJDIR)/BattleWonView.o \
+	$(OBJDIR)/TitleScreenView.o \
+	$(OBJDIR)/CharDescriptionDrawer.o \
+	$(OBJDIR)/SpellLister.o \
+	$(OBJDIR)/MenuDrawer.o \
 
 RESOURCES := \
 
@@ -154,31 +156,16 @@ endif
 	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
 endif
 
-$(OBJDIR)/BattleWonView.o: src/ProjectR.View/BattleWonView.cpp
+$(OBJDIR)/BattleView.o: src/ProjectR.View/BattleView.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
-$(OBJDIR)/ConsoleView.o: src/ProjectR.View/ConsoleView.cpp
+$(OBJDIR)/TargetSelectView.o: src/ProjectR.View/TargetSelectView.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
-$(OBJDIR)/BattleMenuView.o: src/ProjectR.View/BattleMenuView.cpp
+$(OBJDIR)/SwitchView.o: src/ProjectR.View/SwitchView.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
-$(OBJDIR)/MenuDrawer.o: src/ProjectR.View/MenuDrawer.cpp
-	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
-$(OBJDIR)/CharDescriptionDrawer.o: src/ProjectR.View/CharDescriptionDrawer.cpp
-	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
-$(OBJDIR)/SpellSelectView.o: src/ProjectR.View/SpellSelectView.cpp
-	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
-$(OBJDIR)/OverworldView.o: src/ProjectR.View/OverworldView.cpp
-	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
-$(OBJDIR)/TitleScreenView.o: src/ProjectR.View/TitleScreenView.cpp
-	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
-$(OBJDIR)/StatScreenDrawer.o: src/ProjectR.View/StatScreenDrawer.cpp
+$(OBJDIR)/SpellDescriptionDrawer.o: src/ProjectR.View/SpellDescriptionDrawer.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
 $(OBJDIR)/PreGameView.o: src/ProjectR.View/PreGameView.cpp
@@ -187,25 +174,46 @@ $(OBJDIR)/PreGameView.o: src/ProjectR.View/PreGameView.cpp
 $(OBJDIR)/ActionSelectView.o: src/ProjectR.View/ActionSelectView.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
-$(OBJDIR)/RConsole.o: src/ProjectR.View/RConsole.cpp
+$(OBJDIR)/BattleMenuView.o: src/ProjectR.View/BattleMenuView.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+$(OBJDIR)/SpellSelectView.o: src/ProjectR.View/SpellSelectView.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+$(OBJDIR)/ConsoleView.o: src/ProjectR.View/ConsoleView.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+$(OBJDIR)/CharBattleFrame.o: src/ProjectR.View/CharBattleFrame.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
 $(OBJDIR)/BattleLogDrawer.o: src/ProjectR.View/BattleLogDrawer.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
-$(OBJDIR)/TargetSelectView.o: src/ProjectR.View/TargetSelectView.cpp
-	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
-$(OBJDIR)/SpellDescriptionDrawer.o: src/ProjectR.View/SpellDescriptionDrawer.cpp
-	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
-$(OBJDIR)/BattleView.o: src/ProjectR.View/BattleView.cpp
-	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
 $(OBJDIR)/MainMenuView.o: src/ProjectR.View/MainMenuView.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
-$(OBJDIR)/CharBattleFrame.o: src/ProjectR.View/CharBattleFrame.cpp
+$(OBJDIR)/StatScreenDrawer.o: src/ProjectR.View/StatScreenDrawer.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+$(OBJDIR)/OverworldView.o: src/ProjectR.View/OverworldView.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+$(OBJDIR)/RConsole.o: src/ProjectR.View/RConsole.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+$(OBJDIR)/BattleWonView.o: src/ProjectR.View/BattleWonView.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+$(OBJDIR)/TitleScreenView.o: src/ProjectR.View/TitleScreenView.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+$(OBJDIR)/CharDescriptionDrawer.o: src/ProjectR.View/CharDescriptionDrawer.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+$(OBJDIR)/SpellLister.o: src/ProjectR.View/SpellLister.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+$(OBJDIR)/MenuDrawer.o: src/ProjectR.View/MenuDrawer.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
 

@@ -113,7 +113,7 @@ struct CharacterImpl : public SpecialCharacter
 
   bool IsDead()
   {
-    return _currentHP <= 0.f;
+    return _currentHP < 1.f;
   }
 
   float GetCurrentHP()

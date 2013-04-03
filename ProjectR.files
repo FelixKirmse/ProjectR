@@ -331,3 +331,14 @@ include/ProjectR.View/SpellSelectView.hpp
 src/ProjectR.View/SpellSelectView.cpp
 include/ProjectR.View/SpellDescriptionDrawer.hpp
 src/ProjectR.View/SpellDescriptionDrawer.cpp
+include/ProjectR.Logic/SwitchLogic.hpp
+src/ProjectR.Logic/SwitchLogic.cpp
+include/ProjectR.Logic/FrontRowSelector.hpp
+src/ProjectR.Logic/FrontRowSelector.cpp
+include/ProjectR.Interfaces/Initializeable.hpp
+include/ProjectR.Logic/BackRowSelector.hpp
+src/ProjectR.Logic/BackRowSelector.cpp
+include/ProjectR.View/SwitchView.hpp
+src/ProjectR.View/SwitchView.cpp
+include/ProjectR.View/SpellLister.hpp
+src/ProjectR.View/SpellLister.cpp

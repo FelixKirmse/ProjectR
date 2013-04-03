@@ -4,6 +4,8 @@
 #include "ErrorCodes.hpp"
 #include "IModel.hpp"
 #include "CharacterFactory.hpp"
+#include <utility>
+#include <algorithm>
 
 namespace ProjectR
 {
@@ -113,8 +115,22 @@ struct PartyImpl : public Party
   void SwitchCharacters(std::shared_ptr<Character> const& char1,
                         std::shared_ptr<Character> const& char2)
   {
+    if(char1 == nullptr)
+    {
+      //We are replacing a dead frontrow member!
+      auto endIter = _backSeat.end();
+      auto pos = std::find(_backSeat.begin(), endIter, char2);
+      assert(pos != endIter);
+      _backSeat.erase(pos);
+      _frontRow.push_back(char2);
+      _charMap[char2] = &_frontRow;
+      return;
+    }
+
     auto& originVec = *_charMap[char1];
     auto& targetVec = *_charMap[char2];
+    _charMap[char1] = &targetVec;
+    _charMap[char2] = &originVec;
 
     int originPos = 0;
     for(;&(*char1) != &(*originVec[originPos]); ++originPos); // Intentionally Empty
@@ -122,11 +138,7 @@ struct PartyImpl : public Party
     int targetPos = 0;
     for(;&(*char2) != &(*targetVec[targetPos]); ++targetPos); // Intentionally Empty
 
-    originVec[originPos] = char2;
-    targetVec[originPos] = char1;
-
-    _charMap[char1] = &targetVec;
-    _charMap[char2] = &originVec;
+    std::swap(originVec[originPos], targetVec[targetPos]);
   }
 
   std::vector<std::shared_ptr<Character> > _frontRow;

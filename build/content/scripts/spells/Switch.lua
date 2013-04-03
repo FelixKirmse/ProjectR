@@ -1,5 +1,5 @@
 function GetTargetType()
-    return Myself
+    return Single
 end
 
 function GetName()

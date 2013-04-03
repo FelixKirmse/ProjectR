@@ -46,7 +46,7 @@ struct CommonBattleView : public ModelState
     RConsole enemyBorder(74, 24);
     enemyBorder.DrawBorder();
     enemyBorder.SetColourControl(TCOD_COLCTRL_1, Colour::red);
-    enemyBorder.PrintString(3, 5, "%cEnemy Party%c", TCOD_COLCTRL_1, TCOD_COLCTRL_STOP);
+    enemyBorder.PrintString(1, 1, "%cEnemy Party%c", TCOD_COLCTRL_1, TCOD_COLCTRL_STOP);
 
     RConsole* root = RConsole::GetRootConsole();
     root->Blit(enemyBorder, enemyBorder.GetBounds(), 3, 3);
@@ -54,7 +54,7 @@ struct CommonBattleView : public ModelState
     RConsole playerBorder(74, 23);
     playerBorder.DrawBorder();
     playerBorder.SetColourControl(TCOD_COLCTRL_1, Colour::red);
-    playerBorder.PrintString(2, 18, "%cPlayer Party%c", TCOD_COLCTRL_1, TCOD_COLCTRL_STOP);
+    playerBorder.PrintString(1, 21, "%cPlayer Party%c", TCOD_COLCTRL_1, TCOD_COLCTRL_STOP);
     root->Blit(playerBorder, playerBorder.GetBounds(), 3, 28);
   }
 

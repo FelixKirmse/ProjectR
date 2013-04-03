@@ -43,7 +43,8 @@ void MenuModel::SetBattleMenuState(int state)
 MenuModel::MenuModel()
   : _mainMenu(new Menu()),
     _optionsMenu(new Menu()),
-    _activeMenu(_mainMenu)
+    _activeMenu(_mainMenu),
+    _selectedSwitchIndex(0)
 {
   SetupMainMenu(_mainMenu);
   SetupMainMenu(_optionsMenu);
@@ -98,6 +99,16 @@ void MenuModel::SetSpellSelectMenu(std::shared_ptr<Menu> const& menu)
 std::shared_ptr<Menu> const& MenuModel::GetTargetSelectMenu()
 {
   return _targetSelectMenu;
+}
+
+int MenuModel::GetSelectedSwitchIndex()
+{
+  return _selectedSwitchIndex;
+}
+
+void MenuModel::SetSelectedSwitchIndex(int index)
+{
+  _selectedSwitchIndex = index;
 }
 
 }

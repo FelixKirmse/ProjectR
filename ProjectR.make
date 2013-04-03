@@ -72,8 +72,8 @@ ifeq ($(config),release)
 endif
 
 OBJECTS := \
-	$(OBJDIR)/ProjectR.o \
 	$(OBJDIR)/main.o \
+	$(OBJDIR)/ProjectR.o \
 
 RESOURCES := \
 
@@ -138,10 +138,10 @@ endif
 	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
 endif
 
-$(OBJDIR)/ProjectR.o: src/ProjectR/ProjectR.cpp
+$(OBJDIR)/main.o: src/ProjectR/main.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
-$(OBJDIR)/main.o: src/ProjectR/main.cpp
+$(OBJDIR)/ProjectR.o: src/ProjectR/ProjectR.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
 

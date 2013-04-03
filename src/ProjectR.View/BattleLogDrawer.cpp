@@ -11,7 +11,7 @@ struct LogDrawer : public BattleLogDrawer
 {
   LogDrawer()
     : _logConsole(37, 21),
-      LogArea(0, 2, _logConsole.GetWidth(), _logConsole.GetHeight() - 2)
+      LogArea(1, 3, _logConsole.GetWidth(), _logConsole.GetHeight() - 3)
   {
   }
 
@@ -35,8 +35,9 @@ struct LogDrawer : public BattleLogDrawer
     do
     {
       _logConsole.Clear();
+      _logConsole.DrawBorder();
       _logConsole.SetColourControl(TCOD_COLCTRL_1, Colour::red);
-      _logConsole.PrintString(0, 0, "%cBattlelog%c", TCOD_COLCTRL_1, TCOD_COLCTRL_STOP);
+      _logConsole.PrintString(1, 1, "%cBattlelog:%c", TCOD_COLCTRL_1, TCOD_COLCTRL_STOP);
       auto const log = _log->GetLastEntries(fetchCount);
       _logStream.str("");
       _logStream.clear();
@@ -56,7 +57,7 @@ struct LogDrawer : public BattleLogDrawer
   Point _position;
   RConsole* _root;
   std::stringstream _logStream;
-  int const MaxLogLines = 19;
+  int const MaxLogLines = 18;
   Rectangle const LogArea;
 
 };

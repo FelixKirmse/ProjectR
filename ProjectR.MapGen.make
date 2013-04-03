@@ -73,11 +73,11 @@ endif
 
 OBJECTS := \
 	$(OBJDIR)/MapGenerator.o \
-	$(OBJDIR)/Generator.o \
 	$(OBJDIR)/DrunkDigger.o \
+	$(OBJDIR)/RoomGenerator.o \
 	$(OBJDIR)/TreasureRoom.o \
 	$(OBJDIR)/HallwayGenerator.o \
-	$(OBJDIR)/RoomGenerator.o \
+	$(OBJDIR)/Generator.o \
 
 RESOURCES := \
 
@@ -145,10 +145,10 @@ endif
 $(OBJDIR)/MapGenerator.o: src/ProjectR.MapGen/MapGenerator.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
-$(OBJDIR)/Generator.o: src/ProjectR.MapGen/Generators/Generator.cpp
+$(OBJDIR)/DrunkDigger.o: src/ProjectR.MapGen/Generators/DrunkDigger.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
-$(OBJDIR)/DrunkDigger.o: src/ProjectR.MapGen/Generators/DrunkDigger.cpp
+$(OBJDIR)/RoomGenerator.o: src/ProjectR.MapGen/Generators/RoomGenerator.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
 $(OBJDIR)/TreasureRoom.o: src/ProjectR.MapGen/Generators/TreasureRoom.cpp
@@ -157,7 +157,7 @@ $(OBJDIR)/TreasureRoom.o: src/ProjectR.MapGen/Generators/TreasureRoom.cpp
 $(OBJDIR)/HallwayGenerator.o: src/ProjectR.MapGen/Generators/HallwayGenerator.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
-$(OBJDIR)/RoomGenerator.o: src/ProjectR.MapGen/Generators/RoomGenerator.cpp
+$(OBJDIR)/Generator.o: src/ProjectR.MapGen/Generators/Generator.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
 

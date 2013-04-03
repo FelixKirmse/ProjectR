@@ -72,24 +72,27 @@ ifeq ($(config),release)
 endif
 
 OBJECTS := \
-	$(OBJDIR)/BattleLogic.o \
-	$(OBJDIR)/GameOverLogic.o \
-	$(OBJDIR)/SpellSelect.o \
 	$(OBJDIR)/CharacterSpellSelect.o \
-	$(OBJDIR)/BattleWonLogic.o \
-	$(OBJDIR)/PreGameLogic.o \
 	$(OBJDIR)/ActionSelect.o \
-	$(OBJDIR)/MainMenuLogic.o \
-	$(OBJDIR)/IdleBattleLogic.o \
-	$(OBJDIR)/TargetSelect.o \
-	$(OBJDIR)/BattleMenuLogic.o \
-	$(OBJDIR)/TitleScreenLogic.o \
-	$(OBJDIR)/MenuController.o \
-	$(OBJDIR)/LogicState.o \
-	$(OBJDIR)/ConsequenceBattleLogic.o \
-	$(OBJDIR)/RInput.o \
+	$(OBJDIR)/PreGameLogic.o \
 	$(OBJDIR)/RLogic.o \
+	$(OBJDIR)/BackRowSelector.o \
+	$(OBJDIR)/MenuController.o \
+	$(OBJDIR)/SpellSelect.o \
 	$(OBJDIR)/OverworldLogic.o \
+	$(OBJDIR)/MainMenuLogic.o \
+	$(OBJDIR)/TargetSelect.o \
+	$(OBJDIR)/TitleScreenLogic.o \
+	$(OBJDIR)/IdleBattleLogic.o \
+	$(OBJDIR)/GameOverLogic.o \
+	$(OBJDIR)/ConsequenceBattleLogic.o \
+	$(OBJDIR)/SwitchLogic.o \
+	$(OBJDIR)/LogicState.o \
+	$(OBJDIR)/BattleWonLogic.o \
+	$(OBJDIR)/BattleLogic.o \
+	$(OBJDIR)/BattleMenuLogic.o \
+	$(OBJDIR)/RInput.o \
+	$(OBJDIR)/FrontRowSelector.o \
 
 RESOURCES := \
 
@@ -154,58 +157,67 @@ endif
 	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
 endif
 
-$(OBJDIR)/BattleLogic.o: src/ProjectR.Logic/BattleLogic.cpp
-	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
-$(OBJDIR)/GameOverLogic.o: src/ProjectR.Logic/GameOverLogic.cpp
-	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
-$(OBJDIR)/SpellSelect.o: src/ProjectR.Logic/SpellSelect.cpp
-	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
 $(OBJDIR)/CharacterSpellSelect.o: src/ProjectR.Logic/CharacterSpellSelect.cpp
-	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
-$(OBJDIR)/BattleWonLogic.o: src/ProjectR.Logic/BattleWonLogic.cpp
-	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
-$(OBJDIR)/PreGameLogic.o: src/ProjectR.Logic/PreGameLogic.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
 $(OBJDIR)/ActionSelect.o: src/ProjectR.Logic/ActionSelect.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
-$(OBJDIR)/MainMenuLogic.o: src/ProjectR.Logic/MainMenuLogic.cpp
-	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
-$(OBJDIR)/IdleBattleLogic.o: src/ProjectR.Logic/IdleBattleLogic.cpp
-	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
-$(OBJDIR)/TargetSelect.o: src/ProjectR.Logic/TargetSelect.cpp
-	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
-$(OBJDIR)/BattleMenuLogic.o: src/ProjectR.Logic/BattleMenuLogic.cpp
-	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
-$(OBJDIR)/TitleScreenLogic.o: src/ProjectR.Logic/TitleScreenLogic.cpp
-	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
-$(OBJDIR)/MenuController.o: src/ProjectR.Logic/MenuController.cpp
-	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
-$(OBJDIR)/LogicState.o: src/ProjectR.Logic/LogicState.cpp
-	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
-$(OBJDIR)/ConsequenceBattleLogic.o: src/ProjectR.Logic/ConsequenceBattleLogic.cpp
-	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
-$(OBJDIR)/RInput.o: src/ProjectR.Logic/RInput.cpp
+$(OBJDIR)/PreGameLogic.o: src/ProjectR.Logic/PreGameLogic.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
 $(OBJDIR)/RLogic.o: src/ProjectR.Logic/RLogic.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+$(OBJDIR)/BackRowSelector.o: src/ProjectR.Logic/BackRowSelector.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+$(OBJDIR)/MenuController.o: src/ProjectR.Logic/MenuController.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+$(OBJDIR)/SpellSelect.o: src/ProjectR.Logic/SpellSelect.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
 $(OBJDIR)/OverworldLogic.o: src/ProjectR.Logic/OverworldLogic.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+$(OBJDIR)/MainMenuLogic.o: src/ProjectR.Logic/MainMenuLogic.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+$(OBJDIR)/TargetSelect.o: src/ProjectR.Logic/TargetSelect.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+$(OBJDIR)/TitleScreenLogic.o: src/ProjectR.Logic/TitleScreenLogic.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+$(OBJDIR)/IdleBattleLogic.o: src/ProjectR.Logic/IdleBattleLogic.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+$(OBJDIR)/GameOverLogic.o: src/ProjectR.Logic/GameOverLogic.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+$(OBJDIR)/ConsequenceBattleLogic.o: src/ProjectR.Logic/ConsequenceBattleLogic.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+$(OBJDIR)/SwitchLogic.o: src/ProjectR.Logic/SwitchLogic.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+$(OBJDIR)/LogicState.o: src/ProjectR.Logic/LogicState.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+$(OBJDIR)/BattleWonLogic.o: src/ProjectR.Logic/BattleWonLogic.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+$(OBJDIR)/BattleLogic.o: src/ProjectR.Logic/BattleLogic.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+$(OBJDIR)/BattleMenuLogic.o: src/ProjectR.Logic/BattleMenuLogic.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+$(OBJDIR)/RInput.o: src/ProjectR.Logic/RInput.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+$(OBJDIR)/FrontRowSelector.o: src/ProjectR.Logic/FrontRowSelector.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
 

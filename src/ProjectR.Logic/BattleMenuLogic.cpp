@@ -10,6 +10,7 @@
 #include "MenuModel.hpp"
 #include "TargetSelect.hpp"
 #include "SpellSelect.hpp"
+#include "SwitchLogic.hpp"
 
 namespace ProjectR
 {
@@ -24,7 +25,7 @@ struct MenuLogic : public BattleMenuLogic, public StateMachine
     AddState(ActionSelect::Create());
     AddState(TargetSelect::Create());
     AddState(SpellSelect::Create());
-    AddState(/*Switch*/nullptr);
+    AddState(SwitchLogic::Create());
     AddState(/*Convince*/nullptr);
     AddState(/*Execute*/nullptr);
     SetCurrentState(SelectAction);
@@ -35,6 +36,7 @@ struct MenuLogic : public BattleMenuLogic, public StateMachine
   {
     Model()->GetMenuModel()->SetBattleMenuState(state);
     StateMachine::SetCurrentState(state);
+    _lastState = GetCurrentState();
   }
 
   void Run()
@@ -42,14 +44,25 @@ struct MenuLogic : public BattleMenuLogic, public StateMachine
     if(!_initialized)
       Initialize();
 
-    RunCurrentState();
+    auto const& currentState = GetState(Model()->GetMenuModel()->GetBattleMenuState());
+    if(currentState != _lastState)
+    {
+      _lastState->Deactivate();
+      currentState->Activate();
+    }
+
+    currentState->Run();
 
     if(Model()->GetMenuModel()->GetBattleMenuState() == Execute)
     {
       Model()->GetBattleModel()->SetCurrentState(Consequences);
       SetCurrentState(SelectAction);
     }
+
+    _lastState = currentState;
   }
+
+  std::shared_ptr<IState> _lastState;
 
   bool _initialized = false;
 };

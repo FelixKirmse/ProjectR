@@ -47,9 +47,9 @@ void StateMachine::AddState(std::shared_ptr<IState> const& state)
 
 void StateMachine::RunCurrentState()
 {
-  auto const& state = _states[_currentState];
+  auto const& state = _states.at(_currentState);
   if(state != nullptr)
-  state->Run();
+    state->Run();
   if(_synchronizer != nullptr)
     _synchronizer->Sync(_currentState);
 }

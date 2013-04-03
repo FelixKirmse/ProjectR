@@ -5,6 +5,7 @@
 #include "ActionSelectView.hpp"
 #include "TargetSelectView.hpp"
 #include "SpellSelectView.hpp"
+#include "SwitchView.hpp"
 
 namespace ProjectR
 {
@@ -15,7 +16,7 @@ struct BattleMenuViewImpl : public BattleMenuView, public StateMachine
     AddState(ActionSelectView::Create());
     AddState(TargetSelectView::Create());
     AddState(SpellSelectView::Create());
-    AddState(/*Switch*/nullptr);
+    AddState(SwitchView::Create());
     AddState(/*Convince*/nullptr);
     AddState(/*Execute*/nullptr);
     _initialized = true;
